@@ -1,1 +1,1 @@
-# NeoScavModHelperTool
+# IGNORE THIS REPO FOR NOW

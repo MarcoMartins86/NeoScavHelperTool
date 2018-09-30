@@ -7,7 +7,7 @@ It will need to have valid XML files on all mods or else an exception will be th
 - It will list all in-game items
 - It will show "attackmodes" items basic info
 
-### Bellow is a list with fixes I had to make on some mods:
+### Bellow is a list with XML fixes I had to make on some mods:
 + DevKit\BBCAddOn
   - Line 1494: escaped '&' to '&amp;'
   - Line 2574: escaped '&' to '&amp;'

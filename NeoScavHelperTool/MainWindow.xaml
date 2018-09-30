@@ -1,0 +1,73 @@
+﻿<Controls:MetroWindow x:Class="NeoScavModHelperTool.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:local="clr-namespace:NeoScavModHelperTool"
+                      mc:Ignorable="d"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      Title="NeoScavHelperTool" Height="450" Width="800" Loaded="Window_Loaded" TitleCharacterCasing="Normal">
+    <!--
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="Settings" />                    
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Expander ExpandDirection="Right" IsExpanded="True">
+            <Expander.Header>
+                <TextBlock Text="Pick Game Item" Width="Auto" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="-90"/>
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Expander.Header>
+            <TabControl SelectedIndex="2" Width="200">
+                <TabItem IsEnabled="False">
+                    <TabItem.Header>
+                        <Label Content="Group by:"/>
+                    </TabItem.Header>
+                </TabItem>
+                <TabItem Header="Mods" Controls:ControlsHelper.HeaderFontSize="18">
+                    <TreeView x:Name="TreeViewViewerMods" SelectedItemChanged="TreeView_SelectedItemChanged"/>
+                </TabItem>
+                <TabItem Header="Types" Controls:ControlsHelper.HeaderFontSize="18">
+                    <TreeView x:Name="TreeViewViewerTypes" SelectedItemChanged="TreeView_SelectedItemChanged"/>
+                </TabItem>
+            </TabControl>
+        </Expander>
+        <TabControl x:Name="TabControlDataType" Grid.Column="1">
+            <TabItem x:Name="TabItemAttackmodes">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Canvas x:Name="CanvasAttackmodes" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{Binding ActualWidth, ElementName=ImageAttackmodesAModeFrame, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=ImageAttackmodesAModeFrame, Mode=OneWay}">
+                        <Image x:Name="ImageAttackmodesAModeFrame" Panel.ZIndex="0" Canvas.Left="0" Canvas.Top="0" />
+                        <Image x:Name="ImageAttackmodesItem" Panel.ZIndex="1" Canvas.Left="0" Canvas.Top="10"/>
+                        <TextBlock x:Name="TextBlockAttackmodesName" Text="DUMMY" Panel.ZIndex="10" Canvas.Left="50" Canvas.Top="1" FontSize="20"/>
+                    </Canvas>
+                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <DataGrid x:Name="DataGridAttackmods" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
+                        </DataGrid>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <!-- barterhexes -->
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Controls:MetroWindow>

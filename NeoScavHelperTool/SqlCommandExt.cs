@@ -9,7 +9,8 @@ namespace NeoScavModHelperTool
         public static void AddArrayParameters<T>(this SQLiteCommand cmd, string name, IEnumerable<T> values)
         {
             name = name.StartsWith("@") ? name : "@" + name;
-            var names = string.Join(", ", values.Select((value, i) => {
+            var names = string.Join(", ", values.Select((value, i) =>
+            {
                 var paramName = name + i;
                 cmd.Parameters.AddWithValue(paramName, value);
                 return paramName;
@@ -17,7 +18,7 @@ namespace NeoScavModHelperTool
             cmd.CommandText = cmd.CommandText.Replace(name, names);
         }
 
-        public static void AddMultipleAndConditions<T,Q>(this SQLiteCommand cmd, string name, IEnumerable<T> columns, IEnumerable<Q> values)
+        public static void AddMultipleAndConditions<T, Q>(this SQLiteCommand cmd, string name, IEnumerable<T> columns, IEnumerable<Q> values)
         {
             name = name.StartsWith("@") ? name : "@" + name;
             var conditions = string.Join(" and ", columns.Select((value, i) =>

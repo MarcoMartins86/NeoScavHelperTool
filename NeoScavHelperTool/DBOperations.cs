@@ -4,14 +4,10 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Schema;
 
 namespace NeoScavModHelperTool
 {
@@ -21,6 +17,8 @@ namespace NeoScavModHelperTool
         private static string _sqlCommandSelectAllFromTableWhereColumnEqualValue = "SELECT * FROM `{0}` WHERE `{1}`=@value";
         private static string _sqlCommandSelectColumnFromTableWhereColumnEqualValue = "SELECT `{0}` FROM `{1}` WHERE `{2}`=@value";
         private static string _sqlCommandSelectColumnFromTableWhereMultipleColumnEqualValue = "SELECT `{0}` FROM `{1}` WHERE @multiple";
+        private static string _sqlCommandSelectColumnsFromTableWhereMultipleColumnEqualValue = "SELECT {0} FROM `{1}` WHERE @multiple";
+        private static string _sqlCommandSelectColumnsFromTableWhereColumnEqualValue = "SELECT {0} FROM `{1}` WHERE `{2}`=@value";
         private static string _sqlCommandSelectTablesWithNameLike = "SELECT `name` FROM `sqlite_master` WHERE `type`='table' and `name` like @name;";
         private static string _sqlCommandSelectValueFromConfiguration = "SELECT `value` FROM `configuration` WHERE `name`=@name";
         private static string _sqlCommandInsertOrReplaceIntoConfiguration = "INSERT OR REPLACE INTO `configuration` (`name`, `value`) VALUES(@name,@value);";
@@ -39,6 +37,24 @@ namespace NeoScavModHelperTool
 
         private static List<string> _listAttackmodesColumnNames;
         public static List<string> ListAttackmodesColumnNames => _listAttackmodesColumnNames;
+
+        private static List<string> _listBattlemovesColumnNames;
+        public static List<string> ListBattlemovesColumnNames => _listBattlemovesColumnNames;
+
+        private static List<string> _listChargeprofilesColumnNames;
+        public static List<string> ListChargeprofilesColumnNames => _listChargeprofilesColumnNames;
+
+        private static List<string> _listConditionsColumnNames;
+        public static List<string> ListConditionsColumnNames => _listConditionsColumnNames;
+
+        private static List<string> _listContainertypesColumnNames;
+        public static List<string> ListContainertypesColumnNames => _listContainertypesColumnNames;
+
+        private static List<string> _listCreaturesColumnNames;
+        public static List<string> ListCreaturesColumnNames => _listCreaturesColumnNames;
+
+        private static List<string> _listCreaturesourcesColumnNames;
+        public static List<string> ListCreaturesourcesColumnNames => _listCreaturesourcesColumnNames;
 
         public void Init()
         {
@@ -121,6 +137,118 @@ namespace NeoScavModHelperTool
                 "vAttackPhrases"
             };
 
+            _listBattlemovesColumnNames = new List<string>
+            {
+                "id",
+                "strID",
+                "strName",
+                "strNotes",
+                "strSuccess",
+                "strFail",
+                "strPopUp",
+                "vChanceType",
+                "vUsConditions",
+                "vThemConditions",
+                "vPairConditions",
+                "vUsFailConditions",
+                "vThemFailConditions",
+                "vPairFailConditions",
+                "vUsPreConditions",
+                "vThemPreConditions",
+                "nSeeThem",
+                "nSeeUs",
+                "bAllOutOfRange",
+                "bInAttackRange",
+                "nMinCharges",
+                "nMinRange",
+                "nMaxRange",
+                "nAttackModeType",
+                "vHexTypes",
+                "fChance",
+                "fPriority",
+                "fDetect",
+                "fOrder",
+                "fFatigue",
+                "bApproach",
+                "bOffense",
+                "bFallBack",
+                "bRetreat",
+                "bPosition",
+                "bPassive"
+            };
+
+            _listChargeprofilesColumnNames = new List<string>
+            {
+                "nID",
+                "strName",
+                "strItemID",
+                "fPerUse",
+                "fPerHour",
+                "fPerHourEquipped",
+                "fPerHex",
+                "bDegrade"
+            };
+
+            _listConditionsColumnNames = new List<string>
+            {
+                "id",
+                "strName",
+                "strDesc",
+                "aFieldNames",
+                "aModifiers",
+                "aEffects",
+                "bFatal",
+                "vIDNext",
+                "fDuration",
+                "bPermanent",
+                "vChanceNext",
+                "bStackable",
+                "bDisplay",
+                "bDisplayOther",
+                "bDisplayGameOver",
+                "nColor",
+                "bResetTimer",
+                "bRemoveAll",
+                "bRemovePostCombat",
+                "nTransferRange",
+                "aThresholds"
+            };
+
+            _listContainertypesColumnNames = new List<string>
+            {
+                "id",
+                "strName"
+            };
+
+            _listCreaturesColumnNames = new List<string>
+            {
+                "id",
+                "strName",
+                "strNamePublic",
+                "strNotes",
+                "strImg",
+                "vEncounterIDs",
+                "nMovesPerTurn",
+                "nTreasureID",
+                "nFaction",
+                "vAttackModes",
+                "vBaseConditions",
+                "nCorpseID",
+                "vActivities"
+            };
+
+            _listCreaturesourcesColumnNames = new List<string>
+            {
+                "id",
+                "strName", 
+                "nX",
+                "nY",
+                "nCreatureID",
+                "nMin",
+                "nMax",
+                "fWeight" 
+            };
+
             //All tables creation sql commands will be in this dictionary with the exception of special tables
             _sqlCommandsCreationTables = new Dictionary<string, string>();
 
@@ -152,44 +280,44 @@ namespace NeoScavModHelperTool
                 "`nRestockTreasureID` INTEGER NOT NULL DEFAULT 3," +
                 "PRIMARY KEY(`id`)) WITHOUT ROWID;");
             _sqlCommandsCreationTables.Add("battlemoves",
-             "CREATE TABLE IF NOT EXISTS `{0}` (" +
-             "`id` INTEGER NOT NULL," +
-             "`strID` TEXT NOT NULL," +
-             "`strName`	TEXT NOT NULL," +
-             "`strNotes` TEXT NOT NULL," +
-             "`strSuccess` TEXT NOT NULL," +
-             "`strFail` TEXT," +
-             "`strPopUp` TEXT DEFAULT NULL," +
-             "`vChanceType` TEXT NOT NULL DEFAULT '0,0,0'," +
-             "`vUsConditions` TEXT DEFAULT NULL," +
-             "`vThemConditions` TEXT DEFAULT NULL," +
-             "`vPairConditions` TEXT DEFAULT NULL," +
-             "`vUsFailConditions` TEXT DEFAULT NULL," +
-             "`vThemFailConditions` TEXT DEFAULT NULL," +
-             "`vPairFailConditions` TEXT DEFAULT NULL," +
-             "`vUsPreConditions` TEXT DEFAULT NULL," +
-             "`vThemPreConditions` TEXT DEFAULT NULL," +
-             "`nSeeThem` INTEGER DEFAULT 2," +
-             "`nSeeUs` INTEGER DEFAULT 2," +
-             "`bAllOutOfRange` INTEGER DEFAULT 0," +
-             "`bInAttackRange` INTEGER DEFAULT 0," +
-             "`nMinCharges` INTEGER DEFAULT 0," +
-             "`nMinRange` INTEGER DEFAULT -1," +
-             "`nMaxRange` INTEGER DEFAULT -1," +
-             "`nAttackModeType` INTEGER DEFAULT -1," +
-             "`vHexTypes` TEXT NOT NULL," +
-             "`fChance` REAL DEFAULT 1," +
-             "`fPriority` REAL DEFAULT 0," +
-             "`fDetect` REAL DEFAULT 1," +
-             "`fOrder` REAL DEFAULT 0.5," +
-             "`fFatigue` REAL DEFAULT 0," +
-             "`bApproach` INTEGER DEFAULT 0," +
-             "`bOffense` INTEGER DEFAULT 0," +
-             "`bFallBack` INTEGER DEFAULT 0," +
-             "`bRetreat` INTEGER DEFAULT 0," +
-             "`bPosition` INTEGER DEFAULT 0," +
-             "`bPassive` INTEGER NOT NULL DEFAULT 0," +
-             "PRIMARY KEY(`id`)) WITHOUT ROWID;");
+                "CREATE TABLE IF NOT EXISTS `{0}` (" +
+                "`id` INTEGER NOT NULL," +
+                "`strID` TEXT NOT NULL," +
+                "`strName`	TEXT NOT NULL," +
+                "`strNotes` TEXT NOT NULL," +
+                "`strSuccess` TEXT NOT NULL," +
+                "`strFail` TEXT," +
+                "`strPopUp` TEXT DEFAULT NULL," +
+                "`vChanceType` TEXT NOT NULL DEFAULT '0,0,0'," +
+                "`vUsConditions` TEXT DEFAULT NULL," +
+                "`vThemConditions` TEXT DEFAULT NULL," +
+                "`vPairConditions` TEXT DEFAULT NULL," +
+                "`vUsFailConditions` TEXT DEFAULT NULL," +
+                "`vThemFailConditions` TEXT DEFAULT NULL," +
+                "`vPairFailConditions` TEXT DEFAULT NULL," +
+                "`vUsPreConditions` TEXT DEFAULT NULL," +
+                "`vThemPreConditions` TEXT DEFAULT NULL," +
+                "`nSeeThem` INTEGER DEFAULT 2," +
+                "`nSeeUs` INTEGER DEFAULT 2," +
+                "`bAllOutOfRange` INTEGER DEFAULT 0," +
+                "`bInAttackRange` INTEGER DEFAULT 0," +
+                "`nMinCharges` INTEGER DEFAULT 0," +
+                "`nMinRange` INTEGER DEFAULT -1," +
+                "`nMaxRange` INTEGER DEFAULT -1," +
+                "`nAttackModeType` INTEGER DEFAULT -1," +
+                "`vHexTypes` TEXT NOT NULL," +
+                "`fChance` REAL DEFAULT 1," +
+                "`fPriority` REAL DEFAULT 0," +
+                "`fDetect` REAL DEFAULT 1," +
+                "`fOrder` REAL DEFAULT 0.5," +
+                "`fFatigue` REAL DEFAULT 0," +
+                "`bApproach` INTEGER DEFAULT 0," +
+                "`bOffense` INTEGER DEFAULT 0," +
+                "`bFallBack` INTEGER DEFAULT 0," +
+                "`bRetreat` INTEGER DEFAULT 0," +
+                "`bPosition` INTEGER DEFAULT 0," +
+                "`bPassive` INTEGER NOT NULL DEFAULT 0," +
+                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
             _sqlCommandsCreationTables.Add("camptypes",
                 "CREATE TABLE IF NOT EXISTS `{0}` (" +
                 "`id` INTEGER NOT NULL," +
@@ -464,7 +592,7 @@ namespace NeoScavModHelperTool
                 "`bNested` INTEGER NOT NULL DEFAULT 0," +
                 "`bSuppress` INTEGER NOT NULL DEFAULT 0," +
                 "`bIdentify` INTEGER NOT NULL DEFAULT 0," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");            
+                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
 
             //1st - Create the needed folder and db file on appdata if it doesn't exist already
             var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NeoScavHelperTool", "db.sqlite");
@@ -531,7 +659,7 @@ namespace NeoScavModHelperTool
             }
             //5th - start parsing vanilla game xml, checking for changes first comparing previous parse hash
             App._splashScreen.UpdateMessage("Parsing vanilla game files into database");
-            ParseType0(strGameFolder, "0", "vanilla");            
+            ParseType0(strGameFolder, "0", "vanilla");
             //6th - start parsing mods xml, checking for changes first comparing previous parse hash
             ParseGetModsFile(strGameFolder);
             //7th - Finally create an in-memory DB with the values as the game see them
@@ -578,7 +706,7 @@ namespace NeoScavModHelperTool
                     }
                     else
                         throw new Exception("Error parsing " + str_file);
-                    
+
                 }
                 else if (reader.NodeType == XmlNodeType.EndElement)
                 {
@@ -690,7 +818,7 @@ namespace NeoScavModHelperTool
         }
 
         private bool CheckSavedFileHash(string file, out byte[] file_hash)
-        {  
+        {
             using (var md5 = MD5.Create())
             {
                 using (var stream = File.OpenRead(file))
@@ -726,7 +854,7 @@ namespace NeoScavModHelperTool
                 //Let's do one transaction per file to speed things up
                 SQLiteTransaction sqlTransaction = DbFsConnection.BeginTransaction();
                 //Create the table if it does not exist already
-                
+
                 SQLiteCommand command = new SQLiteCommand(_sqlCommandsCreationTables["images"], DbFsConnection, sqlTransaction);
                 command.CommandText = string.Format(command.CommandText, table_name);
                 command.ExecuteNonQuery();
@@ -772,7 +900,7 @@ namespace NeoScavModHelperTool
                 //Create all tables for this mod
                 SQLiteCommand command = new SQLiteCommand(DbFsConnection);
                 command.Transaction = sqlTransaction;
-                for (int nIndex = 0; nIndex<_listTableNameSufix.Count; nIndex++)
+                for (int nIndex = 0; nIndex < _listTableNameSufix.Count; nIndex++)
                 {
                     command.Reset();
                     string strTableName = str_mod_name + "_" + str_mod_folder_name + "_" + _listTableNameSufix[nIndex];
@@ -807,7 +935,7 @@ namespace NeoScavModHelperTool
                 string strFileName = Path.GetFileName(file).ToLower();
                 int nIndex = _listTableNameSufix.IndexOf(Path.GetFileNameWithoutExtension(strFileName));
                 if (nIndex > -1 && (string.Compare(Path.GetExtension(strFileName), ".xml") == 0)) //only parse supported xml files
-                {                    
+                {
                     App._splashScreen.UpdateMessage("Parsing " + str_mod_folder_name + ": " + strFileName);
                     //only parse the file if it was changed since last time
                     byte[] fileHash = null;
@@ -843,25 +971,25 @@ namespace NeoScavModHelperTool
         private void ParseGetModsFile(string str_game_folder)
         {
             string strGetModsFile = Path.Combine(str_game_folder, "getmods.php");
-            if(File.Exists(strGetModsFile))
+            if (File.Exists(strGetModsFile))
             {
                 string strGetModsContent = File.ReadAllText(strGetModsFile);
                 string[] splittedContent = strGetModsContent.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
                 //let's ignore the first line
-                for(int index = 1; index < splittedContent.Length; index++)
-                {                    
+                for (int index = 1; index < splittedContent.Length; index++)
+                {
                     string strModName = splittedContent[index].Split('=')[1].TrimEnd(new char[] { '\r', '\n' }); //split the name
                     index++; //increase the index since the folder should be next
-                    string strModFolder = splittedContent[index].Split('=')[1].TrimEnd(new char[] {'\r','\n', '\\', '/' }); //split the folder
+                    string strModFolder = splittedContent[index].Split('=')[1].TrimEnd(new char[] { '\r', '\n', '\\', '/' }); //split the folder
                     string strModBaseFolder = string.Empty;
                     //to differenciate let's add two folders to the table name or else there could be collision
                     string[] splittedFolders = strModFolder.Split('/');
                     strModBaseFolder = splittedFolders[splittedFolders.Length - 2] + "_" + splittedFolders[splittedFolders.Length - 1];
-                                       
+
                     //now let's check for mod type
                     string strModFullFolderPath = Path.Combine(str_game_folder, strModFolder);
                     string strType1NeogameFile = Path.Combine(strModFullFolderPath, "neogame.xml");
-                    if(File.Exists(strType1NeogameFile))//If neogame.xml file exists, this is a type 1 mod
+                    if (File.Exists(strType1NeogameFile))//If neogame.xml file exists, this is a type 1 mod
                     {
                         ParseType1(strModFullFolderPath, strModName, strModBaseFolder);
                     }
@@ -870,17 +998,20 @@ namespace NeoScavModHelperTool
                         ParseType0(strModFullFolderPath, strModName, strModBaseFolder);
                     }
                 }
-            }            
+            }
         }
 
         private void CreateInMemGameDatabase()
         {
             App._splashScreen.UpdateMessage("Finalizing game database");
-            //For debug porpose only
-            //var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NeoScavHelperTool", "mem.sqlite");
-            //_dbMemConnection = new SQLiteConnection(connectionString: "Data Source=" + dbFilename + ";Version=3;Compress=True;UTF8Encoding=True;");
-            _dbMemConnection = new SQLiteConnection(connectionString: "Data Source=:memory:;Version=3;Compress=True;UTF8Encoding=True;");
 
+#if DEBUG
+            //For debug porpose only
+            var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NeoScavHelperTool", "mem.sqlite");
+            _dbMemConnection = new SQLiteConnection(connectionString: "Data Source=" + dbFilename + ";Version=3;Compress=True;UTF8Encoding=True;");
+#else
+            _dbMemConnection = new SQLiteConnection(connectionString: "Data Source=:memory:;Version=3;Compress=True;UTF8Encoding=True;");
+#endif
             DbMemConnection.Open();
 
             //let's fill the TreeViewViewerTypes with the types
@@ -896,7 +1027,7 @@ namespace NeoScavModHelperTool
                 TreeViewItem treeItem = new TreeViewItem();
                 treeItem.Header = modPrefix;
                 MainWindow.ListModsTreeItems.Add(treeItem);
-            }); 
+            });
 
             //Now we will fetch by mod order data to fill the DB overwriting the previous mod data
             SQLiteCommand fsCommand = new SQLiteCommand(DbFsConnection);
@@ -919,7 +1050,7 @@ namespace NeoScavModHelperTool
                 {
                     SQLiteTransaction dataTableTransaction = DbMemConnection.BeginTransaction(); //transaction per table                    
                     SQLiteCommand command = new SQLiteCommand(DbMemConnection);
-                    command.Transaction = dataTableTransaction; 
+                    command.Transaction = dataTableTransaction;
                     //First fetch table column names
                     fsCommand.Reset();
                     fsCommand.CommandText = string.Format(_sqlCommandPragmaTableInfo, tableName);
@@ -933,7 +1064,7 @@ namespace NeoScavModHelperTool
                     }
                     //Now fetch their values while insert them into the mem DB
                     fsCommand.Reset();
-                    fsCommand.CommandText = string.Format(_sqlCommandSelectAllTableData, tableName);                    
+                    fsCommand.CommandText = string.Format(_sqlCommandSelectAllTableData, tableName);
                     using (SQLiteDataReader reader = fsCommand.ExecuteReader())
                     {
                         if (reader.HasRows) //continue only if there are values on this table
@@ -972,12 +1103,10 @@ namespace NeoScavModHelperTool
 
                             while (reader.Read())
                             {
-                                List<object> listColumnValues = new List<object>();
-                                for (int index = 0; index < listColumnNames.Count; index++)
-                                {
-                                    listColumnValues.Add(reader.GetValue(index));
-                                }
-                                
+                                object[] arrayColumnValues = new object[listColumnNames.Count];                                
+                                reader.GetValues(arrayColumnValues);
+                                List<object> listColumnValues = arrayColumnValues.ToList();
+
                                 command.Reset();
                                 command.CommandText = string.Format(_sqlCommandInsertOrReplaceIntoAnyTable,
                                     strMemTableName,//parameter {0} table name
@@ -1005,15 +1134,57 @@ namespace NeoScavModHelperTool
                                 }
                                 TreeViewItemLeaf newItem = new TreeViewItemLeaf(strFirst, strSecond, listColumnNames[0],
                                     bIsSecondPrimaryKey, dataType, strMemTableName);
-                                //Finally add items to both tree views
-                                typeNode1Item.Items.Add(newItem);
-                                modNode1Item.Items.Add(newItem);
+                                //Finally add items to both tree views if they are not there already
+                                if (0 == typeNode1Item.Items.Cast<TreeViewItemLeaf>().Where(item => string.Compare(item.PrimaryKeyValue, newItem.PrimaryKeyValue) == 0).Count())
+                                {
+                                    typeNode1Item.Items.Add(newItem);
+                                    modNode1Item.Items.Add(newItem);
+                                }
                             }
                         }
                     }
                     dataTableTransaction.Commit();
                 }
             }
+        }
+
+        public List<object> GetColumnsValuesFromMemoryTable(string str_column_search, string str_column_value_search,
+            string str_table_name, List<string> list_column_values_retrieves)
+        {
+            SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
+            command.CommandText = string.Format(_sqlCommandSelectColumnsFromTableWhereColumnEqualValue,
+                $"`{string.Join("`,`", list_column_values_retrieves)}`", str_table_name, str_column_search);
+            command.Parameters.Add(new SQLiteParameter("value", str_column_value_search));
+            object[] values = new object[list_column_values_retrieves.Count];
+            using (SQLiteDataReader reader = command.ExecuteReader())
+            {
+                reader.Read();
+                reader.GetValues(values);
+            }
+
+            return values.ToList();
+        }
+
+        public List<object> GetColumnsValuesFromMemoryTableMultipleAndConditions(List<string> list_column_search, List<string> list_column_value_search,
+            string str_table_name, List<string> list_column_values_retrieves)
+        {
+            SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
+            command.CommandText = string.Format(_sqlCommandSelectColumnsFromTableWhereMultipleColumnEqualValue,
+                $"`{string.Join("`,`", list_column_values_retrieves)}`", str_table_name);
+            command.AddMultipleAndConditions("multiple", list_column_search, list_column_value_search);
+            List<object> listReturn = null; 
+            using (SQLiteDataReader reader = command.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    object[] values = new object[list_column_values_retrieves.Count];
+                    reader.Read();
+                    reader.GetValues(values);
+                    listReturn = values.ToList();
+                }
+            }
+
+            return listReturn;
         }
 
         public string GetColumnValueFromMemoryTableMultipleAndConditions(List<string> list_column_search, List<string> list_column_value_search,
@@ -1040,7 +1211,7 @@ namespace NeoScavModHelperTool
         {
             SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
             command.CommandText = string.Format(_sqlCommandSelectColumnFromTableWhereColumnEqualValue, is_big ? "big" : "small", str_table_name, "name");
-            command.Parameters.Add(new SQLiteParameter("@value", str_name));            
+            command.Parameters.Add(new SQLiteParameter("@value", str_name));
 
             return command.ExecuteScalar().ToString();
         }

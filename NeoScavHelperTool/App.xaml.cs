@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SQLite;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -23,7 +15,7 @@ namespace NeoScavModHelperTool
         public static DBOperations DB => _dbOp;
         private static bool _isStartingUp;
         public static ISplashScreen _splashScreen;
-        
+
         private ManualResetEvent _resetSplashCreated;
         public ManualResetEvent SplashSyncEvent => _resetSplashCreated;
 
@@ -40,7 +32,7 @@ namespace NeoScavModHelperTool
         }
 
         protected override void OnStartup(StartupEventArgs e)
-        {  
+        {
             // ManualResetEvent acts as a block. It waits for a signal to be set.
             _resetSplashCreated = new ManualResetEvent(false);
 
@@ -55,7 +47,7 @@ namespace NeoScavModHelperTool
             SplashSyncEvent.WaitOne();
 
             //Now that the splash screen is shown let's continue
-            
+
             //Register this method for displaying unhandled exception in the appropriate window
             DispatcherUnhandledException +=
                 new DispatcherUnhandledExceptionEventHandler(
@@ -73,7 +65,7 @@ namespace NeoScavModHelperTool
             //Will wait once more until the splash window is really closed
             SplashSyncEvent.WaitOne();
             SplashSyncEvent.Close();
-        }        
+        }
 
         private void ShowSplash()
         {
@@ -137,7 +129,18 @@ namespace NeoScavModHelperTool
                 if (exit)
                     Application.Current.Shutdown(0);
             }
-            
+
+        }
+
+        public static BitmapSource CopyImageRectWithDpi(BitmapImage image, Int32Rect rect, double dpiX, double dpiY)
+        {
+            //hack to convert to same dpi //maybe if this is to slow consider using transforms  
+            int width = rect.Width;
+            int height = rect.Height;
+            int stride = width * 4; // 4 bytes per pixel
+            byte[] pixelData = new byte[stride * height];
+            image.CopyPixels(rect, pixelData, stride, 0);
+            return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);
         }
 
         public static BitmapSource ConvertImageDpi(BitmapImage image, double dpiX, double dpiY)

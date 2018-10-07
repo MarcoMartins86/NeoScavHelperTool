@@ -107,7 +107,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ComboBoxEquipmentItem.cs" />
-    <Compile Include="EqualityComparer.cs" />
     <Compile Include="TreeViewItemLeaf.cs" />
     <Compile Include="ViewerDataGridItem.cs" />
     <Compile Include="WpfWindowExt.cs" />

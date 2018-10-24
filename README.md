@@ -29,7 +29,7 @@ It will need to have valid XML files on all mods or else an exception will be th
 + Overhaul\AddOn
 	- Line 2124: removed extra '24031' after closing tag
 	
-+ Shouldered\Patch_Mm
++ Shouldered\Patch_MmMoD
 	- Line 39: escaped '&' to '&amp;'
 	- Line 78: escaped '&' to '&amp;'
 	- Line 117: escaped '&' to '&amp;'

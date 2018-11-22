@@ -510,6 +510,7 @@ namespace NeoScavModHelperTool
             this.ComboBoxCreaturesShoulderLeft.SelectedIndex = -1;
             this.ComboBoxCreaturesShoulderRight.SelectedIndex = -1;
             this.ComboBoxCreaturesTorso.SelectedIndex = -1;
+            this.ComboBoxCreaturesBackpack.SelectedIndex = -1;
             this.ComboBoxCreaturesWristLeft.SelectedIndex = -1;
             this.ComboBoxCreaturesWristRight.SelectedIndex = -1;
             this.ComboBoxCreaturesHandLeft.SelectedIndex = -1;
@@ -582,15 +583,31 @@ namespace NeoScavModHelperTool
                     else
                         this.RowDefinitionCreaturesShoulder.Height = new GridLength(0);// hide the row
 
-                    if (itemsNamesSprites.ContainsKey(11)) //Torso
+                    if (itemsNamesSprites.ContainsKey(11) || itemsNamesSprites.ContainsKey(22)) //Torso, Backpack
                     {
-                        this.RowDefinitionCreaturesTorso.Height = new GridLength(1, GridUnitType.Star); //show the row
-                        itemsNamesSprites[11].Sort((a, b) => string.Compare(a.Name, b.Name));
-                        this.ComboBoxCreaturesTorso.ItemsSource = itemsNamesSprites[11];
-                        this.ComboBoxCreaturesTorso.SelectedIndex = rand.Next(itemsNamesSprites[11].Count);
+                        this.RowDefinitionCreaturesTorsoBackpack.Height = new GridLength(1, GridUnitType.Star); //show the row
+                        if (itemsNamesSprites.ContainsKey(11))
+                        {
+                            this.ComboBoxCreaturesTorso.IsEnabled = true; //enable the combo
+                            itemsNamesSprites[11].Sort((a, b) => string.Compare(a.Name, b.Name));
+                            this.ComboBoxCreaturesTorso.ItemsSource = itemsNamesSprites[11];
+                            this.ComboBoxCreaturesTorso.SelectedIndex = rand.Next(itemsNamesSprites[11].Count);
+                        }
+                        else
+                            this.ComboBoxCreaturesTorso.IsEnabled = false; //disable the combo
+
+                        if (itemsNamesSprites.ContainsKey(22))
+                        {
+                            this.ComboBoxCreaturesBackpack.IsEnabled = true; //enable the combo
+                            itemsNamesSprites[22].Sort((a, b) => string.Compare(a.Name, b.Name));
+                            this.ComboBoxCreaturesBackpack.ItemsSource = itemsNamesSprites[22];
+                            this.ComboBoxCreaturesBackpack.SelectedIndex = rand.Next(itemsNamesSprites[22].Count);
+                        }
+                        else
+                            this.ComboBoxCreaturesBackpack.IsEnabled = false; //disable the combo
                     }
                     else
-                        this.RowDefinitionCreaturesTorso.Height = new GridLength(0);// hide the row
+                        this.RowDefinitionCreaturesTorsoBackpack.Height = new GridLength(0);// hide the row
 
                     if (itemsNamesSprites.ContainsKey(7) || itemsNamesSprites.ContainsKey(8)) //Wrist left, Wrist right
                     {
@@ -708,6 +725,9 @@ namespace NeoScavModHelperTool
                     case "ComboBoxCreaturesTorso":
                         this.ImageCreatureTorso.Source = null;
                         break;
+                    case "ComboBoxCreaturesBackpack":
+                        this.ImageCreatureBackpack.Source = null;
+                        break;
                     case "ComboBoxCreaturesWristLeft":
                         this.ImageCreatureWristLeft.Source = null;
                         break;
@@ -824,6 +844,12 @@ namespace NeoScavModHelperTool
                             this.ImageCreatureHandRight.Source = App.ConvertImageDpi(spriteImage, _imageBackgroundFrame.DpiX, _imageBackgroundFrame.DpiX);
                         else
                             this.ImageCreatureHandRight.Source = new TransformedBitmap(App.ConvertImageDpi(spriteImage, _imageBackgroundFrame.DpiX, _imageBackgroundFrame.DpiX), new ScaleTransform(2, 2));
+                        break;
+                    case 22: //Backpack
+                        if (bIsBig)
+                            this.ImageCreatureBackpack.Source = App.ConvertImageDpi(spriteImage, _imageBackgroundFrame.DpiX, _imageBackgroundFrame.DpiX);
+                        else
+                            this.ImageCreatureBackpack.Source = new TransformedBitmap(App.ConvertImageDpi(spriteImage, _imageBackgroundFrame.DpiX, _imageBackgroundFrame.DpiX), new ScaleTransform(2, 2));
                         break;
                     case 23://Neck
                         if (bIsBig)

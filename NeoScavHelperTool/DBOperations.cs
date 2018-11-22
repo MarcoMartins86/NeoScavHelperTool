@@ -23,7 +23,7 @@ namespace NeoScavModHelperTool
         private static string _sqlCommandSelectValueFromConfiguration = "SELECT `value` FROM `configuration` WHERE `name`=@name";
         private static string _sqlCommandInsertOrReplaceIntoConfiguration = "INSERT OR REPLACE INTO `configuration` (`name`, `value`) VALUES(@name,@value);";
         private static string _sqlCommandInsertOrReplaceIntoAnyTable = "INSERT OR REPLACE INTO `{0}` ({1}) VALUES(@values);";
-        private static string _sqlCommandInsertOrReplaceIntoFileHash = "INSERT INTO `file_hash` (`file`, `hash`) values (@file, @hash);";
+        private static string _sqlCommandInsertOrReplaceIntoFileHash = "INSERT OR REPLACE INTO `file_hash` (`file`, `hash`) values (@file, @hash);";
         private static string _sqlCommandPragmaTableInfo = "PRAGMA table_info(`{0}`)";
 
         private SQLiteConnection _dbFsConnection;

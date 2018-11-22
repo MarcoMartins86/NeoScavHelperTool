@@ -148,6 +148,7 @@
                             <Image x:Name="ImageCreatureShoulderLeft" Panel.ZIndex="2" Canvas.Left="5" Canvas.Top="5"/>
                             <Image x:Name="ImageCreatureShoulderRight" Panel.ZIndex="2" Canvas.Left="5" Canvas.Top="5"/>
                             <Image x:Name="ImageCreatureTorso" Panel.ZIndex="5" Canvas.Left="5" Canvas.Top="5"/>
+                            <Image x:Name="ImageCreatureBackpack" Panel.ZIndex="5" Canvas.Left="5" Canvas.Top="5"/>
                             <Image x:Name="ImageCreatureWristLeft" Panel.ZIndex="6" Canvas.Left="5" Canvas.Top="5"/>
                             <Image x:Name="ImageCreatureWristRight" Panel.ZIndex="6" Canvas.Left="5" Canvas.Top="5"/>
                             <Image x:Name="ImageCreatureHandLeft" Panel.ZIndex="7" Canvas.Left="5" Canvas.Top="5"/>
@@ -170,7 +171,7 @@
                                     <RowDefinition x:Name="RowDefinitionCreaturesHead"/>
                                     <RowDefinition x:Name="RowDefinitionCreaturesNeck"/>
                                     <RowDefinition x:Name="RowDefinitionCreaturesShoulder"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesTorso"/>
+                                    <RowDefinition x:Name="RowDefinitionCreaturesTorsoBackpack"/>
                                     <RowDefinition x:Name="RowDefinitionCreaturesWrist"/>
                                     <RowDefinition x:Name="RowDefinitionCreaturesHand"/>
                                     <RowDefinition x:Name="RowDefinitionCreaturesBelt"/>
@@ -187,6 +188,8 @@
                                 <ComboBox x:Name="ComboBoxCreaturesShoulderRight" Grid.Column="3" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="2" />
                                 <Label IsEnabled="False" Content="Torso" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" />
                                 <ComboBox x:Name="ComboBoxCreaturesTorso" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="3" />
+                                <Label IsEnabled="False" Content="Backpack" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2"/>
+                                <ComboBox x:Name="ComboBoxCreaturesBackpack" Grid.Column="4" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="3" />
                                 <Label IsEnabled="False" Content="Left Wrist" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" />
                                 <ComboBox x:Name="ComboBoxCreaturesWristLeft" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="4" />
                                 <Label IsEnabled="False" Content="Right Wrist" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" />

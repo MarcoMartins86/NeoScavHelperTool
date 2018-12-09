@@ -199,29 +199,19 @@ namespace NeoScavModHelperTool
 
         [
             NameSufix("recipes"),
-            SqlCreation("CREATE TABLE IF NOT EXISTS `{0}` (" +
-            "`nID` INTEGER NOT NULL," +
-            "`strName` TEXT NOT NULL," +
-            "`strSecretName` TEXT NOT NULL DEFAULT ''," +
-            "`strTools` TEXT NOT NULL DEFAULT ''," +
-            "`strConsumed` TEXT NOT NULL DEFAULT ''," +
-            "`strDestroyed` TEXT NOT NULL DEFAULT ''," +
-            "`nTreasureID` TEXT NOT NULL DEFAULT '3'," +
-            "`fHours` REAL NOT NULL DEFAULT 0," +
-            "`nReverse` INTEGER NOT NULL DEFAULT 0," +
-            "`nHiddenID` TEXT NOT NULL DEFAULT '0'," +
-            "`bIdentify` INTEGER NOT NULL DEFAULT 0," +
-            "`bTransferComponents` INTEGER NOT NULL DEFAULT 0," +
-            "`vAlsoTry` TEXT NOT NULL," +
-            "`nTempTreasureID` INTEGER NOT NULL DEFAULT 3," +
-            "`bDegradeOutput` INTEGER NOT NULL DEFAULT 1," +
-            "`strType` TEXT NOT NULL DEFAULT ''," +
-            "`bScrap` INTEGER NOT NULL DEFAULT 1," +
-            "PRIMARY KEY(`nID`)) WITHOUT ROWID;"),
+            SqlCreation("CREATE TABLE IF NOT EXISTS `{0}` (`nID` INTEGER NOT NULL, `strName` TEXT NOT NULL, `strSecretName` TEXT NOT NULL DEFAULT '', `strTools` TEXT NOT NULL DEFAULT '', `strConsumed` TEXT NOT NULL DEFAULT '', `strDestroyed` TEXT NOT NULL DEFAULT '', `nTreasureID` TEXT NOT NULL DEFAULT '3', `fHours` REAL NOT NULL DEFAULT 0, `nReverse` INTEGER NOT NULL DEFAULT 0, `nHiddenID` TEXT NOT NULL DEFAULT '0', `bIdentify` INTEGER NOT NULL DEFAULT 0, `bTransferComponents` INTEGER NOT NULL DEFAULT 0, `vAlsoTry` TEXT NOT NULL, `nTempTreasureID` INTEGER NOT NULL DEFAULT 3, `bDegradeOutput` INTEGER NOT NULL DEFAULT 1, `strType` TEXT NOT NULL DEFAULT '', `bScrap` INTEGER NOT NULL DEFAULT 1, PRIMARY KEY(`nID`)) WITHOUT ROWID;"),
             ColumnsNames(new string[] { "nID", "strName", "strSecretName", "strTools", "strConsumed", "strDestroyed", "nTreasureID", "fHours", "nReverse", "nHiddenID", "bIdentify", "bTransferComponents", "vAlsoTry", "nTempTreasureID", "bDegradeOutput", "strType", "bScrap" }),
             IdNameColumnsPositions(new int[] { 0, 1 })
             ]
         eRecipes,
+
+        [
+            NameSufix("treasuretable"),
+            SqlCreation("CREATE TABLE IF NOT EXISTS `{0}` (`id` INTEGER NOT NULL, `strName` TEXT NOT NULL, `aTreasures` TEXT NOT NULL, `bNested` INTEGER NOT NULL DEFAULT 0, `bSuppress` INTEGER NOT NULL DEFAULT 0, `bIdentify` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`)) WITHOUT ROWID;"),
+            ColumnsNames(new string[] { "id", "strName", "aTreasures", "bNested", "bSuppress", "bIdentify" }),
+            IdNameColumnsPositions(new int[] { 0, 1 })
+            ]
+        eTreasuretable,                
         eTotal // this must be the last element always!!!!!!!
     }
 

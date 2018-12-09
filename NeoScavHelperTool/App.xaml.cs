@@ -26,7 +26,7 @@ namespace NeoScavModHelperTool
         public List<string> Mods => _listMods;
 
         public App() : base()
-        {
+        {  
             _isStartingUp = true;
             _I = this;
         }
@@ -134,7 +134,6 @@ namespace NeoScavModHelperTool
 
         public static BitmapSource CopyImageRectWithDpi(BitmapImage image, Int32Rect rect, double dpiX, double dpiY)
         {
-            //hack to convert to same dpi //maybe if this is to slow consider using transforms  
             int width = rect.Width;
             int height = rect.Height;
             int stride = width * 4; // 4 bytes per pixel

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeoScavModHelperTool.DBTableAttributes;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -31,569 +32,10 @@ namespace NeoScavModHelperTool
         private SQLiteConnection _dbMemConnection;
         public SQLiteConnection DbMemConnection => _dbMemConnection;
 
-        private static Dictionary<string, string> _sqlCommandsCreationTables;
-        private static List<string> _listTableNameSufix;
-        private static List<int[]> _listTableWantedValues;
-
-        private static List<string> _listAttackmodesColumnNames;
-        public static List<string> ListAttackmodesColumnNames => _listAttackmodesColumnNames;
-
-        private static List<string> _listBattlemovesColumnNames;
-        public static List<string> ListBattlemovesColumnNames => _listBattlemovesColumnNames;
-
-        private static List<string> _listChargeprofilesColumnNames;
-        public static List<string> ListChargeprofilesColumnNames => _listChargeprofilesColumnNames;
-
-        private static List<string> _listConditionsColumnNames;
-        public static List<string> ListConditionsColumnNames => _listConditionsColumnNames;
-
-        private static List<string> _listContainertypesColumnNames;
-        public static List<string> ListContainertypesColumnNames => _listContainertypesColumnNames;
-
-        private static List<string> _listCreaturesColumnNames;
-        public static List<string> ListCreaturesColumnNames => _listCreaturesColumnNames;
-
-        private static List<string> _listCreaturesourcesColumnNames;
-        public static List<string> ListCreaturesourcesColumnNames => _listCreaturesourcesColumnNames;
-
         public void Init()
         {
-            App._splashScreen.UpdateMessage("Initializing database");
-            //The sufix of MODs tables common names
-            _listTableNameSufix = new List<string>{
-                "attackmodes",
-                "barterhexes",
-                "battlemoves",
-                "camptypes",
-                "chargeprofiles",
-                "conditions",
-                "containertypes",
-                "creatures",
-                "creaturesources",
-                "datafiles",
-                "dmcplaces",
-                "encounters",
-                "encountertriggers",
-                "factions",
-                "forbiddenhexes",
-                "gamevars",
-                "headlines",
-                "hextypes",
-                "images",
-                "ingredients",
-                "itemprops",
-                "itemtypes",
-                "maps",
-                "recipes",
-                "treasuretable"
-            };
-
-            _listTableWantedValues = new List<int[]>
-            {
-                new int[] {0, 1}, //attackmodes
-                new int[] {0, -1}, //barterhexes
-                new int[] {0, 2}, //battlemoves
-                new int[] {0, 1}, //camptypes
-                new int[] {0, 1}, //chargeprofiles
-                new int[] {0, 1}, //conditions
-                new int[] {0, 1}, //containertypes
-                new int[] {0, 1}, //creatures
-                new int[] {0, 1}, //creaturesources
-                new int[] {0, 2}, //datafiles
-                new int[] {0, 1}, //dmcplaces
-                new int[] {0, 1}, //encounters
-                new int[] {0, 1}, //encountertriggers
-                new int[] {0, 1}, //factions
-                new int[] {0, 3}, //forbiddenhexes
-                new int[] {-1, 1}, //gamevars
-                new int[] {0, 1}, //headlines
-                new int[] {0, 1}, //hextypes
-                new int[] {-1, 1}, //images
-                new int[] {0, 1}, //ingredients
-                new int[] {0, 1}, //itemprops
-                new int[] {0, 3}, //itemtypes
-                new int[] {0, 1}, //maps
-                new int[] {0, 1}, //recipes
-                new int[] {0, 1} //treasuretable
-            };
-
-            _listAttackmodesColumnNames = new List<string>
-            {
-                "id",
-                "strName",
-                "strNotes",
-                "nRange",
-                "fDamageCut",
-                "fDamageBlunt",
-                "strChargeProfiles",
-                "nPenetration",
-                "nType",
-                "strSnd",
-                "bTransfer",
-                "vAttackerConditions",
-                "strIMG",
-                "fMorale",
-                "strWieldPhrase",
-                "vAttackPhrases"
-            };
-
-            _listBattlemovesColumnNames = new List<string>
-            {
-                "id",
-                "strID",
-                "strName",
-                "strNotes",
-                "strSuccess",
-                "strFail",
-                "strPopUp",
-                "vChanceType",
-                "vUsConditions",
-                "vThemConditions",
-                "vPairConditions",
-                "vUsFailConditions",
-                "vThemFailConditions",
-                "vPairFailConditions",
-                "vUsPreConditions",
-                "vThemPreConditions",
-                "nSeeThem",
-                "nSeeUs",
-                "bAllOutOfRange",
-                "bInAttackRange",
-                "nMinCharges",
-                "nMinRange",
-                "nMaxRange",
-                "nAttackModeType",
-                "vHexTypes",
-                "fChance",
-                "fPriority",
-                "fDetect",
-                "fOrder",
-                "fFatigue",
-                "bApproach",
-                "bOffense",
-                "bFallBack",
-                "bRetreat",
-                "bPosition",
-                "bPassive"
-            };
-
-            _listChargeprofilesColumnNames = new List<string>
-            {
-                "nID",
-                "strName",
-                "strItemID",
-                "fPerUse",
-                "fPerHour",
-                "fPerHourEquipped",
-                "fPerHex",
-                "bDegrade"
-            };
-
-            _listConditionsColumnNames = new List<string>
-            {
-                "id",
-                "strName",
-                "strDesc",
-                "aFieldNames",
-                "aModifiers",
-                "aEffects",
-                "bFatal",
-                "vIDNext",
-                "fDuration",
-                "bPermanent",
-                "vChanceNext",
-                "bStackable",
-                "bDisplay",
-                "bDisplayOther",
-                "bDisplayGameOver",
-                "nColor",
-                "bResetTimer",
-                "bRemoveAll",
-                "bRemovePostCombat",
-                "nTransferRange",
-                "aThresholds"
-            };
-
-            _listContainertypesColumnNames = new List<string>
-            {
-                "id",
-                "strName"
-            };
-
-            _listCreaturesColumnNames = new List<string>
-            {
-                "id",
-                "strName",
-                "strNamePublic",
-                "strNotes",
-                "strImg",
-                "vEncounterIDs",
-                "nMovesPerTurn",
-                "nTreasureID",
-                "nFaction",
-                "vAttackModes",
-                "vBaseConditions",
-                "nCorpseID",
-                "vActivities"
-            };
-
-            _listCreaturesourcesColumnNames = new List<string>
-            {
-                "id",
-                "strName", 
-                "nX",
-                "nY",
-                "nCreatureID",
-                "nMin",
-                "nMax",
-                "fWeight" 
-            };
-
-            //All tables creation sql commands will be in this dictionary with the exception of special tables
-            _sqlCommandsCreationTables = new Dictionary<string, string>();
-
-            _sqlCommandsCreationTables.Add("attackmodes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strNotes` TEXT NOT NULL DEFAULT ''," +
-                "`nRange` INTEGER NOT NULL DEFAULT 1," +
-                "`fDamageCut` REAL NOT NULL DEFAULT 0," +
-                "`fDamageBlunt` REAL NOT NULL DEFAULT 0," +
-                "`strChargeProfiles` TEXT NOT NULL," +
-                "`nPenetration` INTEGER NOT NULL DEFAULT 0," +
-                "`nType` INTEGER NOT NULL DEFAULT 0," +
-                "`strSnd`TEXT NOT NULL," +
-                "`bTransfer` INTEGER NOT NULL DEFAULT 0," +
-                "`vAttackerConditions`TEXT NOT NULL," +
-                "`strIMG` TEXT NOT NULL," +
-                "`fMorale` REAL NOT NULL DEFAULT 0.25," +
-                "`strWieldPhrase` TEXT NOT NULL," +
-                "`vAttackPhrases` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("barterhexes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`nX` INTEGER NOT NULL DEFAULT 0," +
-                "`nY` INTEGER NOT NULL DEFAULT 0," +
-                "`bBuys` INTEGER NOT NULL DEFAULT 0," +
-                "`nRestockTreasureID` INTEGER NOT NULL DEFAULT 3," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("battlemoves",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strID` TEXT NOT NULL," +
-                "`strName`	TEXT NOT NULL," +
-                "`strNotes` TEXT NOT NULL," +
-                "`strSuccess` TEXT NOT NULL," +
-                "`strFail` TEXT," +
-                "`strPopUp` TEXT DEFAULT NULL," +
-                "`vChanceType` TEXT NOT NULL DEFAULT '0,0,0'," +
-                "`vUsConditions` TEXT DEFAULT NULL," +
-                "`vThemConditions` TEXT DEFAULT NULL," +
-                "`vPairConditions` TEXT DEFAULT NULL," +
-                "`vUsFailConditions` TEXT DEFAULT NULL," +
-                "`vThemFailConditions` TEXT DEFAULT NULL," +
-                "`vPairFailConditions` TEXT DEFAULT NULL," +
-                "`vUsPreConditions` TEXT DEFAULT NULL," +
-                "`vThemPreConditions` TEXT DEFAULT NULL," +
-                "`nSeeThem` INTEGER DEFAULT 2," +
-                "`nSeeUs` INTEGER DEFAULT 2," +
-                "`bAllOutOfRange` INTEGER DEFAULT 0," +
-                "`bInAttackRange` INTEGER DEFAULT 0," +
-                "`nMinCharges` INTEGER DEFAULT 0," +
-                "`nMinRange` INTEGER DEFAULT -1," +
-                "`nMaxRange` INTEGER DEFAULT -1," +
-                "`nAttackModeType` INTEGER DEFAULT -1," +
-                "`vHexTypes` TEXT NOT NULL," +
-                "`fChance` REAL DEFAULT 1," +
-                "`fPriority` REAL DEFAULT 0," +
-                "`fDetect` REAL DEFAULT 1," +
-                "`fOrder` REAL DEFAULT 0.5," +
-                "`fFatigue` REAL DEFAULT 0," +
-                "`bApproach` INTEGER DEFAULT 0," +
-                "`bOffense` INTEGER DEFAULT 0," +
-                "`bFallBack` INTEGER DEFAULT 0," +
-                "`bRetreat` INTEGER DEFAULT 0," +
-                "`bPosition` INTEGER DEFAULT 0," +
-                "`bPassive` INTEGER NOT NULL DEFAULT 0," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("camptypes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strDesc` TEXT NOT NULL," +
-                "`vImageList` TEXT NOT NULL DEFAULT 'ItmScavengeGrass01.png'," +
-                "`aCapacities` TEXT NOT NULL DEFAULT '30x30'," +
-                "`nTreasureID` INTEGER NOT NULL DEFAULT 3," +
-                "`m_fAlertness` REAL NOT NULL DEFAULT 0," +
-                "`m_fVisibility` REAL NOT NULL DEFAULT -0.05," +
-                "`WetTempAdjustMod` REAL NOT NULL DEFAULT 0," +
-                "`m_fHealPerHourMod` REAL NOT NULL DEFAULT 0," +
-                "`fSleepQuality` REAL NOT NULL DEFAULT 0," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("chargeprofiles",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`nID` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strItemID` TEXT NOT NULL," +
-                "`fPerUse` REAL NOT NULL DEFAULT 0," +
-                "`fPerHour` REAL NOT NULL DEFAULT 0," +
-                "`fPerHourEquipped` REAL NOT NULL DEFAULT 0," +
-                "`fPerHex` REAL DEFAULT 0," +
-                "`bDegrade` INTEGER NOT NULL DEFAULT 0," +
-                "PRIMARY KEY(`nID`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("conditions",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id`INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strDesc` TEXT NOT NULL," +
-                "`aFieldNames` TEXT NOT NULL," +
-                "`aModifiers` TEXT NOT NULL," +
-                "`aEffects` TEXT NOT NULL," +
-                "`bFatal` INTEGER NOT NULL DEFAULT 0," +
-                "`vIDNext` TEXT NOT NULL DEFAULT '0'," +
-                "`fDuration` REAL NOT NULL DEFAULT 0," +
-                "`bPermanent` INTEGER NOT NULL DEFAULT 0," +
-                "`vChanceNext` TEXT NOT NULL DEFAULT '0'," +
-                "`bStackable` INTEGER NOT NULL DEFAULT 0," +
-                "`bDisplay` INTEGER NOT NULL DEFAULT 1," +
-                "`bDisplayOther` INTEGER NOT NULL DEFAULT 0," +
-                "`bDisplayGameOver` INTEGER NOT NULL DEFAULT 1," +
-                "`nColor` INTEGER NOT NULL DEFAULT 0," +
-                "`bResetTimer` INTEGER NOT NULL DEFAULT 1," +
-                "`bRemoveAll` INTEGER NOT NULL DEFAULT 0," +
-                "`bRemovePostCombat` INTEGER NOT NULL DEFAULT 0," +
-                "`nTransferRange` INTEGER NOT NULL DEFAULT -1," +
-                "`aThresholds` TEXT NOT NULL DEFAULT ''," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("containertypes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id`INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("creatures",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strNamePublic` TEXT NOT NULL," +
-                "`strNotes` TEXT NOT NULL," +
-                "`strImg` TEXT NOT NULL," +
-                "`vEncounterIDs` TEXT NOT NULL," +
-                "`nMovesPerTurn` INTEGER NOT NULL," +
-                "`nTreasureID` INTEGER NOT NULL DEFAULT 3," +
-                "`nFaction` INTEGER NOT NULL DEFAULT 0," +
-                "`vAttackModes` TEXT NOT NULL," +
-                "`vBaseConditions` TEXT NOT NULL," +
-                "`nCorpseID` INTEGER NOT NULL DEFAULT 3," +
-                "`vActivities` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("creaturesources",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`nX` INTEGER NOT NULL DEFAULT -1," +
-                "`nY` INTEGER NOT NULL DEFAULT -1," +
-                "`nCreatureID` INTEGER NOT NULL DEFAULT 0," +
-                "`nMin` INTEGER NOT NULL DEFAULT 0," +
-                "`nMax` INTEGER NOT NULL DEFAULT 0," +
-                "`fWeight` REAL NOT NULL DEFAULT 1," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("datafiles",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strDesc` TEXT NOT NULL," +
-                "`fValue` REAL NOT NULL DEFAULT 0," +
-                "`strImg` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("dmcplaces",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strImg` TEXT NOT NULL," +
-                "`nEncounterID` INTEGER NOT NULL DEFAULT 1," +
-                "`nX` INTEGER NOT NULL DEFAULT 0," +
-                "`nY` INTEGER NOT NULL DEFAULT 0," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("encounters",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strDesc` TEXT NOT NULL," +
-                "`strImg` TEXT NOT NULL DEFAULT 'EncBlank.png'," +
-                "`nTreasureID` INTEGER NOT NULL DEFAULT 3," +
-                "`nRemoveTreasureID` INTEGER NOT NULL DEFAULT 3," +
-                "`aConditions` TEXT NOT NULL DEFAULT '1'," +
-                "`aPreConditions` TEXT NOT NULL DEFAULT ''," +
-                "`fPrice` REAL NOT NULL DEFAULT 0," +
-                "`aResponses` TEXT NOT NULL," +
-                "`aMinimapHexes` TEXT NOT NULL DEFAULT ''," +
-                "`bRemoveCreatures` INTEGER NOT NULL DEFAULT 0," +
-                "`bRemoveUsed` INTEGER NOT NULL DEFAULT 0," +
-                "`nItemsID` INTEGER NOT NULL DEFAULT 3," +
-                "`nCreatureID` INTEGER NOT NULL DEFAULT 0," +
-                "`ptCreatureHex` TEXT NOT NULL DEFAULT '0,0'," +
-                "`ptTeleport` TEXT NOT NULL DEFAULT '0,0'," +
-                "`ptEditor` TEXT NOT NULL DEFAULT '0,0'," +
-                "`nType` INTEGER NOT NULL DEFAULT 0," +
-                "`fLootChance` REAL NOT NULL DEFAULT 0," +
-                "`fAccidentChance` REAL NOT NULL DEFAULT 0," +
-                "`fCreatureChance` REAL NOT NULL DEFAULT 0," +
-                "`vAccidents` TEXT NOT NULL DEFAULT '1'," +
-                "`vLoot` TEXT NOT NULL DEFAULT '3'," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("encountertriggers",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`nEncounterID` INTEGER NOT NULL," +
-                "`fChance` REAL NOT NULL," +
-                "`bLocBased` INTEGER NOT NULL," +
-                "`bDateBased` INTEGER NOT NULL," +
-                "`bHexBased` INTEGER NOT NULL," +
-                "`bUnique` INTEGER NOT NULL," +
-                "`bAIPassable` INTEGER NOT NULL DEFAULT 1," +
-                "`aArea` TEXT NOT NULL," +
-                "`dateMin` TEXT NOT NULL," +
-                "`dateMax` TEXT NOT NULL," +
-                "`aHexTypes` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("factions",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`dictFactions` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("forbiddenhexes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`nX` INTEGER NOT NULL DEFAULT 0," +
-                "`nY` INTEGER NOT NULL DEFAULT 0," +
-                "`strName` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("gamevars",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`strName` TEXT NOT NULL," +
-                "`strType` TEXT NOT NULL," +
-                "`strValue` TEXT NOT NULL," +
-                "PRIMARY KEY(`strName`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("headlines",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strHeadline` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("hextypes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strDesc` TEXT NOT NULL," +
-                "`nTerrainCost` INTEGER NOT NULL," +
-                "`nVizLimiter` INTEGER NOT NULL," +
-                "`nVizIncrease` INTEGER NOT NULL," +
-                "`nTreasureID` INTEGER NOT NULL," +
-                "`bPassable` INTEGER NOT NULL," +
-                "`nScavengeInitialID` INTEGER NOT NULL DEFAULT 3," +
-                "`nScavengeItemsIDPerHour` INTEGER NOT NULL DEFAULT 25," +
-                "`nCampItems` INTEGER NOT NULL DEFAULT 5," +
-                "`vLightLevels` TEXT NOT NULL DEFAULT '0.57,1.0,0.57,0.15'," +
-                "`nDefaultCampID` INTEGER NOT NULL DEFAULT 517," +
-                "`nMinRange` INTEGER NOT NULL DEFAULT 3," +
-                "`nMaxRange` INTEGER NOT NULL DEFAULT 6," +
-                "`vCondIDs` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("images",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`name` TEXT NOT NULL," +
-                "`small` TEXT NOT NULL DEFAULT ''," +
-                "`big` TEXT NOT NULL DEFAULT ''," +
-                "PRIMARY KEY(`name`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("ingredients",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`nID` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strRequiredProps` TEXT NOT NULL," +
-                "`strForbidProps` TEXT NOT NULL," +
-                "PRIMARY KEY(`nID`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("itemprops",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`nID` INTEGER NOT NULL," +
-                "`strPropertyName` TEXT NOT NULL," +
-                "PRIMARY KEY(`nID`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("itemtypes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`nGroupID` INTEGER NOT NULL," +
-                "`nSubgroupID` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strDesc` TEXT NOT NULL," +
-                "`strDescAlt` TEXT NOT NULL," +
-                "`nCondID` INTEGER NOT NULL DEFAULT 1," +
-                "`vImageList` TEXT NOT NULL," +
-                "`vSpriteList` TEXT NOT NULL," +
-                "`vImageUsage` TEXT NOT NULL," +
-                "`fWeight` REAL NOT NULL DEFAULT 0," +
-                "`fMonetaryValue` REAL NOT NULL DEFAULT 0," +
-                "`fMonetaryValueAlt` REAL NOT NULL DEFAULT 0," +
-                "`fDurability` REAL NOT NULL DEFAULT 1," +
-                "`fDegradePerHour` REAL NOT NULL DEFAULT 0," +
-                "`fEquipDegradePerHour` REAL NOT NULL DEFAULT 0," +
-                "`fDegradePerUse` REAL NOT NULL DEFAULT 0," +
-                "`vDegradeTreasureIDs` TEXT NOT NULL DEFAULT '3,3'," +
-                "`aEquipConditions` TEXT NOT NULL," +
-                "`aPossessConditions` TEXT NOT NULL," +
-                "`aUseConditions` TEXT NOT NULL," +
-                "`aCapacities` TEXT NOT NULL," +
-                "`vEquipSlots` TEXT NOT NULL," +
-                "`vUseSlots` TEXT NOT NULL," +
-                "`bSocketLocked` INTEGER NOT NULL DEFAULT 0," +
-                "`vProperties` TEXT NOT NULL," +
-                "`aContentIDs` TEXT NOT NULL," +
-                "`nFormatID` TEXT NOT NULL DEFAULT '3'," +
-                "`nTreasureID` TEXT NOT NULL DEFAULT '3'," +
-                "`nComponentID` INTEGER NOT NULL DEFAULT 3," +
-                "`bMirrored` INTEGER NOT NULL DEFAULT 0," +
-                "`nSlotDepth` INTEGER NOT NULL DEFAULT 0," +
-                "`strChargeProfiles` TEXT NOT NULL," +
-                "`aAttackModes` TEXT NOT NULL," +
-                "`nStackLimit` INTEGER NOT NULL DEFAULT 1," +
-                "`aSwitchIDs` TEXT NOT NULL DEFAULT ''," +
-                "`aSounds` TEXT NOT NULL DEFAULT 'cuePickup,cuePutdown'," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("maps",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strDef` TEXT NOT NULL," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("recipes",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`nID` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`strSecretName` TEXT NOT NULL DEFAULT ''," +
-                "`strTools` TEXT NOT NULL DEFAULT ''," +
-                "`strConsumed` TEXT NOT NULL DEFAULT ''," +
-                "`strDestroyed` TEXT NOT NULL DEFAULT ''," +
-                "`nTreasureID` TEXT NOT NULL DEFAULT '3'," +
-                "`fHours` REAL NOT NULL DEFAULT 0," +
-                "`nReverse` INTEGER NOT NULL DEFAULT 0," +
-                "`nHiddenID` TEXT NOT NULL DEFAULT '0'," +
-                "`bIdentify` INTEGER NOT NULL DEFAULT 0," +
-                "`bTransferComponents` INTEGER NOT NULL DEFAULT 0," +
-                "`vAlsoTry` TEXT NOT NULL," +
-                "`nTempTreasureID` INTEGER NOT NULL DEFAULT 3," +
-                "`bDegradeOutput` INTEGER NOT NULL DEFAULT 1," +
-                "`strType` TEXT NOT NULL DEFAULT ''," +
-                "`bScrap` INTEGER NOT NULL DEFAULT 1," +
-                "PRIMARY KEY(`nID`)) WITHOUT ROWID;");
-            _sqlCommandsCreationTables.Add("treasuretable",
-                "CREATE TABLE IF NOT EXISTS `{0}` (" +
-                "`id` INTEGER NOT NULL," +
-                "`strName` TEXT NOT NULL," +
-                "`aTreasures` TEXT NOT NULL," +
-                "`bNested` INTEGER NOT NULL DEFAULT 0," +
-                "`bSuppress` INTEGER NOT NULL DEFAULT 0," +
-                "`bIdentify` INTEGER NOT NULL DEFAULT 0," +
-                "PRIMARY KEY(`id`)) WITHOUT ROWID;");
-
+            App._splashScreen.UpdateMessage("Initializing database");           
+            
             //1st - Create the needed folder and db file on appdata if it doesn't exist already
             var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NeoScavHelperTool", "db.sqlite");
 
@@ -674,7 +116,7 @@ namespace NeoScavModHelperTool
                 DbMemConnection.Close();
         }
 
-        private void ParseElementIntoDB(string str_file, XmlReader reader, string str_table_name_prefix, int n_type_index, SQLiteTransaction sqlTransaction)
+        private void ParseElementIntoDB(string str_file, XmlReader reader, string str_table_name_prefix, string str_table_name_sufix, SQLiteTransaction sqlTransaction)
         {
             SQLiteCommand command = new SQLiteCommand(_sqlCommandInsertOrReplaceIntoAnyTable, DbFsConnection, sqlTransaction);
             bool bElementStarted = false;
@@ -731,7 +173,7 @@ namespace NeoScavModHelperTool
             if (bEndedTableElement)
             {
                 command.CommandText = string.Format(command.CommandText,
-                    str_table_name_prefix + "_" + _listTableNameSufix[n_type_index],//parameter {0} table name
+                    str_table_name_prefix + "_" + DBTableAttributtesFetcher.GetNameSufix(str_table_name_sufix),//parameter {0} table name
                     $"`{string.Join("`,`", listParameterNames)}`" //parameter {1} columns
                     );
                 command.AddArrayParameters("values", listParameterValues);
@@ -776,9 +218,7 @@ namespace NeoScavModHelperTool
                         if ((reader.NodeType == XmlNodeType.Element) &&
                             ((string.Compare(reader.Name.ToLower(), "table") == 0)))
                         {
-                            int index = _listTableNameSufix.IndexOf(reader.GetAttribute(0).ToLower());
-                            if (index != -1)
-                                ParseElementIntoDB(str_file, reader, str_table_name_prefix, index, sqlTransaction);
+                            ParseElementIntoDB(str_file, reader, str_table_name_prefix, reader.GetAttribute(0).ToLower(), sqlTransaction);
                         }
                     }
                     /*switch (reader.NodeType)
@@ -850,35 +290,50 @@ namespace NeoScavModHelperTool
             byte[] fileHash = null;
             if (CheckSavedFileHash(file, out fileHash) == false)
             {
-                string strFileContent = File.ReadAllText(file);
-                //Let's do one transaction per file to speed things up
-                SQLiteTransaction sqlTransaction = DbFsConnection.BeginTransaction();
-                //Create the table if it does not exist already
-
-                SQLiteCommand command = new SQLiteCommand(_sqlCommandsCreationTables["images"], DbFsConnection, sqlTransaction);
-                command.CommandText = string.Format(command.CommandText, table_name);
-                command.ExecuteNonQuery();
-
+                string strFileContent = File.ReadAllText(file); 
                 string[] splittedFileContent = strFileContent.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
+                Dictionary<string, string[]> dicImages = new Dictionary<string, string[]>(); 
                 //Ignore the first two since they will correspond to "nRows=2326" and "nCols=2"
                 for (int index = 2; index < splittedFileContent.Length; index++)
-                {
-                    command.Reset();
-                    //Access only to the anme of the image
+                {                    
+                    //Access only to the name of the image
                     string strImageName = splittedFileContent[index].Split('=')[1].TrimEnd(new char[] { '\r', '\n' });
 
                     string strImageBaseName = Path.GetFileNameWithoutExtension(strImageName);
-                    if (strImageBaseName.StartsWith("x2")) //ignore this
-                        continue;
+
+                    int iSmallBigIndex = 0; //0 = small, 1 = big
+                    if (strImageBaseName.StartsWith("x2"))
+                    {
+                        iSmallBigIndex = 1;
+                        strImageBaseName = strImageBaseName.Substring(3); //remove the x2_
+                    }
+
+                    if (dicImages.ContainsKey(strImageBaseName) == false)
+                        dicImages.Add(strImageBaseName, new string[2] { "", "" });
+
+                    dicImages[strImageBaseName][iSmallBigIndex] = strImageName;  
+                }
+
+                //Let's do one transaction per file to speed things up
+                SQLiteTransaction sqlTransaction = DbFsConnection.BeginTransaction();
+                //Create the table if it does not exist already
+                SQLiteCommand command = new SQLiteCommand(DBTableAttributtesFetcher.GetSqlCreation(EDBTable.eImages), DbFsConnection, sqlTransaction);
+                command.CommandText = string.Format(command.CommandText, table_name);
+                command.ExecuteNonQuery();
+                string strImageFolderPath = Path.Combine(str_folder, "img"); //since this will be equal for all images we do it outside of for loop to improve performance
+                foreach (KeyValuePair<string, string[]> image in dicImages)
+                {
+                    command.Reset();
                     command.CommandText = string.Format(_sqlCommandInsertOrReplaceIntoAnyTable,
-                        table_name,//parameter {0} table name
-                        $"`{string.Join("`,`", new List<string> { "name", "small", "big" })}`" //parameter {1} columns
-                        );
-                    command.AddArrayParameters("values", new List<string> { strImageBaseName,
-                            Path.Combine(str_folder, "img", strImageName),
-                            Path.Combine(str_folder, "img", "x2_" + strImageName)});
+                       table_name,//parameter {0} table name
+                       $"`{string.Join("`,`", new List<string> { "name", "small", "big" })}`" //parameter {1} columns
+                       );
+                    command.AddArrayParameters("values", new List<string> { image.Key,
+                            Path.Combine(strImageFolderPath, image.Value[0]),
+                            Path.Combine(strImageFolderPath, image.Value[1])});
                     command.ExecuteNonQuery();
                 }
+
                 //now save file hash to table
                 SaveFileHash(file, fileHash, sqlTransaction);
                 //finally commit the transaction
@@ -900,11 +355,13 @@ namespace NeoScavModHelperTool
                 //Create all tables for this mod
                 SQLiteCommand command = new SQLiteCommand(DbFsConnection);
                 command.Transaction = sqlTransaction;
-                for (int nIndex = 0; nIndex < _listTableNameSufix.Count; nIndex++)
+                for (int nIndex = 0; nIndex < (int)EDBTable.eTotal; nIndex++)
                 {
+                    EDBTable eDBTable = (EDBTable)nIndex;
                     command.Reset();
-                    string strTableName = str_mod_name + "_" + str_mod_folder_name + "_" + _listTableNameSufix[nIndex];
-                    command.CommandText = string.Format(_sqlCommandsCreationTables[_listTableNameSufix[nIndex]], strTableName);
+                    string strTableName = str_mod_name + "_" + str_mod_folder_name + "_" + DBTableAttributtesFetcher.GetNameSufix(eDBTable);
+                    string strSqlCreation = DBTableAttributtesFetcher.GetSqlCreation(eDBTable);
+                    command.CommandText = string.Format(strSqlCreation, strTableName);
                     command.ExecuteNonQuery();
                 }
                 //parse the xml file to DB
@@ -932,10 +389,11 @@ namespace NeoScavModHelperTool
             IEnumerable<string> enumFiles = Directory.EnumerateFiles(strType0DataFolder);
             foreach (string file in enumFiles)
             {
-                string strFileName = Path.GetFileName(file).ToLower();
-                int nIndex = _listTableNameSufix.IndexOf(Path.GetFileNameWithoutExtension(strFileName));
-                if (nIndex > -1 && (string.Compare(Path.GetExtension(strFileName), ".xml") == 0)) //only parse supported xml files
+                string strFileName = Path.GetFileName(file);
+                object oDBTable = DBTableAttributtesFetcher.Parse(Path.GetFileNameWithoutExtension(strFileName).ToLower());               
+                if (oDBTable != null && (string.Compare(Path.GetExtension(strFileName), ".xml") == 0)) //only parse supported xml files
                 {
+                    EDBTable eDBTable = (EDBTable)oDBTable; 
                     App._splashScreen.UpdateMessage("Parsing " + str_mod_folder_name + ": " + strFileName);
                     //only parse the file if it was changed since last time
                     byte[] fileHash = null;
@@ -944,8 +402,8 @@ namespace NeoScavModHelperTool
                         //Let's do one transaction per file to speed things up
                         SQLiteTransaction sqlTransaction = DbFsConnection.BeginTransaction();
                         //Create the table if it does not exist already
-                        string strTableName = str_mod_name + "_" + str_mod_folder_name + "_" + _listTableNameSufix[nIndex];
-                        SQLiteCommand command = new SQLiteCommand(_sqlCommandsCreationTables[_listTableNameSufix[nIndex]], DbFsConnection, sqlTransaction);
+                        string strTableName = str_mod_name + "_" + str_mod_folder_name + "_" + DBTableAttributtesFetcher.GetNameSufix(eDBTable);
+                        SQLiteCommand command = new SQLiteCommand(DBTableAttributtesFetcher.GetSqlCreation(eDBTable), DbFsConnection, sqlTransaction);
                         command.CommandText = string.Format(command.CommandText, strTableName);
                         command.ExecuteNonQuery();
                         //parse the xml file to DB
@@ -1015,7 +473,7 @@ namespace NeoScavModHelperTool
             DbMemConnection.Open();
 
             //let's fill the TreeViewViewerTypes with the types
-            _listTableNameSufix.ForEach(type =>
+            DBTableAttributtesFetcher.GetAllNameSufix().ForEach(type =>
             {
                 TreeViewItem treeItem = new TreeViewItem();
                 treeItem.Header = type;
@@ -1074,7 +532,7 @@ namespace NeoScavModHelperTool
                             string[] splittedModName = mod.Split('_');
                             string strMemTableName = splittedModName[0] + '_' + strTableNameSufix;
                             //create this mod table if needed
-                            command.CommandText = string.Format(_sqlCommandsCreationTables[strTableNameSufix], strMemTableName);
+                            command.CommandText = string.Format(DBTableAttributtesFetcher.GetSqlCreation(strTableNameSufix), strMemTableName);
                             command.ExecuteNonQuery();
 
                             //now we need to find or add the the table prefix in the tree view
@@ -1103,7 +561,7 @@ namespace NeoScavModHelperTool
 
                             while (reader.Read())
                             {
-                                object[] arrayColumnValues = new object[listColumnNames.Count];                                
+                                object[] arrayColumnValues = new object[listColumnNames.Count];
                                 reader.GetValues(arrayColumnValues);
                                 List<object> listColumnValues = arrayColumnValues.ToList();
 
@@ -1116,21 +574,24 @@ namespace NeoScavModHelperTool
                                 command.ExecuteNonQuery();
 
                                 //Fill the tree view items with the wanted info
-                                TreeViewItemLeaf.DataType dataType = (TreeViewItemLeaf.DataType)_listTableNameSufix.IndexOf(strTableNameSufix);
-                                int[] wantedValuesColumns = _listTableWantedValues[(int)dataType];
+                                EDBTable eDBTable = (EDBTable) DBTableAttributtesFetcher.Parse(strTableNameSufix);
+                                TreeViewItemLeaf.DataType dataType = (TreeViewItemLeaf.DataType)eDBTable;
 
+                                int nIdColumnPosition = DBTableAttributtesFetcher.GetIdColumnPosition(eDBTable);
                                 string strFirst = string.Empty;
                                 bool bIsSecondPrimaryKey = false;
-                                if (wantedValuesColumns[0] >= 0)
+                                if (nIdColumnPosition >= 0)
                                 {
-                                    strFirst = listColumnValues[wantedValuesColumns[0]].ToString();
+                                    strFirst = listColumnValues[nIdColumnPosition].ToString();
                                 }
                                 else
                                     bIsSecondPrimaryKey = true;
+
+                                int nNameColumnPosition = DBTableAttributtesFetcher.GetNameColumnPosition(eDBTable);
                                 string strSecond = string.Empty;
-                                if (wantedValuesColumns[1] >= 0)
+                                if (nNameColumnPosition >= 0)
                                 {
-                                    strSecond = listColumnValues[wantedValuesColumns[1]].ToString();
+                                    strSecond = listColumnValues[nNameColumnPosition].ToString();
                                 }
                                 TreeViewItemLeaf newItem = new TreeViewItemLeaf(strFirst, strSecond, listColumnNames[0],
                                     bIsSecondPrimaryKey, dataType, strMemTableName);
@@ -1172,7 +633,7 @@ namespace NeoScavModHelperTool
             command.CommandText = string.Format(_sqlCommandSelectColumnsFromTableWhereMultipleColumnEqualValue,
                 $"`{string.Join("`,`", list_column_values_retrieves)}`", str_table_name);
             command.AddMultipleAndConditions("multiple", list_column_search, list_column_value_search);
-            List<object> listReturn = null; 
+            List<object> listReturn = null;
             using (SQLiteDataReader reader = command.ExecuteReader())
             {
                 if (reader.HasRows)

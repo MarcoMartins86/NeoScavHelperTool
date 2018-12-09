@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using NeoScavHelperTool;
+using NeoScavModHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -250,7 +251,7 @@ namespace NeoScavModHelperTool
 
                 //Fill a list with the data so it can be shown on the DataGrid
                 List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-                listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListAttackmodesColumnNames[list.Count], value)));
+                listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eAttackModes)[list.Count], value)));
                 this.DataGridAttackmods.ItemsSource = list;
 
                 //Now let's fetch the item image and display it
@@ -329,7 +330,7 @@ namespace NeoScavModHelperTool
 
                 //Fill a list with the data so it can be shown on the DataGrid
                 List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-                listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListBattlemovesColumnNames[list.Count], value)));
+                listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eBattleMoves)[list.Count], value)));
                 this.DataGridBattlemoves.ItemsSource = list;
 
                 //Now let's fetch the item image
@@ -352,7 +353,7 @@ namespace NeoScavModHelperTool
 
                 //Fill a list with the data so it can be shown on the DataGrid
                 List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-                listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListChargeprofilesColumnNames[list.Count], value)));
+                listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eChargeProfiles)[list.Count], value)));
                 this.DataGridChargeprofiles.ItemsSource = list;
                 //Fetch the item image
                 BitmapImage ammoImage = GetItemDisplayImage(listValues[2].ToString(), _selectedItem.TableName, true);               
@@ -375,7 +376,7 @@ namespace NeoScavModHelperTool
 
             //Fill a list with the data so it can be shown on the DataGrid
             List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListConditionsColumnNames[list.Count], value)));
+            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eConditions)[list.Count], value)));
             this.DataGridConditions.ItemsSource = list;
             //Only bDisplay controls if messages will appear or not
             bool bDisplay = Convert.ToBoolean(listValues[12]);
@@ -486,23 +487,23 @@ namespace NeoScavModHelperTool
 
             //Fill a list with the data so it can be shown on the DataGrid
             List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListContainertypesColumnNames[list.Count], value)));
+            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eContainerTypes)[list.Count], value)));
             this.DataGridContainertypes.ItemsSource = list;
         }
 
-        
+
 
         private void TabItemCreatures_Selected()
         {
-           /* if(this.ImageCreaturesBackground.Source == null)
-            {
-                this.ImageCreaturesBackground.Source = new SolidColorBrush(Colors.White);
-                this.ImageCreaturesBackground.Source = App.CopyImageRectWithDpi(_imageBackgroundFrame,
-                    new Int32Rect(_imageBackgroundFrame.PixelWidth - 300, 10, 210, 164),
-                    _imageBackgroundFrame.DpiX, _imageBackgroundFrame.DpiY);
-                //this.DataGridCreaturesEquipment.ItemsSource = _listCreaturesEquipment;
-            }
-            */
+            /* if(this.ImageCreaturesBackground.Source == null)
+             {
+                 this.ImageCreaturesBackground.Source = new SolidColorBrush(Colors.White);
+                 this.ImageCreaturesBackground.Source = App.CopyImageRectWithDpi(_imageBackgroundFrame,
+                     new Int32Rect(_imageBackgroundFrame.PixelWidth - 300, 10, 210, 164),
+                     _imageBackgroundFrame.DpiX, _imageBackgroundFrame.DpiY);
+                 //this.DataGridCreaturesEquipment.ItemsSource = _listCreaturesEquipment;
+             }
+             */
 
             //we need to clean the combo box every time we choose an item
             this.ComboBoxCreaturesHead.SelectedIndex = -1;
@@ -525,7 +526,7 @@ namespace NeoScavModHelperTool
 
             //Fill a list with the data so it can be shown on the DataGrid
             List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListCreaturesColumnNames[list.Count], value)));
+            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eCreatures)[list.Count], value)));
             this.DataGridCreatures.ItemsSource = list;
             //Set the creature main image
             string strImageName = listValues[4].ToString();
@@ -700,7 +701,7 @@ namespace NeoScavModHelperTool
 
             //Fill a list with the data so it can be shown on the DataGrid
             List<ViewerDataGridItem> list = new List<ViewerDataGridItem>();
-            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBOperations.ListCreaturesourcesColumnNames[list.Count], value)));
+            listValues.ForEach(value => list.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eCreatureSources)[list.Count], value)));
             this.DataGridCreaturesources.ItemsSource = list;
         }
 

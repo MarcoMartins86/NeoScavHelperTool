@@ -1,4 +1,9 @@
 # Changelog
+## 2018-12-09
+### Fix
+- Missing backpack on creatures
+### Changed
+- Refactored some DB code
 
 ## 2018-10-07
 ### Fix

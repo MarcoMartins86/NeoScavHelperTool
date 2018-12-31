@@ -1,4 +1,13 @@
 # Changelog
+
+## 2018-12-31
+### Removed
+- Since code was re-written, older renders are not working anymore
+
+### Added
+- Basic info on hextypes and display of tiles
+- Basic info on images and display of images
+
 ## 2018-12-09
 ### Fix
 - Missing backpack on creatures

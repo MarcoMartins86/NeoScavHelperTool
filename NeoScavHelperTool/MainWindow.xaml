@@ -1,272 +1,37 @@
-﻿<Controls:MetroWindow x:Class="NeoScavModHelperTool.MainWindow"
+﻿<Controls:MetroWindow x:Name="metroWindow" x:Class="NeoScavModHelperTool.MainWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      xmlns:local="clr-namespace:NeoScavModHelperTool"
+                      xmlns:viewer="clr-namespace:NeoScavHelperTool.Viewer"
                       mc:Ignorable="d"
-                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                      Title="NeoScavHelperTool" Height="450" Width="800" Loaded="Window_Loaded" TitleCharacterCasing="Normal" WindowState="Maximized">
-    <!--
+                      Title="NeoScavHelperTool" MinWidth="640" MinHeight="480" Loaded="Window_Loaded" TitleCharacterCasing="Normal" WindowState="Maximized" DataContext="{Binding RelativeSource={RelativeSource Self}}">  
+
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button>
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Kind="Settings" />                    
-                </StackPanel>
-            </Button>
+            <RadioButton x:Name="BigGUI" GroupName="GUIType" Checked="GUIRadioButton_Checked" MouseEnter="GUIRadioButton_MouseEnter" MouseLeave="GUIRadioButton_MouseLeave" PreviewMouseLeftButtonDown="GUIRadioButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="GUIRadioButton_PreviewMouseLeftButtonUp" >
+                <RadioButton.Template>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </ControlTemplate>
+                </RadioButton.Template>
+            </RadioButton>
+            <RadioButton x:Name="SmallGUI" GroupName="GUIType" Checked="GUIRadioButton_Checked" MouseEnter="GUIRadioButton_MouseEnter" MouseLeave="GUIRadioButton_MouseLeave"  PreviewMouseLeftButtonDown="GUIRadioButton_PreviewMouseLeftButtonDown" PreviewMouseLeftButtonUp="GUIRadioButton_PreviewMouseLeftButtonUp">
+                <RadioButton.Template>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </ControlTemplate>
+                </RadioButton.Template>
+            </RadioButton>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    -->
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Expander ExpandDirection="Right" IsExpanded="True">
-            <Expander.Header>
-                <TextBlock Text="Pick Game Item" Width="Auto" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
-                    <TextBlock.LayoutTransform>
-                        <RotateTransform Angle="-90"/>
-                    </TextBlock.LayoutTransform>
-                </TextBlock>
-            </Expander.Header>
-            <TabControl SelectedIndex="2" Width="200">
-                <TabItem IsEnabled="False">
-                    <TabItem.Header>
-                        <Label Content="Group by:"/>
-                    </TabItem.Header>
-                </TabItem>
-                <TabItem Header="Mods" Controls:ControlsHelper.HeaderFontSize="18">
-                    <TreeView x:Name="TreeViewViewerMods" SelectedItemChanged="TreeView_SelectedItemChanged"/>
-                </TabItem>
-                <TabItem Header="Types" Controls:ControlsHelper.HeaderFontSize="18">
-                    <TreeView x:Name="TreeViewViewerTypes" SelectedItemChanged="TreeView_SelectedItemChanged"/>
-                </TabItem>
-            </TabControl>
-        </Expander>
-        <TabControl x:Name="TabControlDataType" Grid.Column="1">
-            <TabItem x:Name="TabItemAttackmodes">
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Canvas x:Name="CanvasAttackmodes" HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ImageAttackmodesAModeFrame, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=ImageAttackmodesAModeFrame, Mode=OneWay}">
-                        <Image x:Name="ImageAttackmodesAModeFrame" Panel.ZIndex="0" Canvas.Left="0" Canvas.Top="0" />
-                        <Image x:Name="ImageAttackmodesItem" Panel.ZIndex="1" Canvas.Left="0" Canvas.Top="10"/>
-                        <TextBlock x:Name="TextBlockAttackmodesName" Text="DUMMY" Panel.ZIndex="10" Canvas.Left="50" Canvas.Top="1" FontSize="20"/>
-                    </Canvas>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridAttackmods" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="TabItemBarterhexes" >
-            </TabItem>
-            <TabItem x:Name="TabItemBattlemoves" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Canvas x:Name="CanvasBattlemoves" HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ImageBattlemovesGridFrame, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=ImageBattlemovesGridFrame, Mode=OneWay}" IsEnabled="False">
-                        <Image x:Name="ImageBattlemovesGridFrame" Panel.ZIndex="0" Canvas.Left="0" Canvas.Top="0" />
-                        <Image x:Name="ImageBattlemovesItem" Panel.ZIndex="1" ToolTipService.ShowOnDisabled="True"/>
-                    </Canvas>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridBattlemoves" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="TabItemCamptypes" >
-            </TabItem>
-            <TabItem x:Name="TabItemChargeprofiles" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Canvas x:Name="CanvasChargeprofiles" HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ImageChargeprofilesGridFrame, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=ImageChargeprofilesGridFrame, Mode=OneWay}" IsEnabled="False">
-                        <Image x:Name="ImageChargeprofilesGridFrame" Panel.ZIndex="0" Canvas.Left="0" Canvas.Top="0" />
-                        <Image x:Name="ImageChargeprofilesItem" Panel.ZIndex="1" ToolTipService.ShowOnDisabled="True"/>
-                    </Canvas>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridChargeprofiles" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="TabItemConditions" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Canvas x:Name="CanvasConditions" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Label x:Name="LabelConditionsStatusMessage" Content="Status Message:" Padding="2"/>
-                        <Image x:Name="ImageConditionsStatusMessage" Panel.ZIndex="0" ToolTipService.ShowOnDisabled="True"/>
-                        <TextBlock x:Name="TextBlockConditionsStatusMessage" TextWrapping="Wrap" Text="DUMMY" Panel.ZIndex="1" FontSize="20" Canvas.Left="5"/>
-                        <Label x:Name="LabelConditionsLogMessage" Content="Log Message:" Padding="2"/>
-                        <Image x:Name="ImageConditionsLogMessage" Panel.ZIndex="0"/>
-                        <TextBlock x:Name="TextBlockConditionsLogMessage" TextWrapping="Wrap" Text="DUMMY" Panel.ZIndex="1" FontSize="20" Canvas.Left="5"/>
-                    </Canvas>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridConditions" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="TabItemContainertypes" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridContainertypes" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="TabItemCreatures" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                        <Canvas x:Name="CanvasCreatures" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=rectangle, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=rectangle, Mode=OneWay}">
-                            <!--<Image x:Name="ImageCreaturesBackground" Panel.ZIndex="0"/>-->
-                            <Rectangle x:Name="rectangle" Panel.ZIndex="0" MinWidth="210" MinHeight="164" Fill="#FF008100" />
-                            <Image x:Name="ImageCreature" Panel.ZIndex="1" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureHead" Panel.ZIndex="3" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureNeck" Panel.ZIndex="4" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureShoulderLeft" Panel.ZIndex="2" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureShoulderRight" Panel.ZIndex="2" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureTorso" Panel.ZIndex="5" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureBackpack" Panel.ZIndex="5" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureWristLeft" Panel.ZIndex="6" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureWristRight" Panel.ZIndex="6" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureHandLeft" Panel.ZIndex="7" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureHandRight" Panel.ZIndex="7" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureBelt" Panel.ZIndex="4" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureLegs" Panel.ZIndex="3" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureFootLeft" Panel.ZIndex="2" Canvas.Left="5" Canvas.Top="5"/>
-                            <Image x:Name="ImageCreatureFootRight" Panel.ZIndex="2" Canvas.Left="5" Canvas.Top="5"/>
-                        </Canvas>
-                        <StackPanel x:Name="StackPanelCreaturesEquipment" HorizontalAlignment="Center" VerticalAlignment="Top">
-                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Content="Possible initial equipment" IsEnabled="False" Padding="2" FontWeight="Bold" FontSize="16" />
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesHead"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesNeck"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesShoulder"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesTorsoBackpack"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesWrist"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesHand"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesBelt"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesLegs"/>
-                                    <RowDefinition x:Name="RowDefinitionCreaturesFoot"/>
-                                </Grid.RowDefinitions>
-                                <Label IsEnabled="False" Content="Head" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <ComboBox x:Name="ComboBoxCreaturesHead" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" />
-                                <Label IsEnabled="False" Content="Neck" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" />
-                                <ComboBox x:Name="ComboBoxCreaturesNeck" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="1" />
-                                <Label IsEnabled="False" Content="Left Shoulder" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" />
-                                <ComboBox x:Name="ComboBoxCreaturesShoulderLeft" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="2" />
-                                <Label IsEnabled="False" Content="Right Shoulder" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" />
-                                <ComboBox x:Name="ComboBoxCreaturesShoulderRight" Grid.Column="3" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="2" />
-                                <Label IsEnabled="False" Content="Torso" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" />
-                                <ComboBox x:Name="ComboBoxCreaturesTorso" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="3" />
-                                <Label IsEnabled="False" Content="Backpack" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2"/>
-                                <ComboBox x:Name="ComboBoxCreaturesBackpack" Grid.Column="4" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="3" />
-                                <Label IsEnabled="False" Content="Left Wrist" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" />
-                                <ComboBox x:Name="ComboBoxCreaturesWristLeft" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="4" />
-                                <Label IsEnabled="False" Content="Right Wrist" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2" />
-                                <ComboBox x:Name="ComboBoxCreaturesWristRight" Grid.Column="3" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="4" />
-                                <Label IsEnabled="False" Content="Left Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" />
-                                <ComboBox x:Name="ComboBoxCreaturesHandLeft" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="5" />
-                                <Label IsEnabled="False" Content="Right Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="5" Grid.Column="2" />
-                                <ComboBox x:Name="ComboBoxCreaturesHandRight" Grid.Column="3" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="5" />
-                                <Label IsEnabled="False" Content="Belt" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6" />
-                                <ComboBox x:Name="ComboBoxCreaturesBelt" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="6" />
-                                <Label IsEnabled="False" Content="Legs" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="7" />
-                                <ComboBox x:Name="ComboBoxCreaturesLegs" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="7" />
-                                <Label IsEnabled="False" Content="Left Foot" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8" />
-                                <ComboBox x:Name="ComboBoxCreaturesFootLeft" Grid.Column="1" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="8" />
-                                <Label IsEnabled="False" Content="Right Foot" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="8" Grid.Column="2" />
-                                <ComboBox x:Name="ComboBoxCreaturesFootRight" Grid.Column="3" SelectionChanged="ComboBoxCreatures_SelectionChanged" Grid.Row="8" />
-                            </Grid>
-                            <!--
-                            <DataGrid x:Name="DataGridCreaturesEquipment" HorizontalAlignment="Center" VerticalAlignment="Center" HeadersVisibility="None" >
-                                <DataGrid.Resources>
-                                    <ResourceDictionary>
-                                        <Style x:Key="{x:Type DataGridCell}" TargetType="{x:Type DataGridCell}">
-                                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}"/>
-                                            <Setter Property="Background" Value="{x:Null}" />
-                                            <Setter Property="BorderBrush" Value="{x:Null}" />
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="{x:Null}" />
-                                                    <Setter Property="BorderBrush" Value="{x:Null}" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                        <Style TargetType="{x:Type DataGridRow}">
-                                            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Foreground}"/>
-                                            <Setter Property="Background" Value="{x:Null}" />
-                                            <Setter Property="BorderBrush" Value="{x:Null}" />
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="{x:Null}" />
-                                                    <Setter Property="BorderBrush" Value="{x:Null}" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ResourceDictionary>
-                                </DataGrid.Resources>
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding Path=BodyPart}" CanUserSort="False" CanUserReorder="False" CanUserResize="False" IsReadOnly="True"/>
-                                    <DataGridTemplateColumn CanUserSort="False" CanUserReorder="False" CanUserResize="False" IsReadOnly="True">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource="{Binding Path=Items}" IsEnabled="True"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            -->
-                        </StackPanel>
-                    </StackPanel>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridCreatures" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False" HeadersVisibility="Column">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="TabItemCreturesources" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <ScrollViewer Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="DataGridCreaturesources" HorizontalAlignment="Center" VerticalAlignment="Center" GridLinesVisibility="Horizontal" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" IsEnabled="False">
-                        </DataGrid>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </Grid>
+
+    <TabControl SelectedIndex="0" Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabPanel" >
+        <TabItem Header="Viewer" Controls:ControlsHelper.HeaderFontSize="24">
+            <viewer:Viewer/>
+        </TabItem>
+        <TabItem Header="Editor" Controls:ControlsHelper.HeaderFontSize="24">
+        </TabItem> 
+    </TabControl>
 </Controls:MetroWindow>

@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -25,10 +30,25 @@ namespace NeoScavModHelperTool
         private List<string> _listMods = new List<string>();
         public List<string> Mods => _listMods;
 
+        private List<string> _listModsPrefix = new List<string>();
+        public List<string> ModsPrefix => _listModsPrefix;
+
+        private int _dpiY;
+        public int DpiY => _dpiY;
+        private int _dpiX;
+        public int DpiX => _dpiX;
+
         public App() : base()
         {  
             _isStartingUp = true;
             _I = this;
+
+            //Find the current Dpi and save them to be used later on when drawing images
+            var dpiXProperty = typeof(SystemParameters).GetProperty("DpiX", BindingFlags.NonPublic | BindingFlags.Static);
+            var dpiYProperty = typeof(SystemParameters).GetProperty("Dpi", BindingFlags.NonPublic | BindingFlags.Static);
+
+            _dpiX = (int)dpiXProperty.GetValue(null, null);
+            _dpiY = (int)dpiYProperty.GetValue(null, null);
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -45,7 +65,7 @@ namespace NeoScavModHelperTool
 
             // Wait for the blocker to be signaled before continuing. This is essentially the same as: while(ResetSplashCreated.NotSet) {}
             SplashSyncEvent.WaitOne();
-
+            
             //Now that the splash screen is shown let's continue
 
             //Register this method for displaying unhandled exception in the appropriate window
@@ -165,6 +185,22 @@ namespace NeoScavModHelperTool
                 str_item = strItemSplitted[1];
                 str_table = strItemSplitted[0] + "_" + str_table_sufix;
             }
+        }
+        
+        public static BitmapImage GetItemDisplayImage(string item_id, string item_id_origin_table, bool big_image)
+        {
+            //Find the correct DB to fetch the information
+            App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref item_id, ref item_id_origin_table, "itemtypes");
+            string[] itemIDSplitted = item_id.Split('.');
+            //Ask for item imageList
+            string strImageList = App.DB.GetColumnValueFromMemoryTableMultipleAndConditions(new List<string> { "nGroupID", "nSubgroupID" },
+            itemIDSplitted.ToList(), item_id_origin_table, "vImageList");
+            //Finally fetch the display image
+            string strImageName = strImageList.Split(',')[0];
+            string strImageTable = item_id_origin_table;
+            App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref strImageName, ref strImageTable, "images");
+            strImageName = Path.GetFileNameWithoutExtension(strImageName);
+            return new BitmapImage(new Uri(App.DB.GetImagePathFromMemory(strImageName, strImageTable, big_image)));
         }
     }
 }

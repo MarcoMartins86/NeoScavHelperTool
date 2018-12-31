@@ -1,0 +1,14 @@
+﻿<Controls:MetroWindow x:Class="NeoScavHelperTool.WaitSpinner"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:local="clr-namespace:NeoScavHelperTool"
+                      mc:Ignorable="d"
+                      Title="WaitSpinner" SizeToContent="WidthAndHeight" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" ShowCloseButton="False" ShowActivated="False" ShowIconOnTitleBar="False" ShowDialogsOverTitleBar="False" ShowMaxRestoreButton="False" ShowMinButton="False" ShowSystemMenuOnRightClick="False" ShowTitleBar="False"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled" AllowsTransparency="True" WindowStyle="None" Focusable="False" IsEnabled="False" IsTabStop="False" IsCloseButtonEnabled="False" IsMaxRestoreButtonEnabled="False" IsMinButtonEnabled="False" IsWindowDraggable="False" ResizeBorderThickness="0"
+                      Visibility="Visible"
+                      BorderThickness="0" Background="{x:Null}" NonActiveBorderBrush="{x:Null}" Foreground="{x:Null}" NonActiveWindowTitleBrush="{x:Null}" WindowTitleBrush="{x:Null}">
+    <Controls:ProgressRing Width="Auto" Height="Auto" MinWidth="100" MinHeight="100" Focusable="False" IsEnabled="False"/>
+</Controls:MetroWindow>

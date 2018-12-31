@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="NeoScavHelperTool.Viewer.Viewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NeoScavHelperTool.Viewer"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Name="ViewerControl" Loaded="ViewerControl_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Expander ExpandDirection="Right" IsExpanded="True">
+            <Expander.Header>
+                <TextBlock Text="Pick Game Item" Width="Auto" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="-90"/>
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Expander.Header>
+            <Expander.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" MinWidth="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TabControl SelectedIndex="2" Width="Auto" Controls:TabControlHelper.Underlined="SelectedTabItem" Name="TabControlViewer">
+                        <TabItem IsEnabled="False">
+                            <TabItem.Header>
+                                <Label Content="Group by:"/>
+                            </TabItem.Header>
+                        </TabItem>
+                        <TabItem Header="Mods" Controls:ControlsHelper.HeaderFontSize="18">
+                            <TreeView x:Name="TreeViewViewerMods" VirtualizingStackPanel.IsVirtualizing="True" SelectedItemChanged="TreeView_SelectedItemChanged">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Tier2}">
+                                        <HierarchicalDataTemplate.ItemTemplate>
+                                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Items}">
+                                                <HierarchicalDataTemplate.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Path=TreeText}" VerticalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </HierarchicalDataTemplate.ItemTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center"/>
+                                            </HierarchicalDataTemplate>
+                                        </HierarchicalDataTemplate.ItemTemplate>
+                                        <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center"/>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </TabItem>
+                        <TabItem Header="Types" Controls:ControlsHelper.HeaderFontSize="18">
+                            <TreeView x:Name="TreeViewViewerTypes" VirtualizingStackPanel.IsVirtualizing="True" SelectedItemChanged="TreeView_SelectedItemChanged">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Tier2}">                                        
+                                        <HierarchicalDataTemplate.ItemTemplate>
+                                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Items}">
+                                                <HierarchicalDataTemplate.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Path=TreeText}" VerticalAlignment="Center"/>
+                                                    </DataTemplate>            
+                                                </HierarchicalDataTemplate.ItemTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center"/>
+                                            </HierarchicalDataTemplate>
+                                        </HierarchicalDataTemplate.ItemTemplate>
+                                        <TextBlock Text="{Binding Path=Name}" VerticalAlignment="Center"/>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </TabItem>
+                    </TabControl>
+                    <GridSplitter Grid.Column="1" Width="5" ResizeBehavior="PreviousAndCurrent" ResizeDirection="Columns"/>
+                </Grid>
+            </Expander.Content>
+        </Expander>
+        <UserControl Name="ViewerDataContainer" Grid.Column="1"/>        
+    </Grid>
+</UserControl>

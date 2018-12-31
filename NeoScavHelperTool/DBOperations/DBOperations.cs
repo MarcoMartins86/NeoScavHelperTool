@@ -15,6 +15,7 @@ namespace NeoScavModHelperTool
     public class DBOperations
     {
         private static string _sqlCommandSelectAllTableData = "SELECT * FROM `{0}`";
+        private static string _sqlCommandSelectAllTableDataOfSpecificColumns = "SELECT {0} FROM `{1}`";
         private static string _sqlCommandSelectAllFromTableWhereColumnEqualValue = "SELECT * FROM `{0}` WHERE `{1}`=@value";
         private static string _sqlCommandSelectColumnFromTableWhereColumnEqualValue = "SELECT `{0}` FROM `{1}` WHERE `{2}`=@value";
         private static string _sqlCommandSelectColumnFromTableWhereMultipleColumnEqualValue = "SELECT `{0}` FROM `{1}` WHERE @multiple";
@@ -104,8 +105,10 @@ namespace NeoScavModHelperTool
             ParseType0(strGameFolder, "0", "vanilla");
             //6th - start parsing mods xml, checking for changes first comparing previous parse hash
             ParseGetModsFile(strGameFolder);
-            //7th - Finally create an in-memory DB with the values as the game see them
-            CreateInMemGameDatabase();
+            //7th - Create a list of simplified mods prefix ordered by loading order
+            CreateModsPrefixList();
+            //8th - Finally create an in-memory DB with the values as the game see them
+            CreateInMemGameDatabase();            
         }
 
         public void Close()
@@ -173,7 +176,7 @@ namespace NeoScavModHelperTool
             if (bEndedTableElement)
             {
                 command.CommandText = string.Format(command.CommandText,
-                    str_table_name_prefix + "_" + DBTableAttributtesFetcher.GetNameSufix(str_table_name_sufix),//parameter {0} table name
+                    str_table_name_prefix + "_" + str_table_name_sufix,//parameter {0} table name
                     $"`{string.Join("`,`", listParameterNames)}`" //parameter {1} columns
                     );
                 command.AddArrayParameters("values", listParameterValues);
@@ -328,9 +331,12 @@ namespace NeoScavModHelperTool
                        table_name,//parameter {0} table name
                        $"`{string.Join("`,`", new List<string> { "name", "small", "big" })}`" //parameter {1} columns
                        );
-                    command.AddArrayParameters("values", new List<string> { image.Key,
-                            Path.Combine(strImageFolderPath, image.Value[0]),
-                            Path.Combine(strImageFolderPath, image.Value[1])});
+
+                    //Check if any of the strings are empty, and if they are don't prepend the path
+                    string strSmallImagePath = string.IsNullOrEmpty(image.Value[0]) ? string.Empty : Path.Combine(strImageFolderPath, image.Value[0]);
+                    string strBigImagePath = string.IsNullOrEmpty(image.Value[1]) ? string.Empty : Path.Combine(strImageFolderPath, image.Value[1]);
+
+                    command.AddArrayParameters("values", new List<string> { image.Key, strSmallImagePath, strBigImagePath});
                     command.ExecuteNonQuery();
                 }
 
@@ -459,10 +465,24 @@ namespace NeoScavModHelperTool
             }
         }
 
+        private void CreateModsPrefixList()
+        {
+            App._splashScreen.UpdateMessage("Setting mods loading order");
+
+            foreach(string mod in App.I.Mods)
+            {
+                string[] strModSplitted = mod.Split('_');
+
+                if(-1 == App.I.ModsPrefix.FindIndex(new Predicate<string>(str => String.Equals(strModSplitted[0], str))))
+                {
+                    App.I.ModsPrefix.Add(strModSplitted[0]);
+                }
+            }
+        }
+
         private void CreateInMemGameDatabase()
         {
-            App._splashScreen.UpdateMessage("Finalizing game database");
-
+            App._splashScreen.UpdateMessage("Finalizing in-game database");
 #if DEBUG
             //For debug porpose only
             var dbFilename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NeoScavHelperTool", "mem.sqlite");
@@ -472,20 +492,20 @@ namespace NeoScavModHelperTool
 #endif
             DbMemConnection.Open();
 
-            //let's fill the TreeViewViewerTypes with the types
-            DBTableAttributtesFetcher.GetAllNameSufix().ForEach(type =>
-            {
-                TreeViewItem treeItem = new TreeViewItem();
-                treeItem.Header = type;
-                MainWindow.ListTypeTreeItems.Add(treeItem);
-            });
-            //let's fill the TreeViewViewerMods with the mods where 0 will only be represented as 0_vanilla
-            App.I.Mods.Select(mod => mod.Split('_')[0]).Distinct().ToList().ForEach(modPrefix =>
-            {
-                TreeViewItem treeItem = new TreeViewItem();
-                treeItem.Header = modPrefix;
-                MainWindow.ListModsTreeItems.Add(treeItem);
-            });
+            ////let's fill the TreeViewViewerTypes with the types
+            //DBTableAttributtesFetcher.GetAllNameSufix().ForEach(type =>
+            //{
+            //    TreeViewItem treeItem = new TreeViewItem();
+            //    treeItem.Header = type;
+            //    MainWindow.ListTypeTreeItems.Add(treeItem);
+            //});
+            ////let's fill the TreeViewViewerMods with the mods where 0 will only be represented as 0_vanilla
+            //App.I.Mods.Select(mod => mod.Split('_')[0]).Distinct().ToList().ForEach(modPrefix =>
+            //{
+            //    TreeViewItem treeItem = new TreeViewItem();
+            //    treeItem.Header = modPrefix;
+            //    MainWindow.ListModsTreeItems.Add(treeItem);
+            //});
 
             //Now we will fetch by mod order data to fill the DB overwriting the previous mod data
             SQLiteCommand fsCommand = new SQLiteCommand(DbFsConnection);
@@ -503,7 +523,7 @@ namespace NeoScavModHelperTool
                         listTables.Add(reader.GetString(0));
                     }
                 }
-                //now fetch all values from the file system table and insert them on the memory table                
+                //now fetch all values from the file system table and insert them on the memory table   
                 foreach (string tableName in listTables)
                 {
                     SQLiteTransaction dataTableTransaction = DbMemConnection.BeginTransaction(); //transaction per table                    
@@ -535,30 +555,6 @@ namespace NeoScavModHelperTool
                             command.CommandText = string.Format(DBTableAttributtesFetcher.GetSqlCreation(strTableNameSufix), strMemTableName);
                             command.ExecuteNonQuery();
 
-                            //now we need to find or add the the table prefix in the tree view
-                            //Type group
-                            //1st Get the existent item
-                            TreeViewItem typeNode0Item = MainWindow.ListTypeTreeItems.Find(item => string.Compare(item.Header.ToString(), strTableNameSufix) == 0);
-                            //2nd check if it has the wanted table item
-                            TreeViewItem typeNode1Item = typeNode0Item.Items.Cast<TreeViewItem>().FirstOrDefault(item => string.Compare(item.Header.ToString(), splittedModName[0]) == 0);
-                            if (typeNode1Item == null)
-                            {
-                                typeNode1Item = new TreeViewItem();
-                                typeNode1Item.Header = splittedModName[0];
-                                typeNode0Item.Items.Add(typeNode1Item);
-                            }
-                            //Mod group
-                            //1st Get the existent item
-                            TreeViewItem modNode0Item = MainWindow.ListModsTreeItems.Find(item => string.Compare(item.Header.ToString(), splittedModName[0]) == 0);
-                            //2nd check if it has the wanted table item
-                            TreeViewItem modNode1Item = modNode0Item.Items.Cast<TreeViewItem>().FirstOrDefault(item => string.Compare(item.Header.ToString(), strTableNameSufix) == 0);
-                            if (modNode1Item == null)
-                            {
-                                modNode1Item = new TreeViewItem();
-                                modNode1Item.Header = strTableNameSufix;
-                                modNode0Item.Items.Add(modNode1Item);
-                            }
-
                             while (reader.Read())
                             {
                                 object[] arrayColumnValues = new object[listColumnNames.Count];
@@ -572,35 +568,6 @@ namespace NeoScavModHelperTool
                                     );
                                 command.AddArrayParameters("values", listColumnValues);
                                 command.ExecuteNonQuery();
-
-                                //Fill the tree view items with the wanted info
-                                EDBTable eDBTable = (EDBTable) DBTableAttributtesFetcher.Parse(strTableNameSufix);
-                                TreeViewItemLeaf.DataType dataType = (TreeViewItemLeaf.DataType)eDBTable;
-
-                                int nIdColumnPosition = DBTableAttributtesFetcher.GetIdColumnPosition(eDBTable);
-                                string strFirst = string.Empty;
-                                bool bIsSecondPrimaryKey = false;
-                                if (nIdColumnPosition >= 0)
-                                {
-                                    strFirst = listColumnValues[nIdColumnPosition].ToString();
-                                }
-                                else
-                                    bIsSecondPrimaryKey = true;
-
-                                int nNameColumnPosition = DBTableAttributtesFetcher.GetNameColumnPosition(eDBTable);
-                                string strSecond = string.Empty;
-                                if (nNameColumnPosition >= 0)
-                                {
-                                    strSecond = listColumnValues[nNameColumnPosition].ToString();
-                                }
-                                TreeViewItemLeaf newItem = new TreeViewItemLeaf(strFirst, strSecond, listColumnNames[0],
-                                    bIsSecondPrimaryKey, dataType, strMemTableName);
-                                //Finally add items to both tree views if they are not there already
-                                if (0 == typeNode1Item.Items.Cast<TreeViewItemLeaf>().Where(item => string.Compare(item.PrimaryKeyValue, newItem.PrimaryKeyValue) == 0).Count())
-                                {
-                                    typeNode1Item.Items.Add(newItem);
-                                    modNode1Item.Items.Add(newItem);
-                                }
                             }
                         }
                     }
@@ -677,17 +644,45 @@ namespace NeoScavModHelperTool
             return command.ExecuteScalar().ToString();
         }
 
-        public List<object> GetAllDataOfAnItemFromMemory(string str_value, string str_column_name, string str_table_name)
+        public object[] GetAllDataOfAnItemFromMemory(string str_value, string str_column_name, string str_table_name)
         {
-            List<object> listValues = new List<object>();
+            object [] arrayReturn = null;
+
             SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
             command.CommandText = string.Format(_sqlCommandSelectAllFromTableWhereColumnEqualValue, str_table_name, str_column_name);
             command.Parameters.Add(new SQLiteParameter("@value", str_value));
             using (SQLiteDataReader reader = command.ExecuteReader())
             {
                 reader.Read();
-                for (int column = 0; column < reader.FieldCount; column++)
-                    listValues.Add(reader.GetValue(column));
+                arrayReturn = new object[reader.FieldCount];
+                reader.GetValues(arrayReturn);
+            }
+
+            return arrayReturn;
+        }
+
+
+        public List<object[]> GetAllTableDataOfSpecificColumnsFromMemory(string str_table_name, List<string> list_column_values_retrieves)
+        {
+            List<object[]> listValues = new List<object[]>();
+            SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
+            command.CommandText = string.Format(_sqlCommandSelectAllTableDataOfSpecificColumns,
+                $"`{string.Join("`,`", list_column_values_retrieves)}`", str_table_name);
+            try
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        object[] values = new object[list_column_values_retrieves.Count];
+                        reader.GetValues(values);
+                        listValues.Add(values);
+                    }
+                }
+            }
+            catch (SQLiteException sqle)
+            {
+                if (sqle.ErrorCode != 1) throw sqle; //if the table does not exist is an expected error
             }
 
             return listValues;

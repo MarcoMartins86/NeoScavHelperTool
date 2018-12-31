@@ -152,22 +152,22 @@ namespace NeoScavModHelperTool
 
         }
 
-        public static BitmapSource CopyImageRectWithDpi(BitmapImage image, Int32Rect rect, double dpiX, double dpiY)
+        public static BitmapSource CopyImageRectWithDpi(BitmapSource image, Int32Rect rect, double dpiX, double dpiY)
         {
             int width = rect.Width;
             int height = rect.Height;
-            int stride = width * 4; // 4 bytes per pixel
+            var stride = (width * image.Format.BitsPerPixel + 7) / 8;
             byte[] pixelData = new byte[stride * height];
             image.CopyPixels(rect, pixelData, stride, 0);
             return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);
         }
 
-        public static BitmapSource ConvertImageDpi(BitmapImage image, double dpiX, double dpiY)
+        public static BitmapSource ConvertImageDpi(BitmapSource image, double dpiX, double dpiY)
         {
             //hack to convert to same dpi //maybe if this is to slow consider using transforms  
             int width = image.PixelWidth;
             int height = image.PixelHeight;
-            int stride = width * 4; // 4 bytes per pixel
+            var stride = (width * image.Format.BitsPerPixel + 7) / 8;
             byte[] pixelData = new byte[stride * height];
             image.CopyPixels(pixelData, stride, 0);
             return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);

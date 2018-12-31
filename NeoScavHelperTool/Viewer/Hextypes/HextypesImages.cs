@@ -1,6 +1,7 @@
 ﻿using NeoScavModHelperTool;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,6 @@ namespace NeoScavHelperTool.Viewer.Hextypes
         private BitmapSource LoadHextypesTile(int hextypes_id, BitmapImage image, bool need_upscale, bool is_highlighted, int tile_width, int tile_height)
         {
             Int32Rect rect = new Int32Rect();
-
             //Hextypes images are 6 per 13 where odd rows are normal highlighted images and even the normal ones
             int nRowIndex = ((hextypes_id - 1) / 13) * 2;
             int nColumnIndex = (hextypes_id - 1) % 13;
@@ -47,10 +47,30 @@ namespace NeoScavHelperTool.Viewer.Hextypes
             rect.Width = tile_width;
             rect.Height = tile_height;
 
+            //TODO: if for some reason in the future someone makes big hextypes images the random string will need to be written with rendered pixels measures instead of hard coded values
+            BitmapSource tile = App.CopyImageRectWithDpi(image, rect, App.I.DpiX, App.I.DpiY);
+            //this is a special tile, in-game it just randomizes the tile, so let's add text saying that
+            if (hextypes_id == 4)
+            {
+                DrawingVisual visual = new DrawingVisual();                
+                using (DrawingContext drawingContext = visual.RenderOpen())
+                {                    
+                    drawingContext.DrawImage(tile, new Rect(0, 0, tile.PixelWidth, tile.PixelHeight));
+                    //Brush brush = new Brush()
+                    SolidColorBrush semiTransBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+                    drawingContext.DrawRoundedRectangle(semiTransBrush, null, new Rect(10, 34, 80, 22), 5, 5);
+                    FormattedText text = new FormattedText("Random", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 20.0, Brushes.Red);
+                    drawingContext.DrawText(text, new Point(14,30));
+                }
+                RenderTargetBitmap mergedImage = new RenderTargetBitmap(tile.PixelWidth, tile.PixelHeight, image.DpiX, image.DpiY, PixelFormats.Pbgra32);
+                mergedImage.Render(visual);
+                tile = App.ConvertImageDpi(mergedImage, App.I.DpiX, App.I.DpiY);
+            }
+
             if (need_upscale)
-                return new TransformedBitmap(App.CopyImageRectWithDpi(image, rect, App.I.DpiX, App.I.DpiY), new ScaleTransform(2, 2));
+                return new TransformedBitmap(tile, new ScaleTransform(2, 2));
             else
-                return App.CopyImageRectWithDpi(image, rect, App.I.DpiX, App.I.DpiY);
+                return tile;
         }
 
         private void InitBitmapSource(int hextypes_id, bool big_gui, string image_name, ref BitmapSource normal, ref BitmapSource highlighted)

@@ -4,8 +4,8 @@ This tool is intended to use with NeoScavenger game for now as viewer of in-game
 It will need to have valid XML files on all mods or else an exception will be thrown.
 
 ### This is still unfinished and so far:
-- It will list all in-game items
-- It will show "attackmodes" items basic info
+- It will display hextypes
+- It will display images
 
 ### Bellow is a list with XML fixes I had to make on some mods:
 + DevKit\BBCAddOn

@@ -27,9 +27,9 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
-    <TabControl SelectedIndex="0" Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabPanel" >
+    <TabControl x:Name="TabControlAppMode"  SelectedIndex="0" Controls:TabControlHelper.IsUnderlined="True" Controls:TabControlHelper.Underlined="TabPanel" >
         <TabItem Header="Viewer" Controls:ControlsHelper.HeaderFontSize="24">
-            <viewer:Viewer/>
+            <viewer:Viewer x:Name="ViewerControl" />
         </TabItem>
         <TabItem Header="Editor" Controls:ControlsHelper.HeaderFontSize="24">
         </TabItem> 

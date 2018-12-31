@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,7 +25,6 @@ namespace NeoScavModHelperTool
         private WaitSpinner _waitSpinnerDialog = null;
         private bool _isBigGUISelected;
         public bool IsBigGUISelected => _isBigGUISelected;
-        //private TreeViewItemLeaf _selectedItem;
         private List<UIElement> _listAttackmodesCanvasDynamicAmmoObjects = new List<UIElement>();
         private BitmapImage _imageGridUsedIngame;
         private BitmapImage _imageLogMessageFrame;
@@ -58,10 +58,10 @@ namespace NeoScavModHelperTool
         {
             if (_waitSpinnerDialog == null)
             {
+                _waitSpinnerDialog = new WaitSpinner();
+                _waitSpinnerDialog.Owner = this;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    _waitSpinnerDialog = new WaitSpinner();
-                    _waitSpinnerDialog.Owner = this;
                     _waitSpinnerDialog.ShowDialog();
                 }));
             }
@@ -71,8 +71,18 @@ namespace NeoScavModHelperTool
         {
             if (_waitSpinnerDialog != null)
             {
-                _waitSpinnerDialog.Close();
-                _waitSpinnerDialog = null;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _waitSpinnerDialog.Close();
+                    switch (TabControlAppMode.SelectedIndex)
+                    {
+                        case 0: //Viewer
+                            //Restore focus to tree view so user can navigate with keyboard
+                            Viewer.I.RestoreFocusSelectedItem();
+                            break;
+                    }
+                    _waitSpinnerDialog = null;
+                }));
             }
         }
         #endregion
@@ -95,7 +105,21 @@ namespace NeoScavModHelperTool
                 this._isBigGUISelected = true;
             }
 
-            Viewer.I.RestoreFocusSelectedItem();//TODO do this for the correct selected  tab item (viewer, editor)
+            switch(TabControlAppMode.SelectedIndex)
+            {
+                case 0: //Viewer
+                    // Restore the focus on the tree so user can navigate with keyboard
+                    Viewer.I.RestoreFocusSelectedItem(); 
+                    // Ask to redraw to reflect the new GUI mode
+                    if(ViewerControl.ViewerDataContainer.Content != null)
+                    {
+                        IChangeGUIType interfaceChangeGUIType = (IChangeGUIType)ViewerControl.ViewerDataContainer.Content;
+                        interfaceChangeGUIType.ChangeGUIType(_isBigGUISelected);
+                    }
+                    break;
+                case 1: //Editor
+                    break;
+            }            
         }
 
         private void GUIRadioButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

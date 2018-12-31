@@ -109,6 +109,11 @@
     <Compile Include="ComboBoxEquipmentItem.cs" />
     <Compile Include="DBOperations\DBTable.cs" />
     <Compile Include="TabSizeConverter.cs" />
+    <Compile Include="Viewer\Hextypes\Hextypes.xaml.cs">
+      <DependentUpon>Hextypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\Hextypes\HextypesImages.cs" />
+    <Compile Include="Viewer\IChangeGUIType.cs" />
     <Compile Include="Viewer\ViewerDataGridItem.cs" />
     <Compile Include="Viewer\Images\Images.xaml.cs">
       <DependentUpon>Images.xaml</DependentUpon>
@@ -148,6 +153,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Viewer\Hextypes\Hextypes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

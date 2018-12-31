@@ -45,14 +45,31 @@ namespace NeoScavHelperTool.Viewer
             _loadTreeItemsWorker.RunWorkerCompleted += LoadTreeItemsWoker_RunWorkerCompleted;
         }
 
+        void ViewerControl_ContentRendered(object sender, EventArgs e)
+        {   
+            if (_treeItemsList == null && MainWindow.I != null)
+            {
+                // Don't forget to unsubscribe from the event
+                ((PresentationSource)sender).ContentRendered -= ViewerControl_ContentRendered;
+
+                MainWindow.I.StartWaitSpinner();
+
+                _loadTreeItemsWorker.RunWorkerAsync();
+            }
+        }
+
         private void ViewerControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(_treeItemsList == null && MainWindow.I != null)
+            //// Get PresentationSource
+            //PresentationSource presentationSource = PresentationSource.FromVisual((Visual)sender);
+            //// Subscribe to PresentationSource's ContentRendered event
+            //presentationSource.ContentRendered += ViewerControl_ContentRendered;
+            if (_treeItemsList == null && MainWindow.I != null)
             {
                 MainWindow.I.StartWaitSpinner();
 
                 _loadTreeItemsWorker.RunWorkerAsync();
-            }            
+            }
         }
         
         static private int GetTier1NodeIndex(ObservableCollection<Tier1TreeNode> collection, string name)
@@ -146,6 +163,9 @@ namespace NeoScavHelperTool.Viewer
 
                 switch(_selectedItem.Type)
                 {
+                    case EDBTable.eHextypes:
+                        ViewerDataContainer.Content = new Hextypes.Hextypes();
+                        break;
                     case EDBTable.eImages:
                         ViewerDataContainer.Content = new Images.Images();
                         break;

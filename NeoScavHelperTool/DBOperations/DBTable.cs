@@ -240,6 +240,27 @@ namespace NeoScavModHelperTool
         eTotal // this must be the last element always!!!!!!!
     }
 
+    public enum EDBHextypesTableColumns
+    {
+        eId,
+        eStrName,
+        eStrDesc,
+        eNTerrainCost,
+        eNVizLimiter,
+        eNVizIncrease,
+        eNTreasureID,
+        eBPassable,
+        eNScavengeInitialID,
+        eNScavengeItemsIDPerHour,
+        eNCampItems,
+        eVLightLevels,
+        eNDefaultCampID,
+        eNMinRange,
+        eNMaxRange,
+        eVCondIDs,
+        eTotal
+    }
+
     public enum EDBImagesTableColumns
     {
         eName,

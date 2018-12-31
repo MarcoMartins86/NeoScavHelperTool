@@ -8,6 +8,10 @@
 - Basic info on hextypes and display of tiles
 - Basic info on images and display of images
 
+### Changed
+- Major code re-write
+- GUI dispositon more modular
+
 ## 2018-12-09
 ### Fix
 - Missing backpack on creatures

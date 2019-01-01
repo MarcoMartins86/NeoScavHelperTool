@@ -269,6 +269,14 @@ namespace NeoScavModHelperTool
         eTotal
     }
 
+    public enum EDBMapsTableColumns
+    {
+        eId,
+        eStrName,
+        eStrDef,
+        eTotal
+    }
+
     namespace DBTableAttributes
     {
         #region Table Attributes

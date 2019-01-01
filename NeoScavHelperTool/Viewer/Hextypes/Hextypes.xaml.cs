@@ -192,7 +192,7 @@ namespace NeoScavHelperTool.Viewer.Hextypes
             }));
 
             // Check if we already have this hextype images created and if not create them
-            int nHextypesID = Int32.Parse(_arrayDBValues[(int)EDBHextypesTableColumns.eId].ToString());
+            int nHextypesID = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
             if (dictImages.ContainsKey(nHextypesID - 1) == false)
                 dictImages.Add(nHextypesID - 1, new HextypesImages(nHextypesID, _isOnBigGUI));
 
@@ -340,7 +340,7 @@ namespace NeoScavHelperTool.Viewer.Hextypes
                     break;
             }
             //Refresh the GUI to show reflect the change
-            int nHextypesId = Int32.Parse(_arrayDBValues[(int)EDBHextypesTableColumns.eId].ToString());
+            int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
             if (_isOnBigGUI)
                 SetCorrectTileOnImage(nHextypesId, _tileBigImage, _dictHextypesBigImages);
             else
@@ -353,7 +353,7 @@ namespace NeoScavHelperTool.Viewer.Hextypes
         {
             _bIsHighlighted = true;
             //Refresh the GUI to show reflect the change
-            int nHextypesId = Int32.Parse(_arrayDBValues[(int)EDBHextypesTableColumns.eId].ToString());
+            int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
             if (_isOnBigGUI)
                 SetCorrectTileOnImage(nHextypesId, _tileBigImage, _dictHextypesBigImages);
             else
@@ -366,7 +366,7 @@ namespace NeoScavHelperTool.Viewer.Hextypes
         {
             _bIsHighlighted = false;
             //Refresh the GUI to show reflect the change
-            int nHextypesId = Int32.Parse(_arrayDBValues[(int)EDBHextypesTableColumns.eId].ToString());
+            int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
             if (_isOnBigGUI)
                 SetCorrectTileOnImage(nHextypesId, _tileBigImage, _dictHextypesBigImages);
             else
@@ -374,7 +374,6 @@ namespace NeoScavHelperTool.Viewer.Hextypes
             //Restore focus to tree view so user can navigate with keyboard
             Viewer.I.RestoreFocusSelectedItem();
         }
-
 
         private void UpdateTile_DoWork(object sender, DoWorkEventArgs e)
         {

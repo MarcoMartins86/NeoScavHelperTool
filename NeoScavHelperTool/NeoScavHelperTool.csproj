@@ -114,6 +114,9 @@
     </Compile>
     <Compile Include="Viewer\Hextypes\HextypesImages.cs" />
     <Compile Include="Viewer\IChangeGUIType.cs" />
+    <Compile Include="Viewer\Maps\Maps.xaml.cs">
+      <DependentUpon>Maps.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Viewer\ViewerDataGridItem.cs" />
     <Compile Include="Viewer\Images\Images.xaml.cs">
       <DependentUpon>Images.xaml</DependentUpon>
@@ -161,6 +164,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Viewer\Images\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewer\Maps\Maps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

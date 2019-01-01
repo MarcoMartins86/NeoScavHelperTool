@@ -56,7 +56,6 @@ namespace NeoScavHelperTool.Viewer.Hextypes
                 using (DrawingContext drawingContext = visual.RenderOpen())
                 {                    
                     drawingContext.DrawImage(tile, new Rect(0, 0, tile.PixelWidth, tile.PixelHeight));
-                    //Brush brush = new Brush()
                     SolidColorBrush semiTransBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
                     drawingContext.DrawRoundedRectangle(semiTransBrush, null, new Rect(10, 34, 80, 22), 5, 5);
                     FormattedText text = new FormattedText("Random", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 20.0, Brushes.Red);

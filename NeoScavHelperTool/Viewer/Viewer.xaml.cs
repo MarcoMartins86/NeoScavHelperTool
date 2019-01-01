@@ -162,12 +162,15 @@ namespace NeoScavHelperTool.Viewer
                 _selectedItem = (ViewerTreeItemDescriptor)e.NewValue;
 
                 switch(_selectedItem.Type)
-                {
+                {                    
                     case EDBTable.eHextypes:
                         ViewerDataContainer.Content = new Hextypes.Hextypes();
                         break;
                     case EDBTable.eImages:
                         ViewerDataContainer.Content = new Images.Images();
+                        break;
+                    case EDBTable.eMaps:
+                        ViewerDataContainer.Content = new Maps.Maps();
                         break;
                 }
             }

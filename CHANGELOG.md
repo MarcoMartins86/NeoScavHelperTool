@@ -1,5 +1,9 @@
 # Changelog
 
+## 2019-01-01
+### Added
+- Basic info on maps and display
+
 ## 2018-12-31
 ### Removed
 - Since code was re-written, older renders are not working anymore

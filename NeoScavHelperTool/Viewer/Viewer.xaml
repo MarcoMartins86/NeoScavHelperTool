@@ -26,7 +26,7 @@
                         <ColumnDefinition Width="300" MinWidth="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TabControl SelectedIndex="2" Width="Auto" Controls:TabControlHelper.Underlined="SelectedTabItem" Name="TabControlViewer">
+                    <TabControl SelectedIndex="2" Width="Auto" Controls:TabControlHelper.Underlined="SelectedTabItem" Name="TabControlViewer" SelectionChanged="TabControlViewer_SelectionChanged">
                         <TabItem IsEnabled="False">
                             <TabItem.Header>
                                 <Label Content="Group by:"/>

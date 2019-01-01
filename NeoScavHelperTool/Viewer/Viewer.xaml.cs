@@ -24,6 +24,11 @@ namespace NeoScavHelperTool.Viewer
     /// </summary>
     public partial class Viewer : UserControl
     {
+        private enum ETreeMode
+        {
+            eByMods = 1,
+            eByTypes
+        }
         public static Viewer I = null;
 
         private List<ViewerTreeItemDescriptor> _treeItemsList = null;
@@ -34,6 +39,8 @@ namespace NeoScavHelperTool.Viewer
         public ViewerTreeItemDescriptor SelectedItem => _selectedItem;
 
         private readonly BackgroundWorker _loadTreeItemsWorker = new BackgroundWorker();
+
+        private ETreeMode _eTreeMode = ETreeMode.eByTypes;
 
         public Viewer() : base()
         {
@@ -154,6 +161,22 @@ namespace NeoScavHelperTool.Viewer
             MainWindow.I.StopWaitSpinner();
         }
 
+        private void DrawSelectedItem()
+        {
+            switch (_selectedItem.Type)
+            {
+                case EDBTable.eHextypes:
+                    ViewerDataContainer.Content = new Hextypes.Hextypes();
+                    break;
+                case EDBTable.eImages:
+                    ViewerDataContainer.Content = new Images.Images();
+                    break;
+                case EDBTable.eMaps:
+                    ViewerDataContainer.Content = new Maps.Maps();
+                    break;
+            }
+        }
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             //Check if it is a leaf first and not an intermediary node
@@ -161,32 +184,43 @@ namespace NeoScavHelperTool.Viewer
             {
                 _selectedItem = (ViewerTreeItemDescriptor)e.NewValue;
 
-                switch(_selectedItem.Type)
-                {                    
-                    case EDBTable.eHextypes:
-                        ViewerDataContainer.Content = new Hextypes.Hextypes();
-                        break;
-                    case EDBTable.eImages:
-                        ViewerDataContainer.Content = new Images.Images();
-                        break;
-                    case EDBTable.eMaps:
-                        ViewerDataContainer.Content = new Maps.Maps();
-                        break;
-                }
+                DrawSelectedItem();
             }
         }
 
         public void RestoreFocusSelectedItem()
         {
-            switch(TabControlViewer.SelectedIndex)
+            switch(_eTreeMode)
             {
-                case 1:
+                case ETreeMode.eByMods:
                     TreeViewViewerMods.Focus();
                     break;
-                case 2:
+                case ETreeMode.eByTypes:
                     TreeViewViewerTypes.Focus();
                     break;
             }
+        }
+
+        private void TabControlViewer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _eTreeMode = (ETreeMode)TabControlViewer.SelectedIndex;
+
+            // Check if we need to redraw the viewer data renderer
+            ViewerTreeItemDescriptor selectedItem = null;
+            switch (_eTreeMode)
+            {
+                case ETreeMode.eByMods:
+                    selectedItem = (ViewerTreeItemDescriptor)TreeViewViewerMods.SelectedItem;
+                    break;
+                case ETreeMode.eByTypes:
+                    selectedItem = (ViewerTreeItemDescriptor)TreeViewViewerTypes.SelectedItem;
+                    break;
+            }
+            if(selectedItem != null && _selectedItem != selectedItem)
+            {
+                _selectedItem = selectedItem;
+                DrawSelectedItem();
+            }            
         }
     }
 }

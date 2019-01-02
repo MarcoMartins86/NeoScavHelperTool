@@ -42,15 +42,25 @@ namespace NeoScavHelperTool.Viewer
         {
             _primaryKeyValue = columns_values[0].ToString();
             _primaryKeyName = DBTableAttributtesFetcher.GetPrimaryKeyName(type);
-            if (columns_values.Length == 2)
+
+            switch(columns_values.Length)
             {
-                _description = columns_values[1].ToString();
-                _treeText = string.Format("{0}_{1}", _primaryKeyValue, _description);
-            }
-            else
-            {
-                _treeText = _primaryKeyValue;
-                _description = string.Empty;
+                case 1:
+                    _treeText = _primaryKeyValue;
+                    _description = string.Empty;
+                    break;
+                case 2: // Most of them
+                    _description = columns_values[1].ToString();
+                    _treeText = string.Format("{0}_{1}", _primaryKeyValue, _description);
+                    break;
+                case 3: // BarterHexes
+                    _description = string.Format("({0}, {1})", columns_values[1], columns_values[2]);
+                    _treeText = string.Format("{0}_{1}", _primaryKeyValue, _description);
+                    break;
+                case 4: // ForbiddenHexes
+                    _description = string.Format("({0}, {1})_{2}", columns_values[1], columns_values[2], columns_values[3]);
+                    _treeText = string.Format("{0}_{1}", _primaryKeyValue, _description);
+                    break;
             }
 
             _type = type;

@@ -166,10 +166,13 @@ namespace NeoScavHelperTool.Viewer
             switch (_selectedItem.Type)
             {
                 case EDBTable.eBarterHexes:
-                    ViewerDataContainer.Content = new Barterhexes.Barterhexes(); 
+                    ViewerDataContainer.Content = new BarterHexes.BarterHexes(); 
                     break;
-                case EDBTable.eHextypes:
-                    ViewerDataContainer.Content = new Hextypes.Hextypes();
+                case EDBTable.eForbiddenHexes:
+                    ViewerDataContainer.Content = new ForbiddenHexes.ForbiddenHexes();
+                    break;
+                case EDBTable.eHexTypes:
+                    ViewerDataContainer.Content = new HexTypes.HexTypes();
                     break;
                 case EDBTable.eImages:
                     ViewerDataContainer.Content = new Images.Images();

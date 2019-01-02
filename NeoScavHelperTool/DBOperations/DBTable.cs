@@ -22,7 +22,7 @@ namespace NeoScavHelperTool
             NameSufix("barterhexes"),
             SqlCreation("CREATE TABLE IF NOT EXISTS `{0}` (`id` INTEGER NOT NULL, `nX` INTEGER NOT NULL DEFAULT 0, `nY` INTEGER NOT NULL DEFAULT 0, `bBuys` INTEGER NOT NULL DEFAULT 0, `nRestockTreasureID` INTEGER NOT NULL DEFAULT 3, PRIMARY KEY(`id`)) WITHOUT ROWID;"),
             ColumnsNames(new string[] { "id", "nX", "nY", "bBuys", "nRestockTreasureID" }),
-            TreeViewDecriptiveColumnsPositionsAttribute(new int[] { 0 }),
+            TreeViewDecriptiveColumnsPositionsAttribute(new int[] { 0, 1, 2 }),
             PrimaryKeyName("id")
             ]
         eBarterHexes,
@@ -139,7 +139,7 @@ namespace NeoScavHelperTool
             NameSufix("forbiddenhexes"),
             SqlCreation("CREATE TABLE IF NOT EXISTS `{0}` (`id` INTEGER NOT NULL, `nX` INTEGER NOT NULL DEFAULT 0, `nY` INTEGER NOT NULL DEFAULT 0, `strName` TEXT NOT NULL, PRIMARY KEY(`id`)) WITHOUT ROWID;"),
             ColumnsNames(new string[] { "id", "nX", "nY", "strName" }),
-            TreeViewDecriptiveColumnsPositionsAttribute(new int[] { 0, 3 }),
+            TreeViewDecriptiveColumnsPositionsAttribute(new int[] { 0, 1, 2, 3 }),
             PrimaryKeyName("id")
             ]
         eForbiddenHexes,
@@ -169,7 +169,7 @@ namespace NeoScavHelperTool
             TreeViewDecriptiveColumnsPositionsAttribute(new int[] { 0, 1 }),
             PrimaryKeyName("id")
             ]
-        eHextypes,
+        eHexTypes,
 
         [
             NameSufix("images"),
@@ -240,7 +240,7 @@ namespace NeoScavHelperTool
         eTotal // this must be the last element always!!!!!!!
     }
 
-    public enum EDBBarterhexesTableColumns
+    public enum EDBBarterHexesTableColumns
     {
         eId,
         eNX,
@@ -249,8 +249,15 @@ namespace NeoScavHelperTool
         eNRestockTreasureID,
         eTotals
     }
-
-    public enum EDBHextypesTableColumns
+    public enum EDBForbiddenHexesTableColumns
+    {
+        eId,
+        eNX,
+        eNY,
+        eStrName,
+        eTotal
+    }
+    public enum EDBHexTypesTableColumns
     {
         eId,
         eStrName,
@@ -270,7 +277,6 @@ namespace NeoScavHelperTool
         eVCondIDs,
         eTotal
     }
-
     public enum EDBImagesTableColumns
     {
         eName,
@@ -278,7 +284,6 @@ namespace NeoScavHelperTool
         eBig,
         eTotal
     }
-
     public enum EDBMapsTableColumns
     {
         eId,

@@ -1,4 +1,4 @@
-﻿using NeoScavHelperTool.Viewer.Hextypes;
+﻿using NeoScavHelperTool.Viewer.HexTypes;
 using NeoScavHelperTool;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NeoScavHelperTool.DBTableAttributes;
-using static NeoScavHelperTool.Viewer.Hextypes.Hextypes;
+using static NeoScavHelperTool.Viewer.HexTypes.HexTypes;
 
 namespace NeoScavHelperTool.Viewer.Maps
 {
@@ -116,7 +116,7 @@ namespace NeoScavHelperTool.Viewer.Maps
         {
             string[] strMapRows = array_db_values[(int)EDBMapsTableColumns.eStrDef].ToString().Split('\n');
 
-            SizeTile sizeTile = big_gui ? Hextypes.Hextypes.SizeBigTile : Hextypes.Hextypes.SizeSmallTile;
+            SizeTile sizeTile = big_gui ? HexTypes.HexTypes.SizeBigTile : HexTypes.HexTypes.SizeSmallTile;
 
             // Calculation by trial and error of the formula to draw the tiles on map
             double nStartYMultiplier = sizeTile.Height * 0.25;
@@ -136,7 +136,7 @@ namespace NeoScavHelperTool.Viewer.Maps
                     for (int nColumn = 0; nColumn < strMapColumns.Length; nColumn++)
                     {
                         int nHextype = Convert.ToInt32(strMapColumns[nColumn]);
-                        BitmapSource tile = Hextypes.Hextypes.GetCorrectTileForDrawing(nHextype, big_gui, day_time, is_highlighted);
+                        BitmapSource tile = HexTypes.HexTypes.GetCorrectTileForDrawing(nHextype, big_gui, day_time, is_highlighted);
 
                         // Calculation by trial and error of the formula to draw the tiles on map
                         double nStartX = (nColumn * nStartXMultiplier);
@@ -294,7 +294,7 @@ namespace NeoScavHelperTool.Viewer.Maps
 
         public static Point GetGameMapImagePixelCoordinate(int row, int column, bool big_gui)
         {
-            SizeTile sizeTile = big_gui ? Hextypes.Hextypes.SizeBigTile : Hextypes.Hextypes.SizeSmallTile;
+            SizeTile sizeTile = big_gui ? HexTypes.HexTypes.SizeBigTile : HexTypes.HexTypes.SizeSmallTile;
 
             // Calculation by trial and error of the formula to draw the tiles on map
             double nStartYMultiplier = sizeTile.Height * 0.25;

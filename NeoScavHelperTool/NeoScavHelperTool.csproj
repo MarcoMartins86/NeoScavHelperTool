@@ -109,13 +109,16 @@
     <Compile Include="ComboBoxEquipmentItem.cs" />
     <Compile Include="DBOperations\DBTable.cs" />
     <Compile Include="TabSizeConverter.cs" />
-    <Compile Include="Viewer\Barterhexes\Barterhexes.xaml.cs">
-      <DependentUpon>Barterhexes.xaml</DependentUpon>
+    <Compile Include="Viewer\BarterHexes\BarterHexes.xaml.cs">
+      <DependentUpon>BarterHexes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Viewer\Hextypes\Hextypes.xaml.cs">
-      <DependentUpon>Hextypes.xaml</DependentUpon>
+    <Compile Include="Viewer\ForbiddenHexes\ForbiddenHexes.xaml.cs">
+      <DependentUpon>ForbiddenHexes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Viewer\Hextypes\HextypesImages.cs" />
+    <Compile Include="Viewer\HexTypes\HexTypes.xaml.cs">
+      <DependentUpon>HexTypes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\HexTypes\HexTypesImages.cs" />
     <Compile Include="Viewer\IChangeGUIType.cs" />
     <Compile Include="Viewer\Maps\Maps.xaml.cs">
       <DependentUpon>Maps.xaml</DependentUpon>
@@ -162,11 +165,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Viewer\Barterhexes\Barterhexes.xaml">
+    <Page Include="Viewer\BarterHexes\BarterHexes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Viewer\Hextypes\Hextypes.xaml">
+    <Page Include="Viewer\ForbiddenHexes\ForbiddenHexes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Viewer\HexTypes\HexTypes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

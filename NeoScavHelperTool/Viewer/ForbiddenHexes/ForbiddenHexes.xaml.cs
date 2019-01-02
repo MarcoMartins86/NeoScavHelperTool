@@ -18,12 +18,12 @@ using System.Windows.Shapes;
 using static NeoScavHelperTool.Viewer.HexTypes.HexTypes;
 using static NeoScavHelperTool.Viewer.Maps.Maps;
 
-namespace NeoScavHelperTool.Viewer.BarterHexes
+namespace NeoScavHelperTool.Viewer.ForbiddenHexes
 {
     /// <summary>
-    /// Interaction logic for BarterHexes.xaml
+    /// Interaction logic for ForbiddenHexes.xaml
     /// </summary>
-    public partial class BarterHexes : UserControl, IChangeGUIType
+    public partial class ForbiddenHexes : UserControl, IChangeGUIType
     {
         private readonly BackgroundWorker _loadItemsWorker = new BackgroundWorker();
         private readonly BackgroundWorker _changeGUITypeWorker = new BackgroundWorker();
@@ -33,7 +33,7 @@ namespace NeoScavHelperTool.Viewer.BarterHexes
         private bool _alreadyLoaded = false;
         private object[] _arrayDBValues;
 
-        public BarterHexes()
+        public ForbiddenHexes()
         {
             InitializeComponent();
 
@@ -44,7 +44,7 @@ namespace NeoScavHelperTool.Viewer.BarterHexes
             _changeGUITypeWorker.RunWorkerCompleted += ChangeGUIType_RunWorkerCompleted;
         }
 
-        private void BarterHexesControl_Loaded(object sender, RoutedEventArgs e)
+        private void ForbiddenHexesControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.I != null && _alreadyLoaded == false)
             {
@@ -58,51 +58,51 @@ namespace NeoScavHelperTool.Viewer.BarterHexes
         {
             _isOnBigGUI = MainWindow.I.IsBigGUISelected;
 
-            int nBarterHexColumn = Convert.ToInt32(_arrayDBValues[(int)EDBBarterHexesTableColumns.eNX]);
-            int nBarterHexRow = Convert.ToInt32(_arrayDBValues[(int)EDBBarterHexesTableColumns.eNY]);
+            int nForbiddenHexColumn = Convert.ToInt32(_arrayDBValues[(int)EDBForbiddenHexesTableColumns.eNX]);
+            int nForbiddenHexRow = Convert.ToInt32(_arrayDBValues[(int)EDBForbiddenHexesTableColumns.eNY]);
             SizeMap sizeMap = Maps.Maps.SizeGameMap;
             BitmapSource mark = null;
             Point? markPosition = null;
-            // Just a sanity check to see if the barter spot exists on map
-            if (nBarterHexColumn <= sizeMap.Columns && nBarterHexRow <= sizeMap.Rows)
+            // Just a sanity check to see if the forbidden spot exists on map
+            if (nForbiddenHexColumn <= sizeMap.Columns && nForbiddenHexRow <= sizeMap.Rows)
             {
-                //HexHilight image will mark the spot
-                mark = Images.Images.GetImageToDraw("HexHilight", "0_images", _isOnBigGUI);
+                //HexHilightInvalid image will mark the spot
+                mark = Images.Images.GetImageToDraw("HexHilightInvalid", "0_images", _isOnBigGUI);
 
-                markPosition = Maps.Maps.GetGameMapImagePixelCoordinate(nBarterHexColumn, nBarterHexRow, _isOnBigGUI);
+                markPosition = Maps.Maps.GetGameMapImagePixelCoordinate(nForbiddenHexColumn, nForbiddenHexRow, _isOnBigGUI);
             }
 
-            //Fetch the map with the barterhex marked on it
-            DrawingImage finalMapWithBarterhexMarked = Maps.Maps.GetGameMapImageWithDrawnImageAtPoint(_isOnBigGUI, Maps.Maps.EDayTime.eDay, true, mark, markPosition);
+            //Fetch the map with the forbiddenhex marked on it
+            DrawingImage finalMapWithForbiddenhexMarked = Maps.Maps.GetGameMapImageWithDrawnImageAtPoint(_isOnBigGUI, Maps.Maps.EDayTime.eDay, true, mark, markPosition);
 
-            //We need this to try to center the scroll view on the barter hex
+            //We need this to try to center the scroll view on the forbidden hex
             SizeTile sizeTile = _isOnBigGUI ? HexTypes.HexTypes.SizeBigTile : HexTypes.HexTypes.SizeSmallTile;
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                ContainerBarterHexesCanvas.Source = finalMapWithBarterhexMarked;
-                ContainerBarterHexesCanvas.Width = finalMapWithBarterhexMarked.Width;
-                ContainerBarterHexesCanvas.Height = finalMapWithBarterhexMarked.Height;
+                ContainerForbiddenHexesCanvas.Source = finalMapWithForbiddenhexMarked;
+                ContainerForbiddenHexesCanvas.Width = finalMapWithForbiddenhexMarked.Width;
+                ContainerForbiddenHexesCanvas.Height = finalMapWithForbiddenhexMarked.Height;
                 //I will do this here instead of on RunWorkerCompleted because I need the grid to reserve it's space on GUI
-                if (DataGridBarterHexes.ItemsSource == null)
+                if (DataGridForbiddenHexes.ItemsSource == null)
                 {
-                    DataGridBarterHexes.ItemsSource = _dataGridItems;
-                    DataGridBarterHexes.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    Size visualSize = DataGridBarterHexes.DesiredSize;
-                    DataGridBarterHexes.Arrange(new Rect(new Point(0, 0), visualSize));
-                    DataGridBarterHexes.UpdateLayout();
+                    DataGridForbiddenHexes.ItemsSource = _dataGridItems;
+                    DataGridForbiddenHexes.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    Size visualSize = DataGridForbiddenHexes.DesiredSize;
+                    DataGridForbiddenHexes.Arrange(new Rect(new Point(0, 0), visualSize));
+                    DataGridForbiddenHexes.UpdateLayout();
                 }
-                // let's try to center the scroll view on the barter hex
+                // let's try to center the scroll view on the forbidden hex
                 if (markPosition.HasValue)
                 {
-                    double scrollWidth = ContainerBarterHexesScroll.ViewportWidth;
-                    double scrollHeight = ContainerBarterHexesScroll.ViewportHeight;
+                    double scrollWidth = ContainerForbiddenHexesScroll.ViewportWidth;
+                    double scrollHeight = ContainerForbiddenHexesScroll.ViewportHeight;
 
                     double offsetX = markPosition.Value.X + sizeTile.Width * 0.5 - scrollWidth * 0.5;
                     double offsetY = markPosition.Value.Y + sizeTile.Height * 0.5 - scrollHeight * 0.5;
 
-                    ContainerBarterHexesScroll.ScrollToVerticalOffset(offsetY);
-                    ContainerBarterHexesScroll.ScrollToHorizontalOffset(offsetX);
+                    ContainerForbiddenHexesScroll.ScrollToVerticalOffset(offsetY);
+                    ContainerForbiddenHexesScroll.ScrollToHorizontalOffset(offsetX);
                 }
             }));
         }
@@ -116,7 +116,7 @@ namespace NeoScavHelperTool.Viewer.BarterHexes
             //Fill a list with the data so it can be shown on the DataGrid
             foreach (object columnValue in _arrayDBValues)
             {
-                _dataGridItems.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eBarterHexes)[_dataGridItems.Count], columnValue));
+                _dataGridItems.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eForbiddenHexes)[_dataGridItems.Count], columnValue));
             }
             //3rd - Display the information on canvas
             CreateUpdateCanvas();
@@ -126,8 +126,8 @@ namespace NeoScavHelperTool.Viewer.BarterHexes
         {
             _alreadyLoaded = true;
             // Update the GUI
-            BarterHexesTitle.Content = string.Format("{0}__({1},{2})", _arrayDBValues[(int)EDBBarterHexesTableColumns.eId], _arrayDBValues[(int)EDBBarterHexesTableColumns.eNX], _arrayDBValues[(int)EDBBarterHexesTableColumns.eNY]);            
-            BarterHexesMainGrid.Visibility = Visibility.Visible;
+            ForbiddenHexesTitle.Content = string.Format("{0}__({1},{2})__{3}", _arrayDBValues[(int)EDBForbiddenHexesTableColumns.eId], _arrayDBValues[(int)EDBForbiddenHexesTableColumns.eNX], _arrayDBValues[(int)EDBForbiddenHexesTableColumns.eNY], _arrayDBValues[(int)EDBForbiddenHexesTableColumns.eStrName]);
+            ForbiddenHexesMainGrid.Visibility = Visibility.Visible;
             //Stop the loading spinner
             MainWindow.I.StopWaitSpinner();
         }

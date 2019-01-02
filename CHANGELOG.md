@@ -1,5 +1,10 @@
 # Changelog
 
+## 2019-01-02
+### Added
+- Basic info on barterhexes and display
+- Basic info on forbiddenhexes and display
+
 ## 2019-01-01
 ### Added
 - Basic info on maps and display

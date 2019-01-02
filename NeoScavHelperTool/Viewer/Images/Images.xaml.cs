@@ -1,5 +1,5 @@
-﻿using NeoScavModHelperTool;
-using NeoScavModHelperTool.DBTableAttributes;
+﻿using NeoScavHelperTool;
+using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -67,8 +67,11 @@ namespace NeoScavHelperTool.Viewer.Images
             label.VerticalAlignment = VerticalAlignment.Top;
             panel.Children.Add(label);
             //Create the image and convert it to use the App Dpi and add it to the panel
+            BitmapSource imageSource = ConvertImageDpi(new BitmapImage(new Uri(image_path)), App.I.DpiX, App.I.DpiY);
             Image image = new Image();
-            image.Source = App.ConvertImageDpi(new BitmapImage(new Uri(image_path)), App.I.DpiX, App.I.DpiY);
+            image.Source = imageSource;
+            image.Width = imageSource.Width;
+            image.Height = imageSource.Height;
             image.HorizontalAlignment = HorizontalAlignment.Center;
             image.VerticalAlignment = VerticalAlignment.Top;
             panel.Children.Add(image);
@@ -128,9 +131,56 @@ namespace NeoScavHelperTool.Viewer.Images
             MainWindow.I.StopWaitSpinner();
         }
 
-        public void ChangeGUIType(bool big_gui)
+        public void ChangeGUIType()
         {
             //on images we don't need to do anything since we are drawing both of the images
+        }
+
+
+        public static string GetImagePathFromMemory(string str_name, string str_table_name, bool big_gui)
+        {
+            return App.DB.GetImagePathFromMemory(str_name, str_table_name, big_gui);
+        }
+
+        public static BitmapSource GetImageToDraw(string str_name, string str_table_name, bool big_gui)
+        {
+            string strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, big_gui);
+            bool bNeedToUpscale = false;
+            if (string.IsNullOrEmpty(strImagePath) && big_gui)
+            {
+                // if big image doesn't exist let's use the small one and upscale it
+                strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, false);
+                bNeedToUpscale = true;
+            }
+
+            BitmapImage image = new BitmapImage(new Uri(strImagePath));
+            BitmapSource sourceReturn = ConvertImageDpi(image, App.I.DpiX, App.I.DpiY);
+
+            if(bNeedToUpscale)
+                sourceReturn = new TransformedBitmap(sourceReturn, new ScaleTransform(2, 2));
+
+            return sourceReturn;
+        }
+
+        public static BitmapSource CopyImageRectWithDpi(BitmapSource image, Int32Rect rect, double dpiX, double dpiY)
+        {
+            int width = rect.Width;
+            int height = rect.Height;
+            var stride = (width * image.Format.BitsPerPixel + 7) / 8;
+            byte[] pixelData = new byte[stride * height];
+            image.CopyPixels(rect, pixelData, stride, 0);
+            return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);
+        }
+
+        public static BitmapSource ConvertImageDpi(BitmapSource image, double dpiX, double dpiY)
+        {
+            //hack to convert to same dpi //maybe if this is to slow consider using transforms  
+            int width = image.PixelWidth;
+            int height = image.PixelHeight;
+            var stride = (width * image.Format.BitsPerPixel + 7) / 8;
+            byte[] pixelData = new byte[stride * height];
+            image.CopyPixels(pixelData, stride, 0);
+            return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);
         }
     }
 }

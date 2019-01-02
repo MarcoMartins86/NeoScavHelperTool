@@ -1,4 +1,4 @@
-﻿using NeoScavModHelperTool;
+﻿using NeoScavHelperTool;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -41,47 +41,47 @@ namespace NeoScavHelperTool.Viewer.Hextypes
             int nRowIndex = ((hextypes_id - 1) / 13) * 2;
             int nColumnIndex = (hextypes_id - 1) % 13;
             if (is_highlighted == false)
-                nRowIndex += 1;                       
+                nRowIndex += 1;
             rect.X = nColumnIndex * tile_width;
             rect.Y = nRowIndex * tile_height;
             rect.Width = tile_width;
             rect.Height = tile_height;
 
             //TODO: if for some reason in the future someone makes big hextypes images the random string will need to be written with rendered pixels measures instead of hard coded values
-            BitmapSource tile = App.CopyImageRectWithDpi(image, rect, App.I.DpiX, App.I.DpiY);
+            BitmapSource tile = Images.Images.CopyImageRectWithDpi(image, rect, App.I.DpiX, App.I.DpiY);
             //this is a special tile, in-game it just randomizes the tile, so let's add text saying that
             if (hextypes_id == 4)
             {
-                DrawingVisual visual = new DrawingVisual();                
+                DrawingVisual visual = new DrawingVisual();
                 using (DrawingContext drawingContext = visual.RenderOpen())
-                {                    
+                {
                     drawingContext.DrawImage(tile, new Rect(0, 0, tile.PixelWidth, tile.PixelHeight));
                     SolidColorBrush semiTransBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
                     drawingContext.DrawRoundedRectangle(semiTransBrush, null, new Rect(10, 34, 80, 22), 5, 5);
                     FormattedText text = new FormattedText("Random", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 20.0, Brushes.Red);
-                    drawingContext.DrawText(text, new Point(14,30));
+                    drawingContext.DrawText(text, new Point(14, 30));
                 }
                 RenderTargetBitmap mergedImage = new RenderTargetBitmap(tile.PixelWidth, tile.PixelHeight, image.DpiX, image.DpiY, PixelFormats.Pbgra32);
                 mergedImage.Render(visual);
-                tile = App.ConvertImageDpi(mergedImage, App.I.DpiX, App.I.DpiY);
+                tile = Images.Images.ConvertImageDpi(mergedImage, App.I.DpiX, App.I.DpiY);
             }
 
             if (need_upscale)
-                return new TransformedBitmap(tile, new ScaleTransform(2, 2));
-            else
-                return tile;
+                tile = new TransformedBitmap(tile, new ScaleTransform(2, 2));
+
+            return tile;
         }
 
         private void InitBitmapSource(int hextypes_id, bool big_gui, string image_name, ref BitmapSource normal, ref BitmapSource highlighted)
         {
-            string strImagePath = App.DB.GetImagePathFromMemory(image_name, "0_images", big_gui);
+            string strImagePath = Images.Images.GetImagePathFromMemory(image_name, "0_images", big_gui);
             bool bNeedToUpscale = false;
             int nTileWidth = 100;
             int nTileHeight = 76;
             if (string.IsNullOrEmpty(strImagePath) && big_gui)
             {
                 // if big image doesn't exist let's use the small one and upscale it
-                strImagePath = App.DB.GetImagePathFromMemory(image_name, "0_images", false);
+                strImagePath = Images.Images.GetImagePathFromMemory(image_name, "0_images", false);
                 bNeedToUpscale = true;
             }
             // Altough this cannot be tested for now since game does not have big hextypes images, I will leave this here just in case 

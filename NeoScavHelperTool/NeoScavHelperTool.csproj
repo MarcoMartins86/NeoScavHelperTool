@@ -109,6 +109,9 @@
     <Compile Include="ComboBoxEquipmentItem.cs" />
     <Compile Include="DBOperations\DBTable.cs" />
     <Compile Include="TabSizeConverter.cs" />
+    <Compile Include="Viewer\Barterhexes\Barterhexes.xaml.cs">
+      <DependentUpon>Barterhexes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Viewer\Hextypes\Hextypes.xaml.cs">
       <DependentUpon>Hextypes.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
     <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Viewer\Barterhexes\Barterhexes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Viewer\Hextypes\Hextypes.xaml">
       <Generator>MSBuild:Compile</Generator>

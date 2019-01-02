@@ -1,5 +1,5 @@
 ﻿using NeoScavHelperTool.Viewer.Hextypes;
-using NeoScavModHelperTool;
+using NeoScavHelperTool;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NeoScavHelperTool.DBTableAttributes;
+using static NeoScavHelperTool.Viewer.Hextypes.Hextypes;
 
 namespace NeoScavHelperTool.Viewer.Maps
 {
@@ -24,7 +26,41 @@ namespace NeoScavHelperTool.Viewer.Maps
     /// </summary>
     public partial class Maps : UserControl, IChangeGUIType
     {
-        private enum EDayTime
+        public struct SizeMap
+        {
+            public int Rows { get; set; }
+            public int Columns { get; set; }
+
+            public SizeMap(int rows, int columns)
+            {
+                Rows = rows;
+                Columns = columns;
+            }
+        }
+
+        private static SizeMap _sizeGameMap = new SizeMap(0, 0);
+        public static SizeMap SizeGameMap
+        {
+            get
+            {
+                // Check if we already initialized this and if not let's do it
+                if (_sizeGameMap.Rows == 0)
+                {
+                    // Since this method is only used to fetch the game map size we can have this hard-coded
+                    object[] arrayDBValues = App.DB.GetAllDataOfAnItemFromMemory("2", DBTableAttributtesFetcher.GetPrimaryKeyName(EDBTable.eMaps), "0_maps");
+
+                    string [] strMapRows = arrayDBValues[(int)EDBMapsTableColumns.eStrDef].ToString().Split('\n');
+                    string[] strMapColumns = strMapRows[0].Split(',');
+
+                    _sizeGameMap.Rows = strMapRows.Length;
+                    _sizeGameMap.Columns = strMapColumns.Length;
+                }
+
+                return _sizeGameMap;
+            }
+        }
+
+        public enum EDayTime
         {
             eMorning,
             eDay,
@@ -36,13 +72,11 @@ namespace NeoScavHelperTool.Viewer.Maps
         static private bool _bIsHighlighted = true; //static since I want to save the current value between items
 
         private readonly BackgroundWorker _loadItemsWorker = new BackgroundWorker();
-        private readonly BackgroundWorker _updateTileWorker = new BackgroundWorker();
+        private readonly BackgroundWorker _changeGUITypeWorker = new BackgroundWorker();
 
         private bool _isOnBigGUI = true;
         private bool _alreadyLoaded = false;
         private object[] _arrayDBValues;
-
-        private Dictionary<EDayTime, BitmapSource> _dictMapsBitmaps = new Dictionary<EDayTime, BitmapSource>();
 
         public Maps()
         {
@@ -51,8 +85,8 @@ namespace NeoScavHelperTool.Viewer.Maps
             _loadItemsWorker.DoWork += LoadItemsWoker_DoWork;
             _loadItemsWorker.RunWorkerCompleted += LoadItemsWoker_RunWorkerCompleted;
 
-            _updateTileWorker.DoWork += UpdateTile_DoWork;
-            _updateTileWorker.RunWorkerCompleted += UpdateTile_RunWorkerCompleted;
+            _changeGUITypeWorker.DoWork += ChangeGUIType_DoWork;
+            _changeGUITypeWorker.RunWorkerCompleted += ChangeGUIType_RunWorkerCompleted;
         }
 
         private void MapsControl_Loaded(object sender, RoutedEventArgs e)
@@ -65,73 +99,62 @@ namespace NeoScavHelperTool.Viewer.Maps
             }
         }
 
-        private BitmapSource GetCorrectTileForDrawing(int hextypes, Dictionary<int, HextypesImages> dictImages)
+        private static DrawingImage GetMapImage(bool big_gui, object[] array_db_values, EDayTime day_time, bool is_highlighted)
         {
-            BitmapSource sourceReturn = null;
-            switch (_eDayTime)
-            {
-                case EDayTime.eMorning:
-                    if (_bIsHighlighted)
-                        sourceReturn = dictImages[hextypes].SummerMorningHighlighted;
-                    else
-                        sourceReturn = dictImages[hextypes].SummerMorning;
-                    break;
-                case EDayTime.eDay:
-                    if (_bIsHighlighted)
-                        sourceReturn = dictImages[hextypes].SummerDayHighlighted;
-                    else
-                        sourceReturn = dictImages[hextypes].SummerDay;
-                    break;
-                case EDayTime.eDusk:
-                    if (_bIsHighlighted)
-                        sourceReturn = dictImages[hextypes].SummerDuskHighlighted;
-                    else
-                        sourceReturn = dictImages[hextypes].SummerDusk;
-                    break;
-                case EDayTime.eNight:
-                    if (_bIsHighlighted)
-                        sourceReturn = dictImages[hextypes].SummerNightHighlighted;
-                    else
-                        sourceReturn = dictImages[hextypes].SummerNight;
-                    break;
-            }
-
-            return sourceReturn;
+            return GetMapImageWithDrawnImageAtPoint(big_gui, array_db_values, day_time, is_highlighted, null, null);
         }
 
-        private void CreateUpdateMapsCanvas()
+        public static DrawingImage GetGameMapImageWithDrawnImageAtPoint(bool big_gui, EDayTime day_time, bool is_highlighted, BitmapSource image_to_draw, Point? where_to_draw)
         {
-            _isOnBigGUI = MainWindow.I.IsBigGUISelected;
+            // Since this method is only used to fetch the game map we can have this hard-coded
+            object [] arrayDBValues = App.DB.GetAllDataOfAnItemFromMemory("2", DBTableAttributtesFetcher.GetPrimaryKeyName(EDBTable.eMaps), "0_maps");
 
-            Dictionary<int, HextypesImages> dictImages = _isOnBigGUI ? Hextypes.Hextypes.DictHextypesBigImages : Hextypes.Hextypes.DictHextypesSmallImages;
+            return GetMapImageWithDrawnImageAtPoint(big_gui, arrayDBValues, day_time, is_highlighted, image_to_draw, where_to_draw);
+        }
 
-            string[] strMapRows = _arrayDBValues[(int)EDBMapsTableColumns.eStrDef].ToString().Split('\n');
+        private static DrawingImage GetMapImageWithDrawnImageAtPoint(bool big_gui, object[] array_db_values, EDayTime day_time, bool is_highlighted, BitmapSource image_to_draw, Point? where_to_draw)
+        {
+            string[] strMapRows = array_db_values[(int)EDBMapsTableColumns.eStrDef].ToString().Split('\n');
+
+            SizeTile sizeTile = big_gui ? Hextypes.Hextypes.SizeBigTile : Hextypes.Hextypes.SizeSmallTile;
+
+            // Calculation by trial and error of the formula to draw the tiles on map
+            double nStartYMultiplier = sizeTile.Height * 0.25;
+            double nStartXOddOffset = sizeTile.Width * 0.8;
+            double nStartXMultiplier = 2 * nStartXOddOffset;
 
             DrawingVisual visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
-            {                
+            {
                 for (int nRows = 0; nRows < strMapRows.Length; nRows++)
                 {
+                    // Calculation by trial and error of the formula to draw the tiles on map
+                    double nStartY = nRows * nStartYMultiplier;
+
                     string[] strMapColumns = strMapRows[nRows].Split(',');
-                    bool bIsRowEven = nRows % 2 == 0;
+                    bool bIsRowOdd = nRows % 2 != 0;
                     for (int nColumn = 0; nColumn < strMapColumns.Length; nColumn++)
                     {
-                        // Check if we already have this hextype images created and if not create them
                         int nHextype = Convert.ToInt32(strMapColumns[nColumn]);
-                        if (dictImages.ContainsKey(nHextype) == false)
-                            dictImages.Add(nHextype, new HextypesImages(nHextype + 1, _isOnBigGUI));
-
-                        BitmapSource tile = GetCorrectTileForDrawing(nHextype, dictImages);
+                        BitmapSource tile = Hextypes.Hextypes.GetCorrectTileForDrawing(nHextype, big_gui, day_time, is_highlighted);
 
                         // Calculation by trial and error of the formula to draw the tiles on map
-                        double nStartX = (nColumn * tile.PixelWidth * 1.6);
-                        if (bIsRowEven == false)
-                            nStartX += tile.PixelWidth * 0.8;                        
-                        double nStartY = nRows * tile.PixelHeight * 0.25;
+                        double nStartX = (nColumn * nStartXMultiplier);
+                        if (bIsRowOdd)
+                            nStartX += nStartXOddOffset;                        
 
                         drawingContext.DrawImage(tile, new Rect(nStartX, nStartY, tile.PixelWidth, tile.PixelHeight));
                     }
                 }
+                // As a final step let's see if there's an image to draw
+                if(image_to_draw != null)
+                {
+                    drawingContext.DrawImage(image_to_draw, new Rect(where_to_draw.Value.X, where_to_draw.Value.Y, image_to_draw.PixelWidth, image_to_draw.PixelHeight));
+                }
+
+
+                // Below code might be useful to save things to a file, and since it took me a long time to find it, I will maintain this here for now in case I will need it later
+
                 //drawingContext.DrawImage(tile, new Rect(0, 0, tile.PixelWidth, tile.PixelHeight));
                 ////Brush brush = new Brush()
                 //SolidColorBrush semiTransBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
@@ -141,6 +164,7 @@ namespace NeoScavHelperTool.Viewer.Maps
             }
             //RenderTargetBitmap mergedImage = new RenderTargetBitmap(nTotalWidth, nTotalHeight, 96, 96, PixelFormats.Pbgra32);
             //mergedImage.Render(visual);
+            //BitmapSource final = App.ConvertImageDpi(mergedImage, App.I.DpiX, App.I.DpiY);
 
             //PngBitmapEncoder encoder = new PngBitmapEncoder();
             //encoder.Frames.Add(BitmapFrame.Create(mergedImage));
@@ -150,18 +174,29 @@ namespace NeoScavHelperTool.Viewer.Maps
             //    encoder.Save(file);
             //}
 
-            //BitmapSource final = App.ConvertImageDpi(mergedImage, App.I.DpiX, App.I.DpiY);
             DrawingImage finalMap = new DrawingImage(visual.Drawing);
             finalMap.Freeze();
+
+            return finalMap;
+        }
+
+        private void CreateUpdateMapsCanvas()
+        {
+            _isOnBigGUI = MainWindow.I.IsBigGUISelected;
+
+            DrawingImage finalMap = GetMapImage(_isOnBigGUI, _arrayDBValues, _eDayTime, _bIsHighlighted);
+
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 ContainerMapsCanvas.Source = finalMap;
+                ContainerMapsCanvas.Width = finalMap.Width;
+                ContainerMapsCanvas.Height = finalMap.Height;
             }));
         }
 
         private void LoadItemsWoker_DoWork(object sender, DoWorkEventArgs e)
         {
-            //1st - Get from DB all data to fill the grid and save it on the list
+            //1st - Get from DB all data
             //Fetch this item data from DB
             ViewerTreeItemDescriptor selectedItem = Viewer.I.SelectedItem;
             _arrayDBValues = App.DB.GetAllDataOfAnItemFromMemory(selectedItem.PrimaryKeyValue, selectedItem.PrimaryKeyName, selectedItem.TableName);
@@ -187,9 +222,7 @@ namespace NeoScavHelperTool.Viewer.Maps
                     ButtonHighlighted.IsChecked = true;
             }));
             //3rd - Display the information on canvas
-            CreateUpdateMapsCanvas();
-
-            _alreadyLoaded = true;
+            CreateUpdateMapsCanvas();            
         }
 
         private void DayTimeRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -212,51 +245,67 @@ namespace NeoScavHelperTool.Viewer.Maps
                     break;
             }
             //Refresh the GUI to show reflect the change
-            ChangeGUIType(_isOnBigGUI);
+            ChangeGUIType();
         }
 
         private void HighlightedButton_Checked(object sender, RoutedEventArgs e)
         {
             _bIsHighlighted = true;
             //Refresh the GUI to show reflect the change
-            ChangeGUIType(_isOnBigGUI);
+            ChangeGUIType();
         }
 
         private void HighlightedButton_Unchecked(object sender, RoutedEventArgs e)
         {
             _bIsHighlighted = false;
             //Refresh the GUI to show reflect the change
-            ChangeGUIType(_isOnBigGUI);
+            ChangeGUIType();
         }
 
         private void LoadItemsWoker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _alreadyLoaded = true;
             // Update the GUI
             MapsTitle.Content = _arrayDBValues[(int)EDBMapsTableColumns.eStrName];
-            //DataGridHextypes.ItemsSource = _dataGridItems;
             MapsMainGrid.Visibility = Visibility.Visible;
             //Stop the loading spinner
             MainWindow.I.StopWaitSpinner();
         }
 
-        private void UpdateTile_DoWork(object sender, DoWorkEventArgs e)
+        private void ChangeGUIType_DoWork(object sender, DoWorkEventArgs e)
         {
             CreateUpdateMapsCanvas();
         }
 
-        private void UpdateTile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void ChangeGUIType_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //Stop the loading spinner
             MainWindow.I.StopWaitSpinner();
         }
 
-        public void ChangeGUIType(bool big_gui)
+        public void ChangeGUIType()
         {
             if (_alreadyLoaded)
             {
                 MainWindow.I.StartWaitSpinner();
-                _updateTileWorker.RunWorkerAsync();
+                _changeGUITypeWorker.RunWorkerAsync();
             }
+        }
+
+        public static Point GetGameMapImagePixelCoordinate(int row, int column, bool big_gui)
+        {
+            SizeTile sizeTile = big_gui ? Hextypes.Hextypes.SizeBigTile : Hextypes.Hextypes.SizeSmallTile;
+
+            // Calculation by trial and error of the formula to draw the tiles on map
+            double nStartYMultiplier = sizeTile.Height * 0.25;
+            double nStartXOddOffset = sizeTile.Width * 0.8;
+            double nStartXMultiplier = 2 * nStartXOddOffset;
+            double nStartY = column * nStartYMultiplier;
+            double nStartX = (row * nStartXMultiplier);
+            if (column % 2 != 0)
+                nStartX += nStartXOddOffset;
+
+            return new Point(nStartX, nStartY);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace NeoScavModHelperTool
+﻿namespace NeoScavHelperTool
 {
     public static class WpfWindowExt
     {

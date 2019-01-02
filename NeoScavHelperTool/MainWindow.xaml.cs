@@ -2,7 +2,7 @@
 using MahApps.Metro.Controls.Dialogs;
 using NeoScavHelperTool;
 using NeoScavHelperTool.Viewer;
-using NeoScavModHelperTool.DBTableAttributes;
+using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NeoScavModHelperTool
+namespace NeoScavHelperTool
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -78,7 +78,7 @@ namespace NeoScavModHelperTool
                     {
                         case 0: //Viewer
                             //Restore focus to tree view so user can navigate with keyboard
-                            Viewer.I.RestoreFocusSelectedItem();
+                            Viewer.Viewer.I.RestoreFocusSelectedItem();
                             break;
                     }
                     _waitSpinnerDialog = null;
@@ -109,12 +109,12 @@ namespace NeoScavModHelperTool
             {
                 case 0: //Viewer
                     // Restore the focus on the tree so user can navigate with keyboard
-                    Viewer.I.RestoreFocusSelectedItem(); 
+                    Viewer.Viewer.I.RestoreFocusSelectedItem(); 
                     // Ask to redraw to reflect the new GUI mode
                     if(ViewerControl.ViewerDataContainer.Content != null)
                     {
                         IChangeGUIType interfaceChangeGUIType = (IChangeGUIType)ViewerControl.ViewerDataContainer.Content;
-                        interfaceChangeGUIType.ChangeGUIType(_isBigGUISelected);
+                        interfaceChangeGUIType.ChangeGUIType();
                     }
                     break;
                 case 1: //Editor

@@ -1,5 +1,5 @@
-﻿using NeoScavModHelperTool;
-using NeoScavModHelperTool.DBTableAttributes;
+﻿using NeoScavHelperTool;
+using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

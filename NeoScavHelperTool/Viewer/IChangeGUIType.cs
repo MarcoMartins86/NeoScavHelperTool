@@ -8,6 +8,6 @@ namespace NeoScavHelperTool.Viewer
 {
     interface IChangeGUIType
     {
-        void ChangeGUIType(bool big_gui);
+        void ChangeGUIType();
     }
 }

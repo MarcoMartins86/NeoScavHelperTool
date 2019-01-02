@@ -1,9 +1,9 @@
-﻿<Window x:Class="NeoScavModHelperTool.AnimatedSplashScreenWindow"
+﻿<Window x:Class="NeoScavHelperTool.AnimatedSplashScreenWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NeoScavModHelperTool"
+        xmlns:local="clr-namespace:NeoScavHelperTool"
         mc:Ignorable="d"
         Title="AnimatedSplashScreenWindow" HorizontalAlignment="Center" VerticalAlignment="Center" AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" Width="{Binding ActualWidth, ElementName=grid, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}" IsEnabled="False" Background="{x:Null}">
     <Grid x:Name="grid" HorizontalAlignment="Center" VerticalAlignment="Center">

@@ -2,7 +2,7 @@
 using System.Data.SQLite;
 using System.Linq;
 
-namespace NeoScavModHelperTool
+namespace NeoScavHelperTool
 {
     public static class SqlCommandExt
     {

@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
-using NeoScavModHelperTool;
-using NeoScavModHelperTool.DBTableAttributes;
+using NeoScavHelperTool;
+using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -165,6 +165,9 @@ namespace NeoScavHelperTool.Viewer
         {
             switch (_selectedItem.Type)
             {
+                case EDBTable.eBarterHexes:
+                    ViewerDataContainer.Content = new Barterhexes.Barterhexes(); 
+                    break;
                 case EDBTable.eHextypes:
                     ViewerDataContainer.Content = new Hextypes.Hextypes();
                     break;

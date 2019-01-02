@@ -1,4 +1,4 @@
-﻿using NeoScavModHelperTool.DBTableAttributes;
+﻿using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
 
-namespace NeoScavModHelperTool
+namespace NeoScavHelperTool
 {
     public class DBOperations
     {

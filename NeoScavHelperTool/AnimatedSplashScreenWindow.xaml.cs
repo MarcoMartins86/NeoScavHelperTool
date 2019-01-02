@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace NeoScavModHelperTool
+namespace NeoScavHelperTool
 {
     /// <summary>
     /// Interaction logic for AnimatedSplashScreenWindow.xaml

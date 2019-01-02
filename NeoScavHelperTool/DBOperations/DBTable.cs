@@ -1,10 +1,10 @@
-using NeoScavModHelperTool.DBTableAttributes;
+using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace NeoScavModHelperTool
+namespace NeoScavHelperTool
 {
     //Enum with main game database tables and their needed attributes
     public enum EDBTable
@@ -238,6 +238,16 @@ namespace NeoScavModHelperTool
             ]
         eTreasuretable,                
         eTotal // this must be the last element always!!!!!!!
+    }
+
+    public enum EDBBarterhexesTableColumns
+    {
+        eId,
+        eNX,
+        eNY,
+        eBBuys,
+        eNRestockTreasureID,
+        eTotals
     }
 
     public enum EDBHextypesTableColumns

@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
-namespace NeoScavModHelperTool
+namespace NeoScavHelperTool
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -150,28 +150,7 @@ namespace NeoScavModHelperTool
                     Application.Current.Shutdown(0);
             }
 
-        }
-
-        public static BitmapSource CopyImageRectWithDpi(BitmapSource image, Int32Rect rect, double dpiX, double dpiY)
-        {
-            int width = rect.Width;
-            int height = rect.Height;
-            var stride = (width * image.Format.BitsPerPixel + 7) / 8;
-            byte[] pixelData = new byte[stride * height];
-            image.CopyPixels(rect, pixelData, stride, 0);
-            return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);
-        }
-
-        public static BitmapSource ConvertImageDpi(BitmapSource image, double dpiX, double dpiY)
-        {
-            //hack to convert to same dpi //maybe if this is to slow consider using transforms  
-            int width = image.PixelWidth;
-            int height = image.PixelHeight;
-            var stride = (width * image.Format.BitsPerPixel + 7) / 8;
-            byte[] pixelData = new byte[stride * height];
-            image.CopyPixels(pixelData, stride, 0);
-            return BitmapSource.Create(width, height, dpiX, dpiY, image.Format, image.Palette, pixelData, stride);
-        }
+        }        
 
         public static void GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref string str_item, ref string str_table, string str_table_sufix)
         {

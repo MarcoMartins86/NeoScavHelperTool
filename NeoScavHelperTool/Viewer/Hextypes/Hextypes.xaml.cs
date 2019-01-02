@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
-using NeoScavModHelperTool;
-using NeoScavModHelperTool.DBTableAttributes;
+using NeoScavHelperTool;
+using NeoScavHelperTool.DBTableAttributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static NeoScavHelperTool.Viewer.Maps.Maps;
 
 namespace NeoScavHelperTool.Viewer.Hextypes
 {
@@ -23,14 +24,51 @@ namespace NeoScavHelperTool.Viewer.Hextypes
     /// Interaction logic for Hextypes.xaml
     /// </summary>
     public partial class Hextypes : UserControl, IChangeGUIType
-    {
-        private enum EDayTime
+    {   
+        public struct SizeTile
         {
-            eMorning,
-            eDay,
-            eDusk,
-            eNight
+            public int Width { get; set; }
+            public int Height { get; set; }
+
+            public SizeTile(int width, int height)
+            {
+                Width = width;
+                Height = height;
+            }
         }
+        private static SizeTile _sizeBigTile = new SizeTile(0, 0);
+        public static SizeTile SizeBigTile
+        {
+            get
+            {
+                // Check if we already initialized this and if not let's do it
+                if(_sizeBigTile.Width == 0)
+                {
+                    BitmapSource tile = GetCorrectTileForDrawing(0, true, EDayTime.eMorning, true);
+                    _sizeBigTile.Height = tile.PixelHeight;
+                    _sizeBigTile.Width = tile.PixelWidth;
+                }
+
+                return _sizeBigTile;
+            }
+        }
+        private static SizeTile _sizeSmallTile = new SizeTile(0, 0);
+        public static SizeTile SizeSmallTile
+        {
+            get
+            {
+                // Check if we already initialized this and if not let's do it
+                if (_sizeSmallTile.Width == 0)
+                {
+                    BitmapSource tile = GetCorrectTileForDrawing(0, false, EDayTime.eMorning, true);
+                    _sizeSmallTile.Height = tile.PixelHeight;
+                    _sizeSmallTile.Width = tile.PixelWidth;
+                }
+
+                return _sizeSmallTile;
+            }
+        }
+
         private static Dictionary<int, HextypesImages> _dictHextypesBigImages = new Dictionary<int, HextypesImages>();
         public static Dictionary<int, HextypesImages> DictHextypesBigImages
         {
@@ -58,7 +96,7 @@ namespace NeoScavHelperTool.Viewer.Hextypes
         }
 
         private readonly BackgroundWorker _loadItemsWorker = new BackgroundWorker();
-        private readonly BackgroundWorker _updateTileWorker = new BackgroundWorker();
+        private readonly BackgroundWorker _changeGUITypeWorker = new BackgroundWorker();
 
         private List<ViewerDataGridItem> _dataGridItems = new List<ViewerDataGridItem>();
         private Grid _gridCanvasBigGUI = new Grid();
@@ -68,8 +106,8 @@ namespace NeoScavHelperTool.Viewer.Hextypes
         private bool _alreadyLoaded = false;
         private object[] _arrayDBValues;
 
-        private Image _tileBigImage = null;
-        private Image _tileSmallImage = null;
+        private Image _tileBigImage = new Image();
+        private Image _tileSmallImage = new Image();
         static private EDayTime _eDayTime = EDayTime.eMorning; //static since I want to save the current value between items
         static private bool _bIsHighlighted = true; //static since I want to save the current value between items
 
@@ -80,16 +118,14 @@ namespace NeoScavHelperTool.Viewer.Hextypes
             _loadItemsWorker.DoWork += LoadItemsWoker_DoWork;
             _loadItemsWorker.RunWorkerCompleted += LoadItemsWoker_RunWorkerCompleted;
 
-            _updateTileWorker.DoWork += UpdateTile_DoWork;
-            _updateTileWorker.RunWorkerCompleted += UpdateTile_RunWorkerCompleted;
+            _changeGUITypeWorker.DoWork += ChangeGUIType_DoWork;
+            _changeGUITypeWorker.RunWorkerCompleted += ChangeGUIType_RunWorkerCompleted;
         }
 
         private void HextypesControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.I != null && _alreadyLoaded == false)
             {
-                _alreadyLoaded = true;
-
                 MainWindow.I.StartWaitSpinner();
 
                 //Configure the grid
@@ -178,8 +214,9 @@ namespace NeoScavHelperTool.Viewer.Hextypes
             return buttonsGrid;
         }
 
-        private void CreateHextypesCanvas(Grid gridCanvas, Dictionary<int, HextypesImages> dictImages)
+        private void CreateHextypesCanvas()
         {
+            Grid gridCanvas = _isOnBigGUI ? _gridCanvasBigGUI : _gridCanvasSmallGUI;
             // Create the buttons
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -191,23 +228,17 @@ namespace NeoScavHelperTool.Viewer.Hextypes
                 gridCanvas.RowDefinitions.Add(buttonsRow);
             }));
 
-            // Check if we already have this hextype images created and if not create them
+            // Fetch the tile
             int nHextypesID = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
-            if (dictImages.ContainsKey(nHextypesID - 1) == false)
-                dictImages.Add(nHextypesID - 1, new HextypesImages(nHextypesID, _isOnBigGUI));
+            BitmapSource tile = GetCorrectTileForDrawing(nHextypesID - 1, _isOnBigGUI, _eDayTime, _bIsHighlighted);
+            Image image = _isOnBigGUI ? _tileBigImage : _tileSmallImage;
 
             Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Image image = new Image();                
-                SetCorrectTileOnImage(nHextypesID, image, dictImages);
+            {                
+                SetImageSourceWithTile(image, tile);
                 gridCanvas.Children.Add(image);
                 gridCanvas.RowDefinitions.Add(new RowDefinition());
                 Grid.SetRow(image, 1);
-                // Since I could not figure it out on how to use image as a by ref parameter this will do the trick
-                if (_isOnBigGUI)
-                    _tileBigImage = image;
-                else
-                    _tileSmallImage = image;
 
                 ContainerHextypesCanvas.Content = gridCanvas;
             }));
@@ -246,11 +277,8 @@ namespace NeoScavHelperTool.Viewer.Hextypes
 
             //2nd - If we need to create let's do it
             if (bNeedToCreateCanvas)
-            {                
-                if (_isOnBigGUI)
-                    CreateHextypesCanvas(_gridCanvasBigGUI, _dictHextypesBigImages);
-                else
-                    CreateHextypesCanvas(_gridCanvasSmallGUI, _dictHextypesSmallImages);
+            {
+                CreateHextypesCanvas();
             }            
         }
 
@@ -266,11 +294,12 @@ namespace NeoScavHelperTool.Viewer.Hextypes
                 _dataGridItems.Add(new ViewerDataGridItem(DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eHextypes)[_dataGridItems.Count], columnValue));
             }
             //2nd - Display the information on canvas
-            CreateUpdateHextypesCanvas();
+            CreateUpdateHextypesCanvas();       
         }
 
         private void LoadItemsWoker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            _alreadyLoaded = true;
             // Update the GUI
             HextypesTitle.Content = _arrayDBValues[(int)EDBHextypesTableColumns.eStrName];
             DataGridHextypes.ItemsSource = _dataGridItems;
@@ -281,42 +310,61 @@ namespace NeoScavHelperTool.Viewer.Hextypes
 
         private void SetImageSourceWithTile(Image image, BitmapSource tile)
         {
-            image.Source = tile;
-            image.Width = tile.Width;
-            image.Height = tile.Height;
-        }
-
-        private void SetCorrectTileOnImage(int hextypes_id, Image image, Dictionary<int, HextypesImages> dictImages)
-        {
             if (image != null)
             {
-                switch (_eDayTime)
-                {
-                    case EDayTime.eMorning:
-                        if (_bIsHighlighted)
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerMorningHighlighted);
-                        else
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerMorning);
-                        break;
-                    case EDayTime.eDay:
-                        if (_bIsHighlighted)
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerDayHighlighted);
-                        else
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerDay);
-                        break;
-                    case EDayTime.eDusk:
-                        if (_bIsHighlighted)
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerDuskHighlighted);
-                        else
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerDusk);
-                        break;
-                    case EDayTime.eNight:
-                        if (_bIsHighlighted)
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerNightHighlighted);
-                        else
-                            SetImageSourceWithTile(image, dictImages[hextypes_id - 1].SummerNight);
-                        break;
-                }
+                image.Source = tile;
+                image.Width = tile.Width;
+                image.Height = tile.Height;
+            }
+        }
+
+        public static BitmapSource GetCorrectTileForDrawing(int hextypes_index, bool big_gui, EDayTime day_time, bool is_highlighted)
+        {
+            Dictionary<int, HextypesImages> dictImages = big_gui ? _dictHextypesBigImages : _dictHextypesSmallImages;
+            // Check if we already have this hextype images created and if not create them        
+            if (dictImages.ContainsKey(hextypes_index) == false)
+                dictImages.Add(hextypes_index, new HextypesImages(hextypes_index + 1, big_gui));
+
+            BitmapSource sourceReturn = null;
+            switch (day_time)
+            {
+                case EDayTime.eMorning:
+                    if (is_highlighted)
+                        sourceReturn = dictImages[hextypes_index].SummerMorningHighlighted;
+                    else
+                        sourceReturn = dictImages[hextypes_index].SummerMorning;
+                    break;
+                case EDayTime.eDay:
+                    if (is_highlighted)
+                        sourceReturn = dictImages[hextypes_index].SummerDayHighlighted;
+                    else
+                        sourceReturn = dictImages[hextypes_index].SummerDay;
+                    break;
+                case EDayTime.eDusk:
+                    if (is_highlighted)
+                        sourceReturn = dictImages[hextypes_index].SummerDuskHighlighted;
+                    else
+                        sourceReturn = dictImages[hextypes_index].SummerDusk;
+                    break;
+                case EDayTime.eNight:
+                    if (is_highlighted)
+                        sourceReturn = dictImages[hextypes_index].SummerNightHighlighted;
+                    else
+                        sourceReturn = dictImages[hextypes_index].SummerNight;
+                    break;
+            }
+
+            return sourceReturn;
+        }
+
+        private void RefreshGUIAfterButtonPress()
+        {
+            if (_alreadyLoaded)
+            {                
+                int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
+                SetImageSourceWithTile(_isOnBigGUI ? _tileBigImage : _tileSmallImage, GetCorrectTileForDrawing(nHextypesId - 1, _isOnBigGUI, _eDayTime, _bIsHighlighted));
+                //Restore focus to tree view so user can navigate with keyboard
+                Viewer.I.RestoreFocusSelectedItem();
             }
         }
 
@@ -340,56 +388,38 @@ namespace NeoScavHelperTool.Viewer.Hextypes
                     break;
             }
             //Refresh the GUI to show reflect the change
-            int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
-            if (_isOnBigGUI)
-                SetCorrectTileOnImage(nHextypesId, _tileBigImage, _dictHextypesBigImages);
-            else
-                SetCorrectTileOnImage(nHextypesId, _tileSmallImage, _dictHextypesSmallImages);
-            //Restore focus to tree view so user can navigate with keyboard
-            Viewer.I.RestoreFocusSelectedItem();
+            RefreshGUIAfterButtonPress();
         }
 
         private void HighlightedButton_Checked(object sender, RoutedEventArgs e)
         {
             _bIsHighlighted = true;
             //Refresh the GUI to show reflect the change
-            int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
-            if (_isOnBigGUI)
-                SetCorrectTileOnImage(nHextypesId, _tileBigImage, _dictHextypesBigImages);
-            else
-                SetCorrectTileOnImage(nHextypesId, _tileSmallImage, _dictHextypesSmallImages);
-            //Restore focus to tree view so user can navigate with keyboard
-            Viewer.I.RestoreFocusSelectedItem();
+            RefreshGUIAfterButtonPress();
         }
 
         private void HighlightedButton_Unchecked(object sender, RoutedEventArgs e)
         {
             _bIsHighlighted = false;
             //Refresh the GUI to show reflect the change
-            int nHextypesId = Convert.ToInt32(_arrayDBValues[(int)EDBHextypesTableColumns.eId]);
-            if (_isOnBigGUI)
-                SetCorrectTileOnImage(nHextypesId, _tileBigImage, _dictHextypesBigImages);
-            else
-                SetCorrectTileOnImage(nHextypesId, _tileSmallImage, _dictHextypesSmallImages);
-            //Restore focus to tree view so user can navigate with keyboard
-            Viewer.I.RestoreFocusSelectedItem();
+            RefreshGUIAfterButtonPress();
         }
 
-        private void UpdateTile_DoWork(object sender, DoWorkEventArgs e)
+        private void ChangeGUIType_DoWork(object sender, DoWorkEventArgs e)
         {
             CreateUpdateHextypesCanvas();
         }
 
-        private void UpdateTile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void ChangeGUIType_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //Stop the loading spinner
             MainWindow.I.StopWaitSpinner();
         }
 
-        public void ChangeGUIType(bool big_gui)
+        public void ChangeGUIType()
         {
             MainWindow.I.StartWaitSpinner();
-            _updateTileWorker.RunWorkerAsync();
+            _changeGUITypeWorker.RunWorkerAsync();
         }
     }
 }

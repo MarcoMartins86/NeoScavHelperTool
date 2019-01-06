@@ -1,0 +1,90 @@
+﻿<UserControl x:Name="ItemTypesControl" x:Class="NeoScavHelperTool.Viewer.ItemTypes.ItemTypes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NeoScavHelperTool.Viewer.ItemTypes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="ItemTypesControl_Loaded">
+    <UserControl.Resources>
+        <local:DataGridItemTypesMaxColumnsWidthConverter x:Key="DataGridItemTypesMaxColumnsWidthConverter"/>
+        <Style TargetType="{x:Type TextBlock}" x:Key="WrapText">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer x:Name="ItemTypesMainGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="Hidden">
+        <StackPanel>
+            <Label Name="ItemTypesTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" IsEnabled="False" FontWeight="Bold"/>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ItemTypesContainerCanvas, Mode=OneWay}">                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton Name="RadioButtonEmpty" Content="Item Empty" GroupName="ItemFullness" HorizontalAlignment="Center" Checked="ItemFullnessRadioButton_Checked"/>
+                <RadioButton Name="RadioButtonFull" Content="Item Full" GroupName="ItemFullness" HorizontalAlignment="Center" Grid.Column="1" Checked="ItemFullnessRadioButton_Checked"/>
+            </Grid>
+            <Canvas x:Name="ItemTypesContainerCanvas" HorizontalAlignment="Center" VerticalAlignment="Top" ClipToBounds="True">
+                <Image x:Name="InventoryCellsImage"  Canvas.Left="5"/>
+                <Image x:Name="InventoryItemImage" Canvas.Left="5" Panel.ZIndex="1"/>
+                <Image x:Name="NeckImage"/>
+                <Image x:Name="NeckItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="HandRImage"/>
+                <Image x:Name="HandRItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="WristRImage"/>
+                <Image x:Name="WristRItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="ShoulderRImage"/>
+                <Image x:Name="ShoulderRItemImage" Panel.ZIndex="-1"/>
+                <Image x:Name="ShoulderRItemInventoryCellsImage" Panel.ZIndex="-1"/>
+                <Image x:Name="HeadImage"/>
+                <Image x:Name="HeadItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="TorsoImage"/>
+                <Image x:Name="TorsoItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="TorsoItemInventoryCellsImage" Panel.ZIndex="-1"/>
+                <Image x:Name="BeltImage"/>
+                <Image x:Name="BeltItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="LegsImage"/>
+                <Image x:Name="LegsItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="LegsItemInventoryCellsImage"/>
+                <Image x:Name="FootRImage"/>
+                <Image x:Name="FootRItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="ShoulderLImage"/>
+                <Image x:Name="ShoulderLItemImage" Panel.ZIndex="-2"/>
+                <Image x:Name="ShoulderLItemInventoryCellsImage" Panel.ZIndex="2"/>
+                <Image x:Name="WristLImage"/>
+                <Image x:Name="WristLItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="HandLImage"/>
+                <Image x:Name="HandLItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="FootLImage"/>
+                <Image x:Name="FootLItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="BackpackImage"/>
+                <Image x:Name="BackpackItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="BackpackItemInventoryCellsImage"/>
+                <Image x:Name="HoldRImage"/>
+                <Image x:Name="HoldRItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="HoldRItemInventoryCellsImage"/>
+                <Image x:Name="HoldLImage"/>
+                <Image x:Name="HoldLItemImage" Panel.ZIndex="1"/>
+                <Image x:Name="HoldLItemInventoryCellsImage"/>
+            </Canvas>
+            <DataGrid x:Name="DataGridItemTypes" GridLinesVisibility="All" Focusable="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"  HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="Single" HeadersVisibility="Column" SelectionUnit="Cell" PreviewMouseWheel="DataGridItemTypes_PreviewMouseWheel" AutoGeneratingColumn="DataGridItemTypes_AutoGeneratingColumn" HorizontalScrollBarVisibility="Disabled" >
+                <DataGrid.MaxColumnWidth>
+                    <MultiBinding Converter="{StaticResource DataGridItemTypesMaxColumnsWidthConverter}">
+                        <Binding Mode="OneWay" Path="ViewportWidth" ElementName="ItemTypesMainGrid"/>
+                        <Binding Mode="OneWay" Path="Columns[0].ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </DataGrid.MaxColumnWidth>
+                <DataGrid.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

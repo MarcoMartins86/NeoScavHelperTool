@@ -47,8 +47,8 @@ namespace NeoScavHelperTool
             var dpiXProperty = typeof(SystemParameters).GetProperty("DpiX", BindingFlags.NonPublic | BindingFlags.Static);
             var dpiYProperty = typeof(SystemParameters).GetProperty("Dpi", BindingFlags.NonPublic | BindingFlags.Static);
 
-            _dpiX = (int)dpiXProperty.GetValue(null, null);
-            _dpiY = (int)dpiYProperty.GetValue(null, null);
+            _dpiX = 96;// (int)dpiXProperty.GetValue(null, null);
+            _dpiY = 96;//(int)dpiYProperty.GetValue(null, null);
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -152,34 +152,34 @@ namespace NeoScavHelperTool
 
         }        
 
-        public static void GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref string str_item, ref string str_table, string str_table_sufix)
-        {
-            string[] strItemSplitted = str_item.Split(':');
-            if (strItemSplitted.Length == 1) //normal case
-            {
-                str_table = str_table.Split('_')[0] + "_" + str_table_sufix;
-            }
-            else //case when image is referenced from another mod like 0:imagename.png
-            {
-                str_item = strItemSplitted[1];
-                str_table = strItemSplitted[0] + "_" + str_table_sufix;
-            }
-        }
+        //public static void GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref string str_item, ref string str_table, string str_table_sufix)
+        //{
+        //    string[] strItemSplitted = str_item.Split(':');
+        //    if (strItemSplitted.Length == 1) //normal case
+        //    {
+        //        str_table = str_table.Split('_')[0] + "_" + str_table_sufix;
+        //    }
+        //    else //case when image is referenced from another mod like 0:imagename.png
+        //    {
+        //        str_item = strItemSplitted[1];
+        //        str_table = strItemSplitted[0] + "_" + str_table_sufix;
+        //    }
+        //}
         
-        public static BitmapImage GetItemDisplayImage(string item_id, string item_id_origin_table, bool big_image)
-        {
-            //Find the correct DB to fetch the information
-            App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref item_id, ref item_id_origin_table, "itemtypes");
-            string[] itemIDSplitted = item_id.Split('.');
-            //Ask for item imageList
-            string strImageList = App.DB.GetColumnValueFromMemoryTableMultipleAndConditions(new List<string> { "nGroupID", "nSubgroupID" },
-            itemIDSplitted.ToList(), item_id_origin_table, "vImageList");
-            //Finally fetch the display image
-            string strImageName = strImageList.Split(',')[0];
-            string strImageTable = item_id_origin_table;
-            App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref strImageName, ref strImageTable, "images");
-            strImageName = Path.GetFileNameWithoutExtension(strImageName);
-            return new BitmapImage(new Uri(App.DB.GetImagePathFromMemory(strImageName, strImageTable, big_image)));
-        }
+        //public static BitmapImage GetItemDisplayImage(string item_id, string item_id_origin_table, bool big_image)
+        //{
+        //    //Find the correct DB to fetch the information
+        //    App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref item_id, ref item_id_origin_table, "itemtypes");
+        //    string[] itemIDSplitted = item_id.Split('.');
+        //    //Ask for item imageList
+        //    string strImageList = App.DB.GetColumnValueFromMemoryTableMultipleAndConditions(new List<string> { "nGroupID", "nSubgroupID" },
+        //    itemIDSplitted.ToList(), item_id_origin_table, "vImageList");
+        //    //Finally fetch the display image
+        //    string strImageName = strImageList.Split(',')[0];
+        //    string strImageTable = item_id_origin_table;
+        //    App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref strImageName, ref strImageTable, "images");
+        //    strImageName = Path.GetFileNameWithoutExtension(strImageName);
+        //    return new BitmapImage(new Uri(App.DB.GetImagePathFromMemory(strImageName, strImageTable, big_image)));
+        //}
     }
 }

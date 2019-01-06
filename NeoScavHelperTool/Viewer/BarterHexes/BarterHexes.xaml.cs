@@ -67,7 +67,7 @@ namespace NeoScavHelperTool.Viewer.BarterHexes
             if (nBarterHexColumn <= sizeMap.Columns && nBarterHexRow <= sizeMap.Rows)
             {
                 //HexHilight image will mark the spot
-                mark = Images.Images.GetImageToDraw("HexHilight", "0_images", _isOnBigGUI);
+                mark = Images.Images.GetImageToDraw("HexHilight", "0_images", _isOnBigGUI, false);
 
                 markPosition = Maps.Maps.GetGameMapImagePixelCoordinate(nBarterHexColumn, nBarterHexRow, _isOnBigGUI);
             }

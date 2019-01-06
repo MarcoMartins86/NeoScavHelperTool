@@ -24,12 +24,12 @@ namespace NeoScavHelperTool
 
         public ComboBoxEquipmentItem(string name, string sprite, string table, int body_part)
         {
-            _sprite = sprite;
-            _tableName = table;
-            App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref _sprite,ref _tableName, "images");
-            _name = name;
-            _sprite = Path.GetFileNameWithoutExtension(sprite);
-            _bodyPart = body_part;
+            //_sprite = sprite;
+            //_tableName = table;
+            //App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref _sprite,ref _tableName, "images");
+            //_name = name;
+            //_sprite = Path.GetFileNameWithoutExtension(sprite);
+            //_bodyPart = body_part;
         }
 
         public override string ToString()

@@ -180,6 +180,9 @@ namespace NeoScavHelperTool.Viewer
                 case EDBTable.eMaps:
                     ViewerDataContainer.Content = new Maps.Maps();
                     break;
+                case EDBTable.eItemTypes:
+                    ViewerDataContainer.Content = new ItemTypes.ItemTypes();
+                    break;
             }
         }
 

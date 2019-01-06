@@ -29,6 +29,37 @@ namespace NeoScavHelperTool.Viewer.Images
         private bool _alreadyLoaded = false;
         private object[] _arrayDBValues;
 
+        private static BitmapSource _GUICellBigImage = null;
+        public static BitmapSource GUICellBigImage
+        {
+            get
+            {
+                if(_GUICellBigImage == null)
+                {
+                    _GUICellBigImage = new BitmapImage(new Uri(GetImagePathFromMemory("GUICell", "0_images", true)));
+                    _GUICellBigImage.Freeze();
+                }
+
+                return _GUICellBigImage;
+            }
+        }
+
+        private static BitmapSource _GUICellSmallImage = null;
+        public static BitmapSource GUICellSmallImage
+        {
+            get
+            {
+                if (_GUICellSmallImage == null)
+                {
+                    _GUICellSmallImage = new BitmapImage(new Uri(GetImagePathFromMemory("GUICell", "0_images", false)));
+                    _GUICellSmallImage.Freeze();
+                }
+
+                return _GUICellSmallImage;
+            }
+        }
+
+
         public Images()
         {
             InitializeComponent();
@@ -142,11 +173,15 @@ namespace NeoScavHelperTool.Viewer.Images
             return App.DB.GetImagePathFromMemory(str_name, str_table_name, big_gui);
         }
 
-        public static BitmapSource GetImageToDraw(string str_name, string str_table_name, bool big_gui)
+        public static BitmapSource GetImageToDraw(string str_name, string str_table_name, bool big_gui, bool is_mirrored)
         {
-            string strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, big_gui);
+            string strImagePath = string.Empty;
             bool bNeedToUpscale = false;
-            if (string.IsNullOrEmpty(strImagePath) && big_gui)
+            try
+            {
+                strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, big_gui);
+            }
+            catch
             {
                 // if big image doesn't exist let's use the small one and upscale it
                 strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, false);
@@ -156,9 +191,14 @@ namespace NeoScavHelperTool.Viewer.Images
             BitmapImage image = new BitmapImage(new Uri(strImagePath));
             BitmapSource sourceReturn = ConvertImageDpi(image, App.I.DpiX, App.I.DpiY);
 
-            if(bNeedToUpscale)
+            if(bNeedToUpscale && !is_mirrored)
+                sourceReturn = new TransformedBitmap(sourceReturn, new ScaleTransform(-2, 2, 0, 0));
+            else if(bNeedToUpscale)
                 sourceReturn = new TransformedBitmap(sourceReturn, new ScaleTransform(2, 2));
+            else if(is_mirrored)
+                sourceReturn = new TransformedBitmap(sourceReturn, new ScaleTransform(-1, 1, 0, 0));
 
+            sourceReturn.Freeze();
             return sourceReturn;
         }
 

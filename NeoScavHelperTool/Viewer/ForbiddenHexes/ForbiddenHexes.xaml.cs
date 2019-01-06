@@ -67,7 +67,7 @@ namespace NeoScavHelperTool.Viewer.ForbiddenHexes
             if (nForbiddenHexColumn <= sizeMap.Columns && nForbiddenHexRow <= sizeMap.Rows)
             {
                 //HexHilightInvalid image will mark the spot
-                mark = Images.Images.GetImageToDraw("HexHilightInvalid", "0_images", _isOnBigGUI);
+                mark = Images.Images.GetImageToDraw("HexHilightInvalid", "0_images", _isOnBigGUI, false);
 
                 markPosition = Maps.Maps.GetGameMapImagePixelCoordinate(nForbiddenHexColumn, nForbiddenHexRow, _isOnBigGUI);
             }

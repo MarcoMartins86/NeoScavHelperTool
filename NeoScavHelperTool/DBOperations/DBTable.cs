@@ -291,6 +291,47 @@ namespace NeoScavHelperTool
         eStrDef,
         eTotal
     }
+    public enum EDBItemTypesTableColumns
+    {
+        eId,
+        eNGroupID,
+        eNSubgroupID,
+        eStrName,
+        eStrDesc,
+        eStrDescAlt,
+        eNCondID,
+        eVImageList,
+        eVSpriteList,
+        eVImageUsage,
+        eFWeight,
+        eFMonetaryValue,
+        eFMonetaryValueAlt,
+        eFDurability,
+        eFDegradePerHour,
+        eFEquipDegradePerHour,
+        eFDegradePerUse,
+        eVDegradeTreasureIDs,
+        eAEquipConditions,
+        eAPossessConditions,
+        eAUseConditions,
+        eACapacities,
+        eVEquipSlots,
+        eVUseSlots,
+        eBSocketLocked,
+        eVProperties,
+        eAContentIDs,
+        eNFormatID,
+        eNTreasureID,
+        eNComponentID,
+        eBMirrored,
+        eNSlotDepth,
+        eStrChargeProfiles,
+        eAAttackModes,
+        eNStackLimit,
+        eASwitchIDs,
+        eASounds,
+        eTotal
+    }
 
     namespace DBTableAttributes
     {

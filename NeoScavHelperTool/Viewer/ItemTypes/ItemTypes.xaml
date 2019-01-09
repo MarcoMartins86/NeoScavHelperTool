@@ -14,8 +14,10 @@
     </UserControl.Resources>
     <ScrollViewer x:Name="ItemTypesMainGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="Hidden">
         <StackPanel>
-            <Label Name="ItemTypesTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" IsEnabled="False" FontWeight="Bold"/>
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ItemTypesContainerCanvas, Mode=OneWay}">
+            <Label IsEnabled="False" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock Name="ItemTypesTitle" FontSize="20" FontWeight="Bold" TextWrapping="WrapWithOverflow" TextAlignment="Center"/>
+            </Label>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ItemTypesMainGrid, Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>

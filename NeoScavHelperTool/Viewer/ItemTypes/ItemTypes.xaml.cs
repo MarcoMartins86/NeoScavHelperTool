@@ -702,7 +702,7 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
             _alreadyLoaded = true;
             // Update the GUI
             string strDesc = string.IsNullOrEmpty(_arrayDBValues[(int)EDBItemTypesTableColumns.eStrDescAlt].ToString()) ? _arrayDBValues[(int)EDBItemTypesTableColumns.eStrDesc].ToString() : _arrayDBValues[(int)EDBItemTypesTableColumns.eStrDescAlt].ToString();
-            ItemTypesTitle.Content = string.Format("{0}: {1}", _arrayDBValues[(int)EDBItemTypesTableColumns.eStrName], strDesc);
+            ItemTypesTitle.Text = string.Format("{0}: {1}", _arrayDBValues[(int)EDBItemTypesTableColumns.eStrName], strDesc); ;
             DataGridItemTypes.ItemsSource = _dataGridItems;
             ItemTypesMainGrid.Visibility = Visibility.Visible;
             //Stop the loading spinner

@@ -180,13 +180,19 @@ namespace NeoScavHelperTool.Viewer.Images
             try
             {
                 strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, big_gui);
+                if (string.IsNullOrEmpty(strImagePath) && big_gui)
+                {
+                    // if big image doesn't exist let's use the small one and upscale it
+                    strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, false);
+                    bNeedToUpscale = true;
+                }
             }
-            catch
+            catch //sometimes it gives an exception other times it returns string empty, :/ I should check this more carefully
             {
                 // if big image doesn't exist let's use the small one and upscale it
                 strImagePath = App.DB.GetImagePathFromMemory(str_name, str_table_name, false);
                 bNeedToUpscale = true;
-            }
+            }            
 
             BitmapImage image = new BitmapImage(new Uri(strImagePath));
             BitmapSource sourceReturn = ConvertImageDpi(image, App.I.DpiX, App.I.DpiY);

@@ -151,14 +151,24 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
                 if (b_use_empty_default)
                     strImage = image_list[Convert.ToInt32(image_usage[(int)(b_equiped ? EImageUsage.eEquiped : EImageUsage.eStored)])];
                 else
-                    strImage = image_list[Convert.ToInt32(equip_slots[1])];
+                {
+                    //it seems that indexes can also have Shoulder:0 and it is valid for some reason
+                    string[] strIndexSplit = equip_slots[1].Split(':');
+                    int index = Convert.ToInt32(strIndexSplit.Length > 1 ? strIndexSplit[1] : strIndexSplit[0]);
+                    strImage = image_list[index];
+                }
             }
             else
             {
                 if (b_use_full_default)
                     strImage = image_list[Convert.ToInt32(image_usage[(int)(b_equiped ? EImageUsage.eEquipedFull : EImageUsage.eStoredFull)])];
                 else
-                    strImage = image_list[Convert.ToInt32(equip_slots[2])];
+                {
+                    //it seems that indexes can also have Shoulder:0 and it is valid for some reason
+                    string[] strIndexSplit = equip_slots[2].Split(':');
+                    int index = Convert.ToInt32(strIndexSplit.Length > 1 ? strIndexSplit[1] : strIndexSplit[0]);
+                    strImage = image_list[index];
+                }
             }
 
             return GetItemImage(strImage, table, big_gui, is_mirrored);
@@ -266,12 +276,15 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
                     TorsoImage.Source = torso;
                     Canvas.SetLeft(TorsoImage, dBodyLeft);
                     Canvas.SetTop(TorsoImage, dBodyTop);
-                    double torsoItemInventoryCellTop = dBodyTop + 6 * dCellHeight;
+                    double torsoItemInventoryCellsTop = dBodyTop + 6 * dCellHeight;
                     Canvas.SetLeft(TorsoItemInventoryCellsImage, shoulderRItemInventoryCellsLeft);
-                    Canvas.SetTop(TorsoItemInventoryCellsImage, torsoItemInventoryCellTop);
+                    Canvas.SetTop(TorsoItemInventoryCellsImage, torsoItemInventoryCellsTop);
                     BeltImage.Source = belt;
                     Canvas.SetLeft(BeltImage, dBodyLeft);
                     Canvas.SetTop(BeltImage, dBodyTop);
+                    double beltItemInventoryCellsTop = dBodyTop + 17 * dCellHeight;
+                    Canvas.SetLeft(BeltItemInventoryCellsImage, shoulderRItemInventoryCellsLeft);
+                    Canvas.SetTop(BeltItemInventoryCellsImage, beltItemInventoryCellsTop);
                     LegsImage.Source = legs;
                     Canvas.SetLeft(LegsImage, dBodyLeft);
                     Canvas.SetTop(LegsImage, dBodyTop);
@@ -376,6 +389,7 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
             BitmapSource handLItem = null;
             BitmapSource handRItem = null;
             BitmapSource beltItem = null;
+            BitmapSource beltItemInventoryCells = null;
             
             //Check if this item can be equiped
             if (strEquipSlots.Length > 0 && string.IsNullOrEmpty(strEquipSlots[0]) == false)
@@ -435,6 +449,7 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
                                 break;
                             case EEquipSlots.eBelt:
                                 beltItem = GetEquipSlotsItemImages(strImageList, strImageUsage, strEquipSlotAndImages, bUseImageListEmptyDefault, bUseImageListFullDefault, true, _itemMode, strItemTable, _isOnBigGUI, false);
+                                beltItemInventoryCells = itemCapacityInventoryCells;
                                 break;
                             case EEquipSlots.eShoulderLeft:
                                 shoulderLItem = GetEquipSlotsItemImages(strImageList, strImageUsage, strEquipSlotAndImages, bUseImageListEmptyDefault, bUseImageListFullDefault, true, _itemMode, strItemTable, _isOnBigGUI, true);
@@ -591,6 +606,7 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
                 HandLItemImage.Source = handLItem;
                 HandRItemImage.Source = handRItem;
                 BeltItemImage.Source = beltItem;
+                BeltItemInventoryCellsImage.Source = beltItemInventoryCells;
                 //Let's position the controls only once
                 if (bNeedToPositionControls)
                 {
@@ -713,7 +729,7 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
             }
         }
 
-        private void DataGridItemTypes_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        private void Control_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (!e.Handled)
             {

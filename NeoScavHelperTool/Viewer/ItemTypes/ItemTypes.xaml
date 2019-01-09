@@ -15,7 +15,7 @@
     <ScrollViewer x:Name="ItemTypesMainGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Visibility="Hidden">
         <StackPanel>
             <Label Name="ItemTypesTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" IsEnabled="False" FontWeight="Bold"/>
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ItemTypesContainerCanvas, Mode=OneWay}">                
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=ItemTypesContainerCanvas, Mode=OneWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -23,50 +23,53 @@
                 <RadioButton Name="RadioButtonEmpty" Content="Item Empty" GroupName="ItemFullness" HorizontalAlignment="Center" Checked="ItemFullnessRadioButton_Checked"/>
                 <RadioButton Name="RadioButtonFull" Content="Item Full" GroupName="ItemFullness" HorizontalAlignment="Center" Grid.Column="1" Checked="ItemFullnessRadioButton_Checked"/>
             </Grid>
-            <Canvas x:Name="ItemTypesContainerCanvas" HorizontalAlignment="Center" VerticalAlignment="Top" ClipToBounds="True">
-                <Image x:Name="InventoryCellsImage"  Canvas.Left="5"/>
-                <Image x:Name="InventoryItemImage" Canvas.Left="5" Panel.ZIndex="1"/>
-                <Image x:Name="NeckImage"/>
-                <Image x:Name="NeckItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="HandRImage"/>
-                <Image x:Name="HandRItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="WristRImage"/>
-                <Image x:Name="WristRItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="ShoulderRImage"/>
-                <Image x:Name="ShoulderRItemImage" Panel.ZIndex="-1"/>
-                <Image x:Name="ShoulderRItemInventoryCellsImage" Panel.ZIndex="-1"/>
-                <Image x:Name="HeadImage"/>
-                <Image x:Name="HeadItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="TorsoImage"/>
-                <Image x:Name="TorsoItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="TorsoItemInventoryCellsImage" Panel.ZIndex="-1"/>
-                <Image x:Name="BeltImage"/>
-                <Image x:Name="BeltItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="LegsImage"/>
-                <Image x:Name="LegsItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="LegsItemInventoryCellsImage"/>
-                <Image x:Name="FootRImage"/>
-                <Image x:Name="FootRItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="ShoulderLImage"/>
-                <Image x:Name="ShoulderLItemImage" Panel.ZIndex="-2"/>
-                <Image x:Name="ShoulderLItemInventoryCellsImage" Panel.ZIndex="2"/>
-                <Image x:Name="WristLImage"/>
-                <Image x:Name="WristLItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="HandLImage"/>
-                <Image x:Name="HandLItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="FootLImage"/>
-                <Image x:Name="FootLItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="BackpackImage"/>
-                <Image x:Name="BackpackItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="BackpackItemInventoryCellsImage"/>
-                <Image x:Name="HoldRImage"/>
-                <Image x:Name="HoldRItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="HoldRItemInventoryCellsImage"/>
-                <Image x:Name="HoldLImage"/>
-                <Image x:Name="HoldLItemImage" Panel.ZIndex="1"/>
-                <Image x:Name="HoldLItemInventoryCellsImage"/>
-            </Canvas>
-            <DataGrid x:Name="DataGridItemTypes" GridLinesVisibility="All" Focusable="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"  HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="Single" HeadersVisibility="Column" SelectionUnit="Cell" PreviewMouseWheel="DataGridItemTypes_PreviewMouseWheel" AutoGeneratingColumn="DataGridItemTypes_AutoGeneratingColumn" HorizontalScrollBarVisibility="Disabled" >
+            <ScrollViewer HorizontalAlignment="Center" VerticalAlignment="Top" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" PreviewMouseWheel="Control_PreviewMouseWheel">
+                <Canvas x:Name="ItemTypesContainerCanvas" HorizontalAlignment="Center" VerticalAlignment="Top" ClipToBounds="True">
+                    <Image x:Name="InventoryCellsImage"  Canvas.Left="5"/>
+                    <Image x:Name="InventoryItemImage" Canvas.Left="5" Panel.ZIndex="1"/>
+                    <Image x:Name="NeckImage"/>
+                    <Image x:Name="NeckItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="HandRImage"/>
+                    <Image x:Name="HandRItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="WristRImage"/>
+                    <Image x:Name="WristRItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="ShoulderRImage"/>
+                    <Image x:Name="ShoulderRItemImage" Panel.ZIndex="-1"/>
+                    <Image x:Name="ShoulderRItemInventoryCellsImage" Panel.ZIndex="-1"/>
+                    <Image x:Name="HeadImage"/>
+                    <Image x:Name="HeadItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="TorsoImage"/>
+                    <Image x:Name="TorsoItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="TorsoItemInventoryCellsImage" Panel.ZIndex="-1"/>
+                    <Image x:Name="BeltImage"/>
+                    <Image x:Name="BeltItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="BeltItemInventoryCellsImage" Panel.ZIndex="-1"/>
+                    <Image x:Name="LegsImage"/>
+                    <Image x:Name="LegsItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="LegsItemInventoryCellsImage"/>
+                    <Image x:Name="FootRImage"/>
+                    <Image x:Name="FootRItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="ShoulderLImage"/>
+                    <Image x:Name="ShoulderLItemImage" Panel.ZIndex="-2"/>
+                    <Image x:Name="ShoulderLItemInventoryCellsImage" Panel.ZIndex="2"/>
+                    <Image x:Name="WristLImage"/>
+                    <Image x:Name="WristLItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="HandLImage"/>
+                    <Image x:Name="HandLItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="FootLImage"/>
+                    <Image x:Name="FootLItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="BackpackImage"/>
+                    <Image x:Name="BackpackItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="BackpackItemInventoryCellsImage"/>
+                    <Image x:Name="HoldRImage"/>
+                    <Image x:Name="HoldRItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="HoldRItemInventoryCellsImage"/>
+                    <Image x:Name="HoldLImage"/>
+                    <Image x:Name="HoldLItemImage" Panel.ZIndex="1"/>
+                    <Image x:Name="HoldLItemInventoryCellsImage"/>
+                </Canvas>
+            </ScrollViewer>
+            <DataGrid x:Name="DataGridItemTypes" GridLinesVisibility="All" Focusable="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"  HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="Single" HeadersVisibility="Column" SelectionUnit="Cell" PreviewMouseWheel="Control_PreviewMouseWheel" AutoGeneratingColumn="DataGridItemTypes_AutoGeneratingColumn" HorizontalScrollBarVisibility="Disabled" >
                 <DataGrid.MaxColumnWidth>
                     <MultiBinding Converter="{StaticResource DataGridItemTypesMaxColumnsWidthConverter}">
                         <Binding Mode="OneWay" Path="ViewportWidth" ElementName="ItemTypesMainGrid"/>

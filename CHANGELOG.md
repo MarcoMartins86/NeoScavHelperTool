@@ -1,5 +1,9 @@
 # Changelog
 
+## 2019-01-09
+### Added
+- Beta basic info on itemtypes and display
+
 ## 2019-01-02
 ### Added
 - Basic info on barterhexes and display

@@ -9,6 +9,7 @@ It will need to have valid XML files on all mods or else an exception will be th
 - It will display hextypes
 - It will display images
 - It will display maps
+- It will somewhat display itemtypes
 
 ### Bellow is a list with XML fixes I had to make on some mods:
 + DevKit\BBCAddOn

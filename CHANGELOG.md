@@ -1,5 +1,9 @@
 # Changelog
 
+## 2019-01-14
+### Added
+- Basic info on treasuretable and display
+
 ## 2019-01-09
 ### Added
 - Beta basic info on itemtypes and display

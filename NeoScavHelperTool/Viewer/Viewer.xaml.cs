@@ -177,11 +177,14 @@ namespace NeoScavHelperTool.Viewer
                 case EDBTable.eImages:
                     ViewerDataContainer.Content = new Images.Images();
                     break;
+                case EDBTable.eItemTypes:
+                    ViewerDataContainer.Content = new ItemTypes.ItemTypes();
+                    break;
                 case EDBTable.eMaps:
                     ViewerDataContainer.Content = new Maps.Maps();
                     break;
-                case EDBTable.eItemTypes:
-                    ViewerDataContainer.Content = new ItemTypes.ItemTypes();
+                case EDBTable.eTreasureTable:
+                    ViewerDataContainer.Content = new TreasureTable.TreasureTable();
                     break;
             }
         }

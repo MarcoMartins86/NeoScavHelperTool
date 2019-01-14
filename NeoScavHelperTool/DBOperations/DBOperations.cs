@@ -618,11 +618,20 @@ namespace NeoScavHelperTool
         public string GetColumnValueFromMemoryTableMultipleAndConditions(List<string> list_column_search, List<string> list_column_value_search,
             string str_table_name, string str_column_value_retrieve)
         {
-            SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
-            command.CommandText = string.Format(_sqlCommandSelectColumnFromTableWhereMultipleColumnEqualValue, str_column_value_retrieve, str_table_name);
-            command.AddMultipleAndConditions("multiple", list_column_search, list_column_value_search);
+            string strColumnValue = string.Empty;
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(_dbMemConnection);
+                command.CommandText = string.Format(_sqlCommandSelectColumnFromTableWhereMultipleColumnEqualValue, str_column_value_retrieve, str_table_name);
+                command.AddMultipleAndConditions("multiple", list_column_search, list_column_value_search);
+                strColumnValue = command.ExecuteScalar().ToString();
+            }
+            catch (Exception)
+            {
+                //TODO
+            }
 
-            return command.ExecuteScalar().ToString();
+            return strColumnValue;
         }
 
         public string GetColumnValueFromMemoryTable(string str_column_search, string str_column_value_search,

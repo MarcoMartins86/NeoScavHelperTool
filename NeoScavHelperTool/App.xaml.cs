@@ -166,20 +166,6 @@ namespace NeoScavHelperTool
         //    }
         //}
         
-        //public static BitmapImage GetItemDisplayImage(string item_id, string item_id_origin_table, bool big_image)
-        //{
-        //    //Find the correct DB to fetch the information
-        //    App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref item_id, ref item_id_origin_table, "itemtypes");
-        //    string[] itemIDSplitted = item_id.Split('.');
-        //    //Ask for item imageList
-        //    string strImageList = App.DB.GetColumnValueFromMemoryTableMultipleAndConditions(new List<string> { "nGroupID", "nSubgroupID" },
-        //    itemIDSplitted.ToList(), item_id_origin_table, "vImageList");
-        //    //Finally fetch the display image
-        //    string strImageName = strImageList.Split(',')[0];
-        //    string strImageTable = item_id_origin_table;
-        //    App.GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref strImageName, ref strImageTable, "images");
-        //    strImageName = Path.GetFileNameWithoutExtension(strImageName);
-        //    return new BitmapImage(new Uri(App.DB.GetImagePathFromMemory(strImageName, strImageTable, big_image)));
-        //}
+        
     }
 }

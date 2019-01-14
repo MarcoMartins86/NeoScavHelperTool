@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NeoScavHelperTool.Viewer.ItemTypes"
+             xmlns:viewer="clr-namespace:NeoScavHelperTool.Viewer"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="ItemTypesControl_Loaded">
     <UserControl.Resources>
-        <local:DataGridItemTypesMaxColumnsWidthConverter x:Key="DataGridItemTypesMaxColumnsWidthConverter"/>
+        <viewer:DataGridMaxColumnsWidthConverter x:Key="DataGridMaxColumnsWidthConverter"/>
         <Style TargetType="{x:Type TextBlock}" x:Key="WrapText">
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
@@ -73,7 +74,7 @@
             </ScrollViewer>
             <DataGrid x:Name="DataGridItemTypes" GridLinesVisibility="All" Focusable="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False"  HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="Single" HeadersVisibility="Column" SelectionUnit="Cell" PreviewMouseWheel="Control_PreviewMouseWheel" AutoGeneratingColumn="DataGridItemTypes_AutoGeneratingColumn" HorizontalScrollBarVisibility="Disabled" >
                 <DataGrid.MaxColumnWidth>
-                    <MultiBinding Converter="{StaticResource DataGridItemTypesMaxColumnsWidthConverter}">
+                    <MultiBinding Converter="{StaticResource DataGridMaxColumnsWidthConverter}">
                         <Binding Mode="OneWay" Path="ViewportWidth" ElementName="ItemTypesMainGrid"/>
                         <Binding Mode="OneWay" Path="Columns[0].ActualWidth" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace NeoScavHelperTool.Viewer.ItemTypes
+namespace NeoScavHelperTool.Viewer
 {
-    class DataGridItemTypesMaxColumnsWidthConverter : IMultiValueConverter
+    class DataGridMaxColumnsWidthConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

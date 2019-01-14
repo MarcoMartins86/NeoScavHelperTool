@@ -236,7 +236,7 @@ namespace NeoScavHelperTool
             TreeViewDecriptiveColumnsPositionsAttribute(new int[] { 0, 1 }),
             PrimaryKeyName("id")
             ]
-        eTreasuretable,                
+        eTreasureTable,                
         eTotal // this must be the last element always!!!!!!!
     }
 
@@ -284,13 +284,6 @@ namespace NeoScavHelperTool
         eBig,
         eTotal
     }
-    public enum EDBMapsTableColumns
-    {
-        eId,
-        eStrName,
-        eStrDef,
-        eTotal
-    }
     public enum EDBItemTypesTableColumns
     {
         eId,
@@ -332,7 +325,24 @@ namespace NeoScavHelperTool
         eASounds,
         eTotal
     }
-
+    public enum EDBMapsTableColumns
+    {
+        eId,
+        eStrName,
+        eStrDef,
+        eTotal
+    }
+    public enum EDBTreasureTableColumns
+    {
+        eId,
+        eStrName,
+        eATreasures,
+        eBNested,
+        eBSuppress,
+        eBIdentify,
+        eTotal
+    }
+    
     namespace DBTableAttributes
     {
         #region Table Attributes

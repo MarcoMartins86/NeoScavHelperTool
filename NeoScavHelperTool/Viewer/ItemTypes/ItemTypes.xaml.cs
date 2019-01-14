@@ -92,6 +92,30 @@ namespace NeoScavHelperTool.Viewer.ItemTypes
             }
         }
 
+        public static BitmapSource GetItemDisplayImage(string group_id, string subgroup_id, string table, bool big_gui)
+        {
+            //Ask for item imageList
+            string[] columnsName = DBTableAttributtesFetcher.GetColumnsNames(EDBTable.eItemTypes);
+            string strGroupIDColumn = columnsName[(int)EDBItemTypesTableColumns.eNGroupID];
+            string strSubgroupIDColumn = columnsName[(int)EDBItemTypesTableColumns.eNSubgroupID];
+            string strVImageListColumn = columnsName[(int)EDBItemTypesTableColumns.eVImageList];
+            string strVImageUsage = columnsName[(int)EDBItemTypesTableColumns.eVImageUsage];
+
+            List<object> listDBValues = App.DB.GetColumnsValuesFromMemoryTableMultipleAndConditions(new List<string> { strGroupIDColumn, strSubgroupIDColumn }, new List<string> { group_id, subgroup_id }, table, new List<string> { strVImageUsage, strVImageListColumn });
+            if (listDBValues != null && listDBValues.Count == 2)
+            {
+                //Finally fetch the display image
+                int nImageDisplayIndex = Convert.ToInt32(listDBValues[0].ToString().Split(',')[(int)EImageUsage.eStored]);
+                string strImageName = listDBValues[1].ToString().Split(',')[nImageDisplayIndex];
+                //translate to the correct DB
+                string strImagesTableSufix = DBTableAttributtesFetcher.GetNameSufix(EDBTable.eImages);
+                GetFinalItemAndTableFromEncapsulatedItemAndTableWithSufix(ref strImageName, ref table, strImagesTableSufix);
+                return Images.Images.GetImageToDraw(strImageName, table, big_gui, false);
+            }
+            else
+                return null;
+        }
+
         public BitmapSource CreateCellsGrid(int width, int heigth, bool big_gui)
         {
             //Select the cell image we will use

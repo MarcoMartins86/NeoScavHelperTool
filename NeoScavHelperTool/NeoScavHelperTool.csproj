@@ -124,9 +124,14 @@
     <Compile Include="Viewer\ItemTypes\ItemTypes.xaml.cs">
       <DependentUpon>ItemTypes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Viewer\ItemTypes\DataGridItemTypesMaxColumnsWidthConverter.cs" />
+    <Compile Include="Viewer\DataGridMaxColumnsWidthConverter.cs" />
     <Compile Include="Viewer\Maps\Maps.xaml.cs">
       <DependentUpon>Maps.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer\TreasureTable\Int32IndexToNumberConverter.cs" />
+    <Compile Include="Viewer\TreasureTable\NumericUpDownIndexTextConverter.cs" />
+    <Compile Include="Viewer\TreasureTable\TreasureTable.xaml.cs">
+      <DependentUpon>TreasureTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Viewer\ViewerDataGridItem.cs" />
     <Compile Include="Viewer\Images\Images.xaml.cs">
@@ -191,6 +196,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Viewer\Maps\Maps.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Viewer\TreasureTable\TreasureTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -264,6 +273,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

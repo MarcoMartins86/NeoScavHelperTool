@@ -1,4 +1,3 @@
-.vs/
-packages/
-NeoScavHelperTool/obj/
-NeoScavHelperTool/bin/
+﻿.vs
+NeoScavHelperTool/bin
+NeoScavHelperTool/obj

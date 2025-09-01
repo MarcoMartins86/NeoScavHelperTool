@@ -52,7 +52,7 @@ namespace NeoScavHelperTool.ViewModels
         {
             window.Closing += (sender, e) =>
             {
-                _logger.LogTrace("SplashWindow is closing, launching MainWindow");
+                _logger.LogInformation("MainWindow launching");
                 _mainWindow.Show();
             };
 
@@ -63,13 +63,13 @@ namespace NeoScavHelperTool.ViewModels
                         "Loading work must not run in the UI thread!"
                     );
 
-                    _logger.LogTrace("Asking LoadingService to start");
-
+                    _logger.LogInformation("LoadingService starting");
                     _loadingService.Start(this);
+                    _logger.LogInformation("LoadingService finished");
                 })
                 .ConfigureAwait(false);
 
-            _logger.LogTrace("LoadingService finished, asking SplashWindow to close");
+            _logger.LogInformation("SplashWindow closing");
             _dispatcher.Invoke(window.Close);
         }
     }

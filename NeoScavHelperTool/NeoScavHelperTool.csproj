@@ -10,6 +10,7 @@
     <None Remove="SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Awesome.Net.WritableOptions" Version="3.0.0" />
     <PackageReference Include="Costura.Fody" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>compile; runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,10 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.8" />
-    <PackageReference
-      Include="Microsoft.Extensions.Options.ConfigurationExtensions"
-      Version="9.0.8"
-    />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.8" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />

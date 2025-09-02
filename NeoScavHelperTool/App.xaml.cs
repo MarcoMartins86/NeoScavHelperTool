@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Awesome.Net.WritableOptions.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,7 +59,7 @@ namespace NeoScavHelperTool
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-            IConfiguration config = builder.Build();
+            IConfigurationRoot config = builder.Build();
 
             //string conn = config.GetConnectionString("Neenah_SFC_ConnectionString");
 
@@ -68,11 +69,12 @@ namespace NeoScavHelperTool
                 .ValidateDataAnnotations()
                 .Validate(
                     options => File.Exists(options.NeoScavExePath),
-                    "Neoscavenger executable not found!"
+                    "Neo Scavenger executable not found!"
                 );
-            //services.Configure<AppOptions>(config.GetSection(AppOptions.Section));
 
-            services.AddSingleton(config);
+            services.ConfigureWritableOptions<AppOptions>(config, AppOptions.Section);
+
+            services.AddSingleton<IConfiguration>(config);
 
             return config;
         }

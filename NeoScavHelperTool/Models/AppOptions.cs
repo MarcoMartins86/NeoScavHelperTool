@@ -11,7 +11,7 @@ namespace NeoScavHelperTool.Models
     {
         public const string Section = "App";
 
-        [Required(AllowEmptyStrings = false)]
+        [RegularExpression("^.+NEOScavenger\\.exe$", ErrorMessage = "Unexpected value")]
         public string NeoScavExePath { get; set; } = string.Empty;
     }
 }

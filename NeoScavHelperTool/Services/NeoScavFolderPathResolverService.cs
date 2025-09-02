@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Awesome.Net.WritableOptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NeoScavHelperTool.Models;
@@ -14,7 +15,7 @@ namespace NeoScavHelperTool.Services
     public class NeoScavFolderPathResolverService
     {
         private readonly ILogger<NeoScavFolderPathResolverService> _logger;
-        private readonly IOptionsMonitor<AppOptions> _optionsDelegate;
+        IWritableOptions<AppOptions> _appOptions;
         private readonly DialogService _dialogService;
 
         private string _neoScavFolderPath = string.Empty;
@@ -26,12 +27,12 @@ namespace NeoScavHelperTool.Services
 
         public NeoScavFolderPathResolverService(
             ILogger<NeoScavFolderPathResolverService> logger,
-            IOptionsMonitor<AppOptions> optionsDelegate,
+            IWritableOptions<AppOptions> appOptions,
             DialogService dialogService
         )
         {
             _logger = logger;
-            _optionsDelegate = optionsDelegate;
+            _appOptions = appOptions;
             _dialogService = dialogService;
         }
 
@@ -41,9 +42,7 @@ namespace NeoScavHelperTool.Services
             {
                 if (string.IsNullOrEmpty(_neoScavFolderPath))
                 {
-                    _neoScavFolderPath = Path.GetDirectoryName(
-                        _optionsDelegate.CurrentValue.NeoScavExePath
-                    );
+                    _neoScavFolderPath = Path.GetDirectoryName(_appOptions.Value.NeoScavExePath);
                 }
             }
             catch (OptionsValidationException ex)
@@ -69,11 +68,12 @@ namespace NeoScavHelperTool.Services
             );
             if (!string.IsNullOrEmpty(neoScavExePath))
             {
+                _appOptions.Update(opt => opt.NeoScavExePath = neoScavExePath);
+                _neoScavFolderPath = Path.GetDirectoryName(neoScavExePath);
                 _logger.LogDebug(
                     "Successfully resolved Neo Scavenger Exe directory: \"{neoScavExePath}\"",
                     neoScavExePath
                 );
-                _neoScavFolderPath = Path.GetDirectoryName(neoScavExePath);
                 return true;
             }
             return false;

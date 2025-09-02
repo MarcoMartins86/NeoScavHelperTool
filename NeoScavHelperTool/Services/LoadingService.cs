@@ -14,20 +14,21 @@ namespace NeoScavHelperTool.Services
     public class LoadingService
     {
         private readonly ILogger<LoadingService> _logger;
-        private readonly IOptionsMonitor<AppOptions> _optionsDelegate;
+        private readonly NeoScavFolderPathResolverService _gamePathResolverService;
 
         public LoadingService(
             ILogger<LoadingService> logger,
-            IOptionsMonitor<AppOptions> optionsDelegate
+            NeoScavFolderPathResolverService folderPathResolverService
         )
         {
             _logger = logger;
-            _optionsDelegate = optionsDelegate;
+            _gamePathResolverService = folderPathResolverService;
         }
 
-        public void Start(SplashViewModel splashViewModel)
+        public void Start(SplashScreenViewModel splashScreenViewModel)
         {
-            splashViewModel.Message = _optionsDelegate.CurrentValue.NeoScavExePath;
+            string gamePath = _gamePathResolverService.NeoScavFolderPath;
+
             Thread.Sleep(5000);
         }
     }

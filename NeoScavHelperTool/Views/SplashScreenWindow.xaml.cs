@@ -22,16 +22,18 @@ using NeoScavHelperTool.ViewModels;
 namespace NeoScavHelperTool.Views
 {
     /// <summary>
-    /// Interaction logic for SplashWindow.xaml
+    /// Interaction logic for SplashScreenWindow.xaml
     /// </summary>
-    public partial class SplashWindow : Window
+    public partial class SplashScreenWindow : Window
     {
-        public SplashWindow(SplashViewModel splashViewModel)
+        public SplashScreenWindow(SplashScreenViewModel splashScreenViewModel)
         {
             InitializeComponent();
 
-            DataContext = splashViewModel;
-            this.ExecuteWhenLoaded(async () => await splashViewModel.StartLoadingService(this));
+            DataContext = splashScreenViewModel;
+            this.ExecuteWhenLoaded(async () =>
+                await splashScreenViewModel.StartLoadingService(this)
+            );
         }
     }
 }

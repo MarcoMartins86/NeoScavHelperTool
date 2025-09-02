@@ -15,6 +15,7 @@ using NeoScavHelperTool.Services;
 using NeoScavHelperTool.ViewModels;
 using NeoScavHelperTool.Views;
 using Serilog;
+using Forms = System.Windows.Forms;
 
 namespace NeoScavHelperTool
 {
@@ -25,24 +26,33 @@ namespace NeoScavHelperTool
     {
         private IServiceProvider _serviceProvider;
         private ILogger<App> _logger;
+        private DialogService _dialogService;
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // subscribe to catch all unhandled exception (show message)
             DispatcherUnhandledException += DispatcherUnhandledExceptionHandler;
 
+            // start a service collection
             IServiceCollection serviceCollection = new ServiceCollection();
 
-            IConfiguration configuration = ConfigureConfiguration(serviceCollection);
-            ConfigureLogging(serviceCollection, configuration);
-            ConfigureServices(serviceCollection);
+            // setup the service collection
+            IConfiguration configuration = SetupConfiguration(serviceCollection);
+            SetupLogging(serviceCollection, configuration);
+            SetupServices(serviceCollection);
 
+            // build the service provider
             _serviceProvider = serviceCollection.BuildServiceProvider();
-            _logger = _serviceProvider.GetService<ILogger<App>>();
 
-            _serviceProvider.GetRequiredService<SplashWindow>().Show();
+            // assign the internal properties from the service provider
+            _logger = _serviceProvider.GetRequiredService<ILogger<App>>();
+            _dialogService = _serviceProvider.GetRequiredService<DialogService>();
+
+            // show the splash screen
+            _serviceProvider.GetRequiredService<SplashScreenWindow>().Show();
         }
 
-        private IConfiguration ConfigureConfiguration(IServiceCollection services)
+        private IConfiguration SetupConfiguration(IServiceCollection services)
         {
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -67,7 +77,7 @@ namespace NeoScavHelperTool
             return config;
         }
 
-        private void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
+        private void SetupLogging(IServiceCollection services, IConfiguration configuration)
         {
             File.Delete("./last_run.txt");
             Log.Logger = new LoggerConfiguration()
@@ -87,19 +97,19 @@ namespace NeoScavHelperTool
             );
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        private void SetupServices(IServiceCollection services)
         {
             // Register Services
-            services.AddSingleton(Current.Dispatcher);
-            services.AddSingleton<Application>(this);
+            services.AddSingleton<Dispatcher>(Current.Dispatcher);
             services.AddSingleton<LoadingService>();
-            services.AddSingleton<UnauthorizedAccessException>();
+            services.AddSingleton<NeoScavFolderPathResolverService>();
+            services.AddSingleton<DialogService>();
 
             // Register ViewModels
-            services.AddSingleton<SplashViewModel>();
+            services.AddSingleton<SplashScreenViewModel>();
 
             // Register Views
-            services.AddSingleton<SplashWindow>();
+            services.AddSingleton<SplashScreenWindow>();
             services.AddSingleton<MainWindow>();
         }
 
@@ -112,7 +122,7 @@ namespace NeoScavHelperTool
             }
         }
 
-        public void DispatcherUnhandledExceptionHandler(
+        private void DispatcherUnhandledExceptionHandler(
             object sender,
             DispatcherUnhandledExceptionEventArgs e
         )
@@ -120,13 +130,11 @@ namespace NeoScavHelperTool
             if (!e.Handled)
             {
                 _logger.LogCritical(e.Exception, e.Exception.Message);
-                Dispatcher.Invoke(() =>
-                    MessageBox.Show(
-                        e.Exception.Message,
-                        "Error",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
-                    )
+                _dialogService.MessageBox(
+                    e.Exception.Message,
+                    "Error",
+                    Forms.MessageBoxButtons.OK,
+                    Forms.MessageBoxIcon.Error
                 );
             }
         }

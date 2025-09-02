@@ -14,9 +14,9 @@ using NeoScavHelperTool.Views;
 
 namespace NeoScavHelperTool.ViewModels
 {
-    public class SplashViewModel : ViewModelBase
+    public class SplashScreenViewModel : ViewModelBase
     {
-        private readonly ILogger<SplashViewModel> _logger;
+        private readonly ILogger<SplashScreenViewModel> _logger;
         private readonly MainWindow _mainWindow;
         private readonly Dispatcher _dispatcher;
         private readonly LoadingService _loadingService;
@@ -35,8 +35,8 @@ namespace NeoScavHelperTool.ViewModels
             }
         }
 
-        public SplashViewModel(
-            ILogger<SplashViewModel> logger,
+        public SplashScreenViewModel(
+            ILogger<SplashScreenViewModel> logger,
             MainWindow mainWindow,
             Dispatcher dispatcher,
             LoadingService loadingService
@@ -52,7 +52,7 @@ namespace NeoScavHelperTool.ViewModels
         {
             window.Closing += (sender, e) =>
             {
-                _logger.LogInformation("MainWindow launching");
+                _logger.LogInformation($"{nameof(MainWindow)} launching");
                 _mainWindow.Show();
             };
 
@@ -63,13 +63,13 @@ namespace NeoScavHelperTool.ViewModels
                         "Loading work must not run in the UI thread!"
                     );
 
-                    _logger.LogInformation("LoadingService starting");
+                    _logger.LogInformation($"{nameof(LoadingService)} starting");
                     _loadingService.Start(this);
-                    _logger.LogInformation("LoadingService finished");
+                    _logger.LogInformation($"{nameof(LoadingService)} finished");
                 })
                 .ConfigureAwait(false);
 
-            _logger.LogInformation("SplashWindow closing");
+            _logger.LogInformation($"{nameof(SplashScreenWindow)} closing");
             _dispatcher.Invoke(window.Close);
         }
     }

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using MahApps.Metro.Controls;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Services;
@@ -22,18 +23,17 @@ using NeoScavHelperTool.ViewModels;
 namespace NeoScavHelperTool.Views
 {
     /// <summary>
-    /// Interaction logic for SplashScreenWindow.xaml
+    /// Interaction logic for SplashScreenView.xaml
     /// </summary>
-    public partial class SplashScreenWindow : Window
+    public partial class SplashScreenView : Window
     {
-        public SplashScreenWindow(SplashScreenViewModel splashScreenViewModel)
+        private SplashScreenViewModel ViewModel => (SplashScreenViewModel)DataContext;
+
+        public SplashScreenView()
         {
             InitializeComponent();
 
-            DataContext = splashScreenViewModel;
-            this.ExecuteWhenLoaded(async () =>
-                await splashScreenViewModel.StartLoadingService(this)
-            );
+            this.ExecuteWhenLoaded(async () => await ViewModel.StartLoadingService(this));
         }
     }
 }

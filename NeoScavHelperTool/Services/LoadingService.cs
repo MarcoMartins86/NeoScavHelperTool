@@ -28,7 +28,7 @@ namespace NeoScavHelperTool.Services
         public void Start(SplashScreenViewModel splashScreenViewModel)
         {
             string gamePath = _gamePathResolverService.NeoScavFolderPath;
-
+            splashScreenViewModel.Message = gamePath;
             Thread.Sleep(5000);
         }
     }

@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Services;
 using NeoScavHelperTool.Views;
 
 namespace NeoScavHelperTool.ViewModels
 {
-    public class SplashScreenViewModel : ViewModelBase
+    public class SplashScreenViewModel : ObservableObject
     {
         private readonly ILogger<SplashScreenViewModel> _logger;
-        private readonly MainWindow _mainWindow;
+        private readonly MainView _mainView;
         private readonly Dispatcher _dispatcher;
         private readonly LoadingService _loadingService;
 
@@ -25,25 +26,18 @@ namespace NeoScavHelperTool.ViewModels
         public string Message
         {
             get => _message;
-            set
-            {
-                if (!Equals(_message, value))
-                {
-                    _message = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _message, value);
         }
 
         public SplashScreenViewModel(
             ILogger<SplashScreenViewModel> logger,
-            MainWindow mainWindow,
+            MainView mainView,
             Dispatcher dispatcher,
             LoadingService loadingService
         )
         {
             _logger = logger;
-            _mainWindow = mainWindow;
+            _mainView = mainView;
             _dispatcher = dispatcher;
             _loadingService = loadingService;
         }
@@ -52,8 +46,8 @@ namespace NeoScavHelperTool.ViewModels
         {
             window.Closing += (sender, e) =>
             {
-                _logger.LogInformation($"{nameof(MainWindow)} launching");
-                _mainWindow.Show();
+                _logger.LogInformation($"{nameof(MainView)} launching");
+                _mainView.Show();
             };
 
             await Task.Run(() =>
@@ -69,7 +63,7 @@ namespace NeoScavHelperTool.ViewModels
                 })
                 .ConfigureAwait(false);
 
-            _logger.LogInformation($"{nameof(SplashScreenWindow)} closing");
+            _logger.LogInformation($"{nameof(SplashScreenView)} closing");
             _dispatcher.Invoke(window.Close);
         }
     }

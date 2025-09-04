@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Awesome.Net.WritableOptions.Extensions;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,11 +26,12 @@ namespace NeoScavHelperTool
     /// </summary>
     public partial class App : Application
     {
-        private IServiceProvider _serviceProvider;
         private ILogger<App> _logger;
         private DialogService _dialogService;
 
-        protected override void OnStartup(StartupEventArgs e)
+        public static new App Current => (App)Application.Current;
+
+        public App()
         {
             // subscribe to catch all unhandled exception (show message)
             DispatcherUnhandledException += DispatcherUnhandledExceptionHandler;
@@ -42,15 +44,14 @@ namespace NeoScavHelperTool
             SetupLogging(serviceCollection, configuration);
             SetupServices(serviceCollection);
 
-            // build the service provider
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+            // build the service provider and register it in the Ioc.Default
+            Ioc.Default.ConfigureServices(serviceCollection.BuildServiceProvider());
 
             // assign the internal properties from the service provider
-            _logger = _serviceProvider.GetRequiredService<ILogger<App>>();
-            _dialogService = _serviceProvider.GetRequiredService<DialogService>();
+            _logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+            _dialogService = Ioc.Default.GetRequiredService<DialogService>();
 
-            // show the splash screen
-            _serviceProvider.GetRequiredService<SplashScreenWindow>().Show();
+            InitializeComponent();
         }
 
         private IConfiguration SetupConfiguration(IServiceCollection services)
@@ -102,26 +103,22 @@ namespace NeoScavHelperTool
         private void SetupServices(IServiceCollection services)
         {
             // Register Services
-            services.AddSingleton<Dispatcher>(Current.Dispatcher);
+            services.AddSingleton<Dispatcher>(Dispatcher);
             services.AddSingleton<LoadingService>();
             services.AddSingleton<NeoScavFolderPathResolverService>();
             services.AddSingleton<DialogService>();
 
             // Register ViewModels
-            services.AddSingleton<SplashScreenViewModel>();
+            services.AddTransient<SplashScreenViewModel>();
 
             // Register Views
-            services.AddSingleton<SplashScreenWindow>();
-            services.AddSingleton<MainWindow>();
+            services.AddSingleton<SplashScreenView>();
+            services.AddSingleton<MainView>();
         }
 
         private void OnExit(object sender, ExitEventArgs e)
         {
-            // Dispose of services if needed
-            if (_serviceProvider is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
+            _logger.LogInformation("Successful exit the application");
         }
 
         private void DispatcherUnhandledExceptionHandler(

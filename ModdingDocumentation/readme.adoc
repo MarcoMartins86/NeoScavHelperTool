@@ -1,0 +1,19 @@
+= Modding documentation
+:toc:
+:toc-placement!:
+
+
+This is a collection of data I was able to find in web archive of the original forums.
+
+toc::[]
+
+== How IDs Work
+.click to show content
+[%collapsible]
+====
+this
+is
+going
+to be
+folded
+====

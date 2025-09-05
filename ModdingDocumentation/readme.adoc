@@ -118,3 +118,76 @@ Some examples:
 
 There are lots of tricks that I've learned in this system, and too much for me to get into right now. But you can do things like =AAx1x0x0x0 where AA is the ID of the current encounter, and this will cause the encounter to point back to itself. This is useful for forcing the player to make a choice, as the encounter will end if no choice is valid.
 ====
+
+== Battle Moves
+.View content
+[%collapsible]
+====
+BattleMoves are the data type that control what combatants can do during any given combat turn. They include not only attacking with the wielded weapon, but also movement, surrender, exiting battle, talking, and special moves. If it happens during battle, it needs a BattleMove.
+
+ - *id* - unique ID
+ - *strID* - item ID used to display this move (e.g. 90.33 = green crosshair icon)
+ - *strName* - name of battle move
+ - *strNotes* - unused in-game. notes to myself.
+ - *strSuccess* - message displayed if succeeded. <us> gets auto-replaced with actor's name, <them> is recipient
+ - *strFail* - message displayed if failed. <us> gets auto-replaced with actor's name, <them> is recipient
+ - *strPopUp* - pop-up/tooltip text
+ - *vChanceType* - type of random check (see below) to make when checking if the overall move succeeds
+ - *vUsConditions* - list of conditions and random checks (see below) this applies to us if we succeed
+ - *vThemConditions* - list of conditions and random checks (see below) this applies to them if we succeed
+ - *vPairConditions* - list of conditions and random checks (see below) this applies to the pair if we succeed (e.g. range changes require a pair to operate on, as "us" is meaningless without someone to change range against)
+ - *vUsFailConditions* - same as vUsConditions above, except this is for the fail case
+ - *vThemFailConditions* - same as vThemFailConditions above, except this is for the fail case
+ - *vPairFailConditions* - same as vPairFailConditions above, except this is for the fail case
+ - *vUsPreConditions* - list of conditions we must have (or not have) for this move to be available
+ - *vThemPreConditions* - list of conditions they must have (or not have) for this move to be available
+ - *nSeeThem* - 0=can only do this if they are unseen, 1=seen, 2=doesn't matter
+ - *nSeeUs* - 0=can only do this if we are unseen, 1=seen, 2=doesn't matter
+ - *bAllOutOfRange* - 1=can only do this if all hostiles are beyond their attack ranges, 0=doesn't matter
+ - *bInAttackRange* - 1=can only do this if we are in our attack range, 0=doesn't matter
+ - *nMinCharges* - minimum # charges we must have for current attack mode (if any)
+ - *nMinRange* - minimum range we can use this move
+ - *nMaxRange* - maximum range we can use this move
+ - *nAttackModeType* - 0=melee, 1=ranged, -1=any
+ - *vHexTypes* - list of hex types in which this move is available. empty=all
+ - *fChance* - chance of this move appearing if above conditions are met. 1.0 = 100%
+ - *fPriority* - priority of this move compared to other moves. AI will prefer higher priorities over lower.
+ - *fDetect* - chance of this move revealing us (multiplier against normal chance)
+ - *fOrder* - order in which this move is executed in a turn. 0.0 happens sooner than 1.0
+ - *fFatigue* - amount of fatigue this move costs
+ - *bApproach* - used by AI to tell if this move will approach target. 0=no, 1=yes
+ - *bOffense* - used by AI to tell if this move will attack target. 0=no, 1=yes
+ - *bFallBack* - used by AI to tell if this move will fall back from target. 0=no, 1=yes
+ - *bRetreat* - used by AI to tell if this move will retreat battle. 0=no, 1=yes
+ - *bPosition* - used by AI to tell if this move will stay put/prepare. 0=no, 1=yes
+ - *bPassive* - used by AI to tell if this move is passive/non-combat (e.g. talking). 0=no, 1=yes
+
+*Random Checks*
+
+A random check can be one of several types, but they all follow the same format:
+
+[source,xml]
+ nCondition,nCheckType,fChance
+
+or if the field supports a list of more than one type:
+[source,xml]
+ [nCondition,nCheckType,fChance],[nCondition,nCheckType,fChance]
+
+where:
+
+ - *nCondition* - is the condition ID that gets applied if chance passes
+ - *nCheckType* - is the ID for the type of check to make (see below)
+ - *fChance* - is a parameter passed into the check type specified (usually a chance or chance modifier)
+
+and the nCheckType IDs are:
+
+ - =happens no matter what
+ - =requires a melee attack roll to happen
+ - =requires a ranged attack roll to happen
+ - =requires a terrain trip roll to happen
+ - =requires a terrain trip roll to happen (modified by next term, e.g. 2.0 is double chance)
+ - =requires a morale check to happen
+ - =requires a flat probability to happen (specified in next parameter)
+ - =requires an escape check to happen
+====
+

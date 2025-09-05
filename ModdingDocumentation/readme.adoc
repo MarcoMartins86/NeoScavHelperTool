@@ -191,3 +191,28 @@ and the nCheckType IDs are:
  - =requires an escape check to happen
 ====
 
+== Item Group IDs
+.View content
+[%collapsible]
+====
+An item's nGroupID can be important for some item types, but most can be anything. The nGroupIDs to watch out for are:
+
+7, //headlines
+8, //hardware
+9, //recipe scrap
+12, //camps
+20, //crippled (e.g. blocks hands if arm crippled)
+25, //terrain resource (e.g. forest, lake, power tap)
+26, //camp fixture (e.g. HVAC, light)
+36, //datafiles
+90, //encounter item (e.g. cryo console, cryo window)
+91, //skill
+96, //trait
+103 //scavenge location
+
+weapons can be anything, as can clothes.
+====
+
+
+
+

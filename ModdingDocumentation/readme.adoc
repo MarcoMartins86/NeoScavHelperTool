@@ -15,7 +15,7 @@ If anyone has the original images with better quality, do let me know.
 toc::[]
 
 == How IDs Work
-.click to show content
+.View content
 [%collapsible]
 ====
 Parts of an ID:
@@ -50,7 +50,7 @@ The benefit to a system like this is that modders can each use whatever IDs they
 ====
 
 == Encounters
-.click to show content
+.View content
 [%collapsible]
 ====
 Encounters are probably the most complex data type in the game, and much of that complexity comes from the way encounters flow from one to the other.
@@ -58,4 +58,63 @@ Encounters are probably the most complex data type in the game, and much of that
 Conceptually, it's easiest to think of encounters as nodes connected by arrows. Like a flowchart. This is an example of what the encounter editor looks like:
 
 image::screenshot-2013-10-01.png[]
+
+Before anyone asks, the editor won't do you any good. It doesn't read XML files. Instead, it reads data from a mySQL database running on a local server. I just export the database into XML format because most modders don't have a database running on a server they can use.
+
+Though, if tech-savvy modders are able to setup a database...
+
+Anyway, as you can see above, encounters are gray "nodes" connected by colored arrows. In the XML file, an encounter consists of one of those gray boxes, and all outgoing arrows.
+
+All encounters have the following fields (* are required):
+
+ - *id++*++* - The unique ID for this encounter (easiest to just add 1 to the previous highest number)
+ - *strName++*++* - Shows up as yellow text if the player has a choice of inputs. Invisible if not.
+ - *strDesc++*++* - The main text. The longest text I've got in one encounter panel is about 130 words. Probably 150 is the limit that will fit on-screen in the game. Longer text needs to be split into subsequent panels (no-choice arrows), so it's better to break them up if they're getting long.
+ - *strImg* - The image to display for the panel. Not specifying a picture defaults to a snapshot of the current hex (like battle).
+ - *nItemsID* - The special encounter items available in this panel. This is stuff like the broken cryo window or control panel, which only exist in the context of the encounter. Regular items and skills in the player's possession are added automatically in-game based on the possible outcomes, and only if the player has them.
+ - *nTreasureID* - Loot to give to the player in this panel. Used for quest items, rewards, etc. Indexes into the treasuretables.
+ - *nRemoveTreasureID* - Items to remove from the player in this panel (usually turning in quest items, but could be lost/broken items, etc.). Indexes into the treasuretables.
+ - *aPreConditions* - Player conditions that must be present for this encounter to be valid. If the player is missing the requisite condition, this panel will not appear. This is often used in conversations to separate initial conversations from follow-up conversations. It can also be used to hide/show certain panels based on skills or present items. E.g. player must have cholera to see this node, or player must not have visited DMC yet to see this node, etc. Comma-separated list of IDs of conditions. Putting a "-" before a condition ID means this condition must not be on the player to trigger.
+ - *aConditions* - Player conditions this panel applies or removes when done. (E.g. injury, flags denoting a conversation was had, etc.) Comma-separated list of IDs of conditions. Putting a "-" before a condition ID means this condition will be removed.
+fPrice - The amount of money deducted when reaching this node. If player does not have enough money, node is not shown.
+ - *nCreatureID* - The ID of the creature spawn group this panel spawns. E.g. spawn dogman when exiting cryo. (Currently, these IDs are hidden in code. I need to break them out of code at some point.)
+ - *ptCreatureHex* - The hex coordinates where the creature will appear, if applicable. E.g. "40,0" is (radius, direction), and spawns the creature 40 hex rows (radius) due north (direction). Direction is 0-based hexes clockwise from north in the destination hex ring. So hex ring radius 0 is the current hex, radius 1 is the 6 hexes around that, 2 is the 12 around that, etc.
+ - *ptTeleport* - The hex coordinates (radius, direction) where the player will be teleported to. Specifying X-only will randomly teleport the player in a ring of radius X. Uses same radius/direction spec as ptCreatureHex, above.
+ - *aMinimapHexes* - The coordinates (map x,y) of a hex to reveal, with optional text label for map. Used in the Hatter urn quest, and the glow reveal. E.g. "20x164=Gyges Cryo Facility" reveals hex (20,164) with label "Gyges Cryo Facility."
+bRemoveCreatures - Whether this panel removes creatures from the current hex or not. Useful for guaranteeing current hex is empty. 0 = false, 1 = true.
+bRemoveUsed - Removes from player whichever item was used to reach this node. Useful when generic item types are used to reach a node, rather than specific items (e.g. any light source) 0 = false, 1 = true.
+ - *nType* - Whether this is a normal encounter or not. Encounter types include normal (0), scavenge (1), battle (2), and hacking (3).
+fLootChance - The change in loot chance this panel creates, if chosen in a scavenge encounter. 0.0 = 0%, 1.0 = 100%.
+ - *fAccidentChance* - The change in accident chance this panel creates, if chosen in a scavenge encounter. 0.0 = 0%, 1.0 = 100%.
+ - *fCreatureChance* - The change in creature chance this panel creates, if chosen in a scavenge encounter. 0.0 = 0%, 1.0 = 100%.
+ - *vAccidents* - A list of accidents to choose from if this scavenge encounter produces an accident. Comma-separated IDs for encounters.
+ - *vLoot* - Additional loot added to regular scavenge loot if this option is chosen in a scavenge encounter. Comma-separated IDs which are indices for the treasuretables.
+ - *ptEditor* - The in-editor coordinates of the node. Ignored by game.
+
+*aResponses* - warrant special mention, since they are pretty complicated and also important. These are basically the arrows seen in the image above, and control which encounters one can reach from here, and how.
+
+The format is a series of formulae separated by commas. A formula looks like this:
+
+`AA.BBxCC=DDxEExFFxGGxHH`
+
+Where:
+
+ - *AA* - The nGroupID of the required item
+ - *BB* - The nSubGroupID of the required item
+ - *CC* - The number of AA.BB items required.
+ - *DD* - The ID of the encounter this choice results in.
+ - *EE* - The chance of this outcome happening. 1.0 = 100%, 0.0 = 0%. (Used in cases where more than one outcome is possible at the same time. The total chance of all valid outcomes for a set of input items must be 1.0.)
+ - *FF* - The number of "per-use" charges consumed.
+ - *GG* - The number of "per-hour" charges consumed.
+ - *HH* - The number of "per-hex" charges consumed.
+
+Some examples:
+
+ - *=1x1x0x0x0* - If no inputs are specified, go to encounter 1 (blank, which ends the encounter), 100% chance, 0 charges used.
+ - *=16x1x0x0x0,=3x1x0x0x0* - If no inputs are specified, go to encounter 16 or 3, depending on which one is valid. 100% chance and 0 charges used, either way.
+ - *90.3x1=20x1x0x0x0,90.4x1=1320x1x0x0x0,=7x1x0x0x0* - If one item 90.3 is used, go to encounter 20. If one 90.4 is used, go to encounter 1320. If nothing is used, go to 7.
+ - *86.0x5+46.0x1=1037x1x0x0x0* - If five 86.0s and one 46.0 are used, go to encounter 1037.
+ - *49x1=930x1x0x1x0* - If you omit the ".BB" in the formula, the game will think you're asking for an ingredient rather than a specific item. In this case, #49 is "handheld lightsource," and will result in encounter 930 with 1 "per-hour" charge deducted.
+
+There are lots of tricks that I've learned in this system, and too much for me to get into right now. But you can do things like =AAx1x0x0x0 where AA is the ID of the current encounter, and this will cause the encounter to point back to itself. This is useful for forcing the player to make a choice, as the encounter will end if no choice is valid.
 ====

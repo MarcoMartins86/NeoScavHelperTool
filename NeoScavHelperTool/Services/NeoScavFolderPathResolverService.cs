@@ -42,23 +42,28 @@ namespace NeoScavHelperTool.Services
             {
                 if (string.IsNullOrEmpty(_neoScavFolderPath))
                 {
+                    // Try to read executable path from appsettings.json
                     _neoScavFolderPath = Path.GetDirectoryName(_appOptions.Value.NeoScavExePath);
                 }
             }
             catch (OptionsValidationException ex)
             {
                 _logger.LogDebug(ex, $"Failed to get {nameof(_neoScavFolderPath)}");
-                if (!ResolveNeoScavFolderPath())
-                {
-                    throw new Exception("Cannot continue without the game folder!");
-                }
+                // Resolve the game folder path in other way
+                _neoScavFolderPath = ResolveNeoScavFolderPath();
             }
+
+            _logger.LogTrace(
+                "Neo Scavenger game folder: \"{_neoScavFolderPath}\"",
+                _neoScavFolderPath
+            );
 
             return _neoScavFolderPath;
         }
 
-        private bool ResolveNeoScavFolderPath()
+        private string ResolveNeoScavFolderPath()
         {
+            // Ask user to point to the game executable
             string neoScavExePath = _dialogService.OpenFileDialog(
                 "Select your NEO Scavenger game folder",
                 "NEOScavenger",
@@ -66,17 +71,23 @@ namespace NeoScavHelperTool.Services
                 "exe",
                 true
             );
-            if (!string.IsNullOrEmpty(neoScavExePath))
+
+            if (string.IsNullOrEmpty(neoScavExePath))
             {
-                _appOptions.Update(opt => opt.NeoScavExePath = neoScavExePath);
-                _neoScavFolderPath = Path.GetDirectoryName(neoScavExePath);
-                _logger.LogDebug(
-                    "Successfully resolved Neo Scavenger Exe directory: \"{neoScavExePath}\"",
-                    neoScavExePath
-                );
-                return true;
+                throw new Exception("Cannot continue without the game folder!");
             }
-            return false;
+
+            // Refresh appsettings.json with the new value
+            _appOptions.Update(opt => opt.NeoScavExePath = neoScavExePath);
+
+            // Extract the game directory from the executable path
+            string neoScavFolderPath = Path.GetDirectoryName(neoScavExePath);
+            _logger.LogDebug(
+                "Successfully resolved Neo Scavenger Exe directory: \"{neoScavExePath}\"",
+                neoScavExePath
+            );
+
+            return neoScavFolderPath;
         }
     }
 }

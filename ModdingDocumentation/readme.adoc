@@ -1,9 +1,16 @@
 = Modding documentation
+ifdef::env-github[]
+:imagesdir: ./images
+endif::[]
+ifndef::env-github[]
+:imagesdir: ./images
+endif::[]
 :toc:
 :toc-placement!:
 
+Collection of data I was able to find in web archive of the original forums from 26/SEP/2022.
 
-This is a collection of data I was able to find in web archive of the original forums.
+If anyone has the original images with better quality, do let me know.
 
 toc::[]
 
@@ -11,9 +18,44 @@ toc::[]
 .click to show content
 [%collapsible]
 ====
-this
-is
-going
-to be
-folded
+Parts of an ID:
+
+`AA:BB.CC`
+
+Where:
+
+ - *AA* - The ID of the data set we're loading from
+ - *BB* - The ID of the thing we want in that data set
+ - *CC* - The optional subgroup ID of the thing we want (for items that have IDs like BB.CC)
+
+Most data within NEO Scavenger is referred to by an ID. The condition for "Hungry" is condition ID 5, the "dogman" is creature ID 1, and the opening cryo encounter is encounter ID 2. There are even a few complex IDs, such as items. E.g. the "medium branch" item is ID 13.0, 13 for the group ID, and 0 for the subgroup ID.
+
+Everything in the game uses these IDs when referring to other things. So if a dogman has "strong" as a starting condition, the creature data for the dogman specifies "60" as a starting condition.
+
+However, these IDs can become a problem if other mods or the base game use the same ID for something different. For example, what if you have a mod that includes a car tire with ID "13.0"? The base game has "13.0" set to a medium branch, so if you mention "13.0" in your mod, the game needs to know which "13.0" you want. Base game version or the mod version?
+
+That's where prefixes come in (the AA: above). You can specify which data set you mean before the ID by prefixing the ID with the data set's ID and a colon. If no prefix is specified, the game will assume you mean the version in the current mod you're editing. Otherwise, it will assume you mean the version in the mod you specify.
+
+E.g. itemID=13.0 will reference this mod's copy of 13.0
+
+If a mod wants to reference the base game data, it must specify mod "0".
+
+E.g. itemID=0:13.0 will reference base data's copy of 13.0
+
+And if a modder wants to reference another mod, just replace "0" with that mod's name.
+
+E.g. itemID=DeFactoMod:13.0 will reference DeFactoMod's copy of 13.0
+
+The benefit to a system like this is that modders can each use whatever IDs they want without worrying about whether another mod will conflict. The game will just sort everything out behind the scenes, as long as the AA: prefix is there when needed.
+====
+
+== Encounters
+.click to show content
+[%collapsible]
+====
+Encounters are probably the most complex data type in the game, and much of that complexity comes from the way encounters flow from one to the other.
+
+Conceptually, it's easiest to think of encounters as nodes connected by arrows. Like a flowchart. This is an example of what the encounter editor looks like:
+
+image::screenshot-2013-10-01.png[]
 ====

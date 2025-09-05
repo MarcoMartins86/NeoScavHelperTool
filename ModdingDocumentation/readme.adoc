@@ -213,6 +213,166 @@ An item's nGroupID can be important for some item types, but most can be anythin
 weapons can be anything, as can clothes.
 ====
 
+== Item Slot Info
+Complete list of slot IDs and properties. Also includes wound slot IDs and props. Covers things like aPossessConditions, aUseConditions, vEquipSlots, vUseSlots, and maybe some others. Especially wounds.
 
+.View content
+[%collapsible]
+====
+*dcfedor* on March 11, 2015 - 11:00
 
+Kaaven mentioned that several folks were interested in a breakdown of the slots and their IDs, so I've compiled some data tables to help illustrate this info.
+
+First, the equipment slots. The fields below are:
+
+ - *ID* - Slot ID
+ - *Name* - Slot Name
+ - *Image (Off)* - Image to display when non-highlighted
+ - *Image (On)* - Image to display when highlighted (e.g. during item-dragging)
+ - *Z-Depth* - Depth "into" the screen, for choosing which slot draws on top of others
+ - *Carried* - Whether this slot counts against encumbrance or not
+ - *Mirrored* - Whether to mirror the slot and item art or not
+ - *Layers* - How many slot depths there are, and how many layers per slot-depth. Default is 1.
+
+[cols="1,2,2,2,1,1,1,1"] 
+|===
+
+|ID |Name |Image (Off) |Image (On) |Z-Depth |Carried |Mirrored |Layers
+
+|2 |"LEFT SHOE" |"btn_inv_body_shoel.png" |"btn_inv_body_shoel_on.png" |20 |true |true |
+
+|3 |"RIGHT SHOE" |"btn_inv_body_shoer.png" |"btn_inv_body_shoer_on.png" |30 |true |false |
+
+|4 |"LEGS" |"btn_inv_body_legs.png" |"btn_inv_body_legs_on.png" |40 |true |false |
+
+|5 |"LEFT WRIST" |"btn_inv_body_wristl.png" |"btn_inv_body_wristl_on.png" |50 |true |true |
+
+|6 |"RIGHT WRIST" |"btn_inv_body_wristr.png" |"btn_inv_body_wristr_on.png" |60 |true |false | 
+
+|7 |"LEFT HAND" |"btn_inv_body_handl.png" |"btn_inv_body_handl_on.png" |130 |true |true |
+
+|8 |"RIGHT HAND" |"btn_inv_body_handr.png" |"btn_inv_body_handr_on.png" |130 |true |false |
+
+|11 |"TORSO" |"btn_inv_body_torso.png" |"btn_inv_body_torso_on.png" |120 |true |false |3,1,1,1
+
+|12 |"BELT" |"btn_inv_body_belt.png" |"btn_inv_body_belt_on.png" |110 |true |false |
+
+|13 |"LEFT SHOULDER" |"btn_inv_body_shoulderl.png" |"btn_inv_body_shoulderl_on.png" |20 |true |true | 
+
+|14 |"RIGHT SHOULDER" |"btn_inv_body_shoulderr.png" |"btn_inv_body_shoulderr_on.png" |20 |true |false |
+
+|17 |"HEAD" |"btn_inv_body_head.png" |"btn_inv_body_head_on.png" |170 |true |false |1,1,1
+
+|20 |"HOLD IN LEFT HAND" |"btn_inv_body_holdl.png" |"btn_inv_body_holdl_on.png" |240 |true |false | 
+
+|21 |"HOLD IN RIGHT HAND" |"btn_inv_body_holdr.png" |"btn_inv_body_holdr_on.png" |240 |true |false |
+
+|22 |"BACKPACK" |"btn_inv_backpack.png" |"btn_inv_backpack_on.png" |10 |true |false |
+
+|23 |"NECK #1" |"btn_inv_neck.png" |"btn_inv_neck_on.png" |230 |true |false |3
+ 
+|200 |"GROUND" |"blank.png" |"blank.png" |0 |false |false | 
+
+|201 |"ENCOUNTER RESPONSE" |"blank.png" |"blank.png" |0 |false |false | 
+
+|202 |"ENCOUNTER ITEMS" |"blank.png" |"blank.png" |0 |false |false |
+
+|203 |"AVAILABLE TRAITS" |"blank.png" |"blank.png" |0 |false |false | 
+
+|204 |"AVAILABLE SKILLS" |"blank.png" |"blank.png" |0 |false |false | 
+
+|213 |"Traits" |"blank.png" |"blank.png" |0 |false |false |
+
+|214 |"Skills" |"blank.png" |"blank.png" |0 |false |false | 
+
+|205 |"INGREDIENTS" |"blank.png" |"blank.png" |0 |false |false | 
+
+|206 |"YIELD" |"blank.png" |"blank.png" |0 |false |false | 
+
+|210 |"AVAILABLE CRAFTING ITEMS" |"blank.png" |"blank.png" |0 |false |false | 
+
+|207 |"VEHICLE" |"btn_vehicle.png" |"btn_vehicle_on.png" |0 |true |false | 
+
+|209 |"AVAILABLE CAMP SITES" |"blank.png" |"blank.png" |0 |false |false |  
+
+|208 |"CAMP" |"btn_camp.png" |"btn_camp_on.png" |0 |false |false |
+
+|211 |"USE" |"blank.png" |"blank.png" |0 |false |false | 
+
+|212 |"TEMP" |"blank.png" |"blank.png" |0 |false |false |1,1,1
+
+|===
+
+Next, the wound slots. These are still equipment slots, but they have some slight differences. The fields below are:
+
+ - *ID* - Slot ID
+ - *Name* - Slot Name
+ - *Blood Images* - Images to display when wound is bleeding
+ - *Bruise Images* - Images to display when wound is bruised
+ - *Infect Images* - Images to display when wound is infected
+ - *Cut Images* - Images to display when wound is cut
+ - *Pain Image* - Image to display when wound is feeling pain
+ - *Mirrored* - Whether to mirror the slot and item art or not
+
+[cols="1,2,1,1,2,2,2,2,2,1"] 
+|===
+|ID |Name |Probability |Z-Sort |Blood Images |Bruise Images |Infect Images |Cut Images |Pain Images |Mirrored
+
+|100 |upper left arm |0.1 |0 |WoundUACBloodMild.png, WoundUACBlood.png, WoundUACBloodSevere.png |WoundUACBruise.png, WoundUACBruiseSevere.png |WoundBlank.png, WoundUACInfect.png, WoundUACInfect.png, WoundUACInfect.png |WoundUACCutMild.png, WoundUACCut.png, WoundUACCutSevere.png |WoundUACPain.png |false
+
+|111 |upper right arm |0.1 |0 |WoundUACBloodMild.png, WoundUACBlood.png, WoundUACBloodSevere.png |WoundUACBruise.png, WoundUACBruiseSevere.png |WoundBlank.png, WoundUACInfect.png, WoundUACInfect.png, WoundUACInfect.png |WoundUACCutMild.png, WoundUACCut.png, WoundUACCutSevere.png |WoundUACPain.png |true
+
+|101 |head |0.1 |0 |WoundHCBloodMild.png, WoundHCBlood.png, WoundHCBloodSevere.png |WoundHCBruise.png, WoundHCBruiseSevere.png |WoundBlank.png, WoundHCInfect.png, WoundHCInfect.png, WoundHCInfect.png |WoundHCCutMild.png, WoundHCCut.png, WoundHCCutSevere.png |WoundHCPain.png |false
+
+|102 |lower left arm |0.1 |0 |WoundLACBloodMild.png, WoundLACBlood.png, WoundLACBloodSevere.png |WoundLACBruise.png, WoundLACBruiseSevere.png |WoundBlank.png, WoundLACInfect.png, WoundLACInfect.png, WoundLACInfect.png |WoundLACCutMild.png, WoundLACCut.png, WoundLACCutSevere.png |WoundLACPain.png |false
+
+|112 |lower right arm |0.1 |0 |WoundLACBloodMild.png, WoundLACBlood.png, WoundLACBloodSevere.png |WoundLACBruise.png, WoundLACBruiseSevere.png |WoundBlank.png, WoundLACInfect.png, WoundLACInfect.png, WoundLACInfect.png |WoundLACCutMild.png, WoundLACCut.png, WoundLACCutSevere.png |WoundLACPain.png |true
+
+|103 |left arm |0.1 |0 |WoundBlank.png |WoundAFBruiseMild.png, WoundAFBruise.png, WoundAFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundAFPain.png |false
+
+|113 |right arm |0.1 |0 |WoundBlank.png |WoundAFBruiseMild.png, WoundAFBruise.png, WoundAFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundAFPain.png |true
+
+|104 |upper chest |0.25 |0 |WoundUCCBloodMild.png, WoundUCCBlood.png, WoundUCCBloodSevere.png |WoundUCCBruise.png, WoundUCCBruiseSevere.png |WoundBlank.png, WoundUCCInfect.png, WoundUCCInfect.png, WoundUCCInfect.png |WoundUCCCutMild.png, WoundUCCCut.png, WoundUCCCutSevere.png |WoundUCCPain.png |false
+
+|105 |lower chest |0.35 |0 |WoundLCCBloodMild.png, WoundLCCBlood.png, WoundLCCBloodSevere.png |WoundLCCBruise.png, WoundLCCBruiseSevere.png |WoundBlank.png, WoundLCCInfect.png, WoundLCCInfect.png, WoundLCCInfect.png |WoundLCCCutMild.png, WoundLCCCut.png, WoundLCCCutSevere.png |WoundLCCPain.png |false
+
+|106 |upper stomach |0.3 |0 |WoundUSCBloodMild.png, WoundUSCBlood.png, WoundUSCBloodSevere.png |WoundUSCBruise.png, WoundUSCBruiseSevere.png |WoundBlank.png, WoundUSCInfect.png, WoundUSCInfect.png, WoundUSCInfect.png |WoundUSCCutMild.png, WoundUSCCut.png, WoundUSCCutSevere.png |WoundUSCPain.png |false
+
+|107 |lower stomach |0.25 |0 |WoundLSCBloodMild.png, WoundLSCBlood.png, WoundLSCBloodSevere.png |WoundLSCBruise.png, WoundLSCBruiseSevere.png |WoundBlank.png, WoundLSCInfect.png, WoundLSCInfect.png, WoundLSCInfect.png |WoundLSCCutMild.png, WoundLSCCut.png, WoundLSCCutSevere.png |WoundLSCPain.png |false
+
+|108 |upper left leg |0.25 |0 |WoundULCBloodMild.png, WoundULCBlood.png, WoundULCBloodSevere.png |WoundULCBruise.png, WoundULCBruiseSevere.png |WoundBlank.png, WoundULCInfect.png, WoundULCInfect.png, WoundULCInfect.png |WoundULCCutMild.png, WoundULCCut.png, WoundULCCutSevere.png |WoundULCPain.png |false
+
+|114 |upper right leg |0.1 |0 |WoundULCBloodMild.png, WoundULCBlood.png, WoundULCBloodSevere.png |WoundULCBruise.png, WoundULCBruiseSevere.png |WoundBlank.png, WoundULCInfect.png, WoundULCInfect.png, WoundULCInfect.png |WoundULCCutMild.png, WoundULCCut.png, WoundULCCutSevere.png |WoundULCPain.png |true
+
+|109 |lower left leg |0.1 |0 |WoundLLCBloodMild.png, WoundLLCBlood.png, WoundLLCBloodSevere.png |WoundLLCBruise.png, WoundLLCBruiseSevere.png |WoundBlank.png, WoundLLCInfect.png, WoundLLCInfect.png, WoundLLCInfect.png |WoundLLCCutMild.png, WoundLLCCut.png, WoundLLCCutSevere.png |WoundLLCPain.png |false
+
+|115 |lower right leg |0.1 |0 |WoundLLCBloodMild.png, WoundLLCBlood.png, WoundLLCBloodSevere.png |WoundLLCBruise.png, WoundLLCBruiseSevere.png |WoundBlank.png, WoundLLCInfect.png, WoundLLCInfect.png, WoundLLCInfect.png |WoundLLCCutMild.png, WoundLLCCut.png, WoundLLCCutSevere.png |WoundLLCPain.png |true
+
+|110 |left leg |0.1 |0 |WoundBlank.png |WoundLFBruiseMild.png, WoundLFBruise.png, WoundLFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundLFPain.png |false
+
+|116 |right leg |0.1 |0 |WoundBlank.png |WoundLFBruiseMild.png, WoundLFBruise.png, WoundLFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundLFPain.png |true
+
+|===
+
+There's a bit more going on under the hood, but this should help get folks started. I'd like to make these moddable at some point, but there's a pretty big chunk of work to get that functional.
+
+As always, feel free to post questions here, or PM/email me if I'm taking too long to reply :)
+
+'''
+*Magi* on March 11, 2015 - 11:09
+
+Awesome, btw, is it possible to mod in new wound types?
+
+'''
+*dcfedor* on March 11, 2015 - 14:03
+
+We sort of chatted about this offline already, but for anyone else who might be wondering: probably not.
+
+The wound system only supports location-based blunt, cut, bleeding, infection, and pain stats. Any other wound types would have to be handled by conditions. You might be able to fake certain things with the conditions system. See the various diseases and drugs for examples of this.
+
+'''
+*jt2* on April 15, 2015 - 11:04
+
+Does the BarterBox, where you place items to sell, have a slot ID?
+====
 

@@ -4,7 +4,8 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="clr-namespace:NeoScavHelperTool"
   xmlns:s="clr-namespace:NeoScavHelperTool.Services"
-  StartupUri="Views/SplashScreenView.xaml"
+  StartupUri="Windows/SplashScreenWindow.xaml"
+  Exit="OnExit"
 >
   <Application.Resources>
     <ResourceDictionary>

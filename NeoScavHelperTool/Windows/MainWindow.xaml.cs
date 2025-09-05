@@ -13,11 +13,11 @@ using MahApps.Metro.Controls;
 namespace NeoScavHelperTool.Views
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainView : MetroWindow
+    public partial class MainWindow : MetroWindow
     {
-        public MainView()
+        public MainWindow()
         {
             InitializeComponent();
         }

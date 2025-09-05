@@ -23,13 +23,13 @@ using NeoScavHelperTool.ViewModels;
 namespace NeoScavHelperTool.Views
 {
     /// <summary>
-    /// Interaction logic for SplashScreenView.xaml
+    /// Interaction logic for SplashScreenWindow.xaml
     /// </summary>
-    public partial class SplashScreenView : Window
+    public partial class SplashScreenWindow : Window
     {
         private SplashScreenViewModel ViewModel => (SplashScreenViewModel)DataContext;
 
-        public SplashScreenView()
+        public SplashScreenWindow()
         {
             InitializeComponent();
 

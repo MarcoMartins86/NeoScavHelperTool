@@ -112,8 +112,8 @@ namespace NeoScavHelperTool
             services.AddTransient<SplashScreenViewModel>();
 
             // Register Views
-            services.AddSingleton<SplashScreenView>();
-            services.AddSingleton<MainView>();
+            services.AddSingleton<SplashScreenWindow>();
+            services.AddSingleton<MainWindow>();
         }
 
         private void OnExit(object sender, ExitEventArgs e)

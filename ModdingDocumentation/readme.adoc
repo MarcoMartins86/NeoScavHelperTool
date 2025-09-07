@@ -754,6 +754,7 @@ so what you see above is what camptype each of the five use, and if it looks con
 ====
 
 == Complete List of Item nGroupIDs
+Complete list of nGroupIDs for items.
 
 .View content
 [%collapsible]
@@ -870,6 +871,94 @@ The list might come in handy when adding or revising treasure tables and the lik
 |102 |Headwear |Balaclava, NV-Goggles, Gasmask |Clothes, head slot
 |103 |Scavenge Locations |Locked Storage Shed, Open Field |Scavenge locations found in hexes
 |===
+
+====
+
+== Item Field and Misc Info
+Includes some creature field and attackmode talk.
+
+.View content
+[%collapsible]
+====
+I started by looking at each piece of the "itemtypes". Here's what I know:
+
+ - *id* - A unique id
+ - *nGroupID* - Id of the group in which this item is included
+ - *nSubgroupID* - Id of this item within the group
+ - *strName* - Mostly irrelevant to players. Used for organization.
+ - *strDesc* - Name displayed ingame
+ - *strDescAlt* - if nCondID is met, this description overrides strDesc
+ - *nCondID* - which conditions are needed for strDescAlt and fMonetaryValueAlt to override strDesc and fMonetaryValue
+ - *vImageList* - Image displayed ingame
+ - *vSpriteList* - The display of items on your map sprite
+ - *vImageUsage* - There are 6 triggers for when the program loads an image, and each trigger will load the variable set up in vImageList. E.g., the plastic shopping bag: vImageList = ItmPlasticShoppingBag.png,ItmPlasticShoppingBagStored.png. ItmPlasticShoppingBag.png is value 0, ItmPlasticShoppingBagStored.png is value 1.
+  . MODE_STORED (when the item is in a grid) = 0 (the 1-grid image)
+  . MODE_STORED_FULL (when the item's container slots are occupied and it's in a grid) = 1
+  . MODE_EQUIPPED (when the item is in an allowed equip slot) = 1
+  . MODE_EQUIPPED_FULL (when the item's container slots are occupied and it's in an allowed equip slot) = 1
+  . MODE_HELD (when the item is picked up by your cursor) = 1
+  . MODE_HELD_FULL (when the item's container slots are occupied and it's picked up by your cursor) = 1
+
+If you want to have different images loaded depending on where it's equipped, set MODE_EQUIPPED and MODE_EQUIPPED_FULL to 0 and code each image in vImageList to their desired equip slot in vEquipSlots instead (e.g., 20=1=1, 22=5=5, etc.).
+
+ - *fWeight* - Weight of the item ingame, in kg
+ - *fMonetaryValue* - How much it sells for in game at %100 condition
+ - *fMonetaryValueAlt* - if nCondID is met, this value overrides fMonetaryValue
+ - *fDurability* - Maximum durability the item spawns at, 1 being %100
+ - *fDegradePerHour* - how much it degrades per hour, 1 being %100
+ - *fEquipDegradePerHour* - How much it degrades per hour while equipped 1 being %100
+ - *fDegradePerUse* - How much the item degrades when used 1 being %100
+ - *vDegradeTreasureIDs* - The two treasure IDs this item will degrade into when it breaks. The first ID is if the item degrades from time, the second ID is if the item degrades from usage.
+ - *aEquipConditions* - Conditions you get while it is equipped eg.(20=1, 21=1)
+ - *aPossessConditions* - I'm guessing this is which conditions you get while it's in your inventory
+ - *aUseConditions* - conditions you get when it's used
+ - *aCapacities* - How much space it has to store items (10x10 = 100 slots)
+ - *vEquipSlots* - Where you can equip this item eg.(20=0,21=0,22=0) The "=0" is optional and denotes which image from vImageList (0-based index) should be used when the item is in each slot.
+ - *vUseSlots* - which windows and areas the item can be used in, 211 = use function enabled
+ - *bSocketLocked* - seems mainly for GUI stuff, fixes the item in place. Used for grids. The Strangler's hood is a special example, and there is a special way to remove it.
+ - *vProperties* - item properties
+ - *aContentIDs* - which containertypes its container grid can hold
+ - *nFormatID* - This is the type of item for container purposes, as defined in "containertypes" table of neogame.xml. (Same IDs as used in aContentIDs.)
+ - *nTreasureID* - What items this item contains (doesn't matter if you have no aCapacities I assume)
+ - *nComponentID* - A treasure ID to describe the default ingredients this item wthe game needs to know what items were used to make it so it can degrade properly. overridden for items that the player crafted.
+ - *bMirrored* - Should this item use a mirrored image instead of default image? (E.g. left vs. right boots)
+ - *nSlotDepth* - How "deep" this item is worn on a slot. E.g. the torso can have clothes on 4 separate layers, #s 0-3. 0 is T-shirts, 1 is jackets, 2 is armor/fur, 3 is sashes. Different slots have different available depths.
+ - *strChargeProfiles* - A comma-separated list of charge profile IDs this item executes when activated.
+ - *aAttackModes* - I'm guessing this will give you the attack modes you specify when equipped
+ - *nStackLimit* - How many items can be stacked on top of each other
+ - *aSwitchIDs* - A list of other items this can turn into, via the context menu. Laptops can open/close, flashlights can turn on/off, etc.
+ - *aSounds* - Which two sounds should be used for picking up or putting down this item. Due to licensing restrictions, the sounds are embedded in the game, and not moddable. So for now, you're limited to existing sounds as defined in other items.
+ - *aThresholds* - E.g. *4=99,3=-99* this means when a condition has been stacked 4 times then condition 99 gets applied. when it drops below that condition 99 gets removed. I am not sure if you need to add 2=-99, and 1=-99 though but possible.
+
+In the creature profile:
+
+ - *vEncounterIDs* - is the list of possible encounter that creature might start when it agrees to talk, so basically their dialog options
+ - *nTreasureID* - is the treasure table containing their possible load-out
+ - *nFaction* - is the ID of the faction they belong to
+ - *vAttackModes* - is their "default" mode of attacking. Fist for humans, claws for dogmen, etc.
+ - *vBaseConditions* - is the list of all available starting conditions, with a % of creature actually spawning with that condition (so 50=0.75 means that this creature has a 75% chance of spawning with a Melee skill (condition ID 50)).
+ - *CorpseID* - is the ID of the treasure table containing the corpse (or any other item, really) that will show up after creature's death
+
+Creatures spawns are controlled by a different part of the code - "creaturesources". Example:
+
+[source,xml]
+<table name="creaturesources">
+	<column name="id">4</column>
+	<column name="strName">SE Looter</column>
+	<column name="nX">48</column>
+	<column name="nY">164</column>
+	<column name="nCreatureID">2</column>
+	<column name="nMin">1</column>
+	<column name="nMax">4</column>
+	<column name="fWeight">0.4</column>
+</table>
+
+ - *ID* - spawn point original ID
+ - *strName* - name of the spawn point, simply for modder to recognize it. Does not show in-game
+nX and nY map coordinates of the spawn point, creatures will spawn more often, the closer the player is to that point on the map
+ - *nCreatureID* - Id of the creature type to show up (in example above, it's Crature ID 2 - looter)
+ - *nMin* and *nMax* - how many creatures this one spawn point can support (in this case between 1 and 4)
+ - *fWeight* - the relative "strength" of this point, compared to the others. If the creature is to be spawned, and two points can supply it, the one with higher Weight most likely will. 1.0 is max.
 
 ====
 

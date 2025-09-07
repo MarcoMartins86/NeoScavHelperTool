@@ -197,18 +197,18 @@ and the nCheckType IDs are:
 ====
 An item's nGroupID can be important for some item types, but most can be anything. The nGroupIDs to watch out for are:
 
-7, //headlines
-8, //hardware
-9, //recipe scrap
-12, //camps
-20, //crippled (e.g. blocks hands if arm crippled)
-25, //terrain resource (e.g. forest, lake, power tap)
-26, //camp fixture (e.g. HVAC, light)
-36, //datafiles
-90, //encounter item (e.g. cryo console, cryo window)
-91, //skill
-96, //trait
-103 //scavenge location
+ - *7* - headlines
+ - *8* - hardware
+ - *9* - recipe scrap
+ - *12* - camps
+ - *20* - crippled (e.g. blocks hands if arm crippled)
+ - *25* - terrain resource (e.g. forest, lake, power tap)
+ - *26* - camp fixture (e.g. HVAC, light)
+ - *36* - datafiles
+ - *90* - encounter item (e.g. cryo console, cryo window)
+ - *91* - skill
+ - *96* - trait
+ - *103* - scavenge location
 
 weapons can be anything, as can clothes.
 ====
@@ -216,14 +216,11 @@ weapons can be anything, as can clothes.
 == Item Slot Info
 Complete list of slot IDs and properties. Also includes wound slot IDs and props. Covers things like aPossessConditions, aUseConditions, vEquipSlots, vUseSlots, and maybe some others. Especially wounds.
 
+=== Equipment slots
+
 .View content
 [%collapsible]
 ====
-*dcfedor* on March 11, 2015 - 11:00
-
-Kaaven mentioned that several folks were interested in a breakdown of the slots and their IDs, so I've compiled some data tables to help illustrate this info.
-
-First, the equipment slots. The fields below are:
 
  - *ID* - Slot ID
  - *Name* - Slot Name
@@ -303,7 +300,15 @@ First, the equipment slots. The fields below are:
 
 |===
 
-Next, the wound slots. These are still equipment slots, but they have some slight differences. The fields below are:
+====
+
+=== Wound slots 
+
+.View content
+[%collapsible]
+====
+
+These are still equipment slots, but they have some slight differences. The fields below are:
 
  - *ID* - Slot ID
  - *Name* - Slot Name
@@ -354,25 +359,423 @@ Next, the wound slots. These are still equipment slots, but they have some sligh
 
 |===
 
-There's a bit more going on under the hood, but this should help get folks started. I'd like to make these moddable at some point, but there's a pretty big chunk of work to get that functional.
-
-As always, feel free to post questions here, or PM/email me if I'm taking too long to reply :)
-
-'''
-*Magi* on March 11, 2015 - 11:09
-
-Awesome, btw, is it possible to mod in new wound types?
-
-'''
-*dcfedor* on March 11, 2015 - 14:03
-
-We sort of chatted about this offline already, but for anyone else who might be wondering: probably not.
-
 The wound system only supports location-based blunt, cut, bleeding, infection, and pain stats. Any other wound types would have to be handled by conditions. You might be able to fake certain things with the conditions system. See the various diseases and drugs for examples of this.
-
-'''
-*jt2* on April 15, 2015 - 11:04
-
-Does the BarterBox, where you place items to sell, have a slot ID?
 ====
+
+== Condensed List of properties
+Complete lists of ingredient, item property, container IDs, aFieldNames, and aEffects for reference.
+
+=== Ingredients - strTools / strConsumed
+.View content
+[%collapsible]
+====
+
+These are the numbers you use for "recipes". When "strTools" or "strConsumed" has a number this is what it's referring to:
+
+ - *1* - flame source
+ - *2* - kindling
+ - *3* - medium fire fuel
+ - *4* - water (non-chemical)
+ - *5* - water purification pill
+ - *6* - fireproof, waterproof container
+ - *7* - heat source
+ - *8* - tannin source
+ - *9* - small fresh meat
+ - *10* - medium shaft
+ - *11* - sharp point
+ - *12* - small pelt
+ - *13* - small thread
+ - *14* - sharp edge
+ - *15* - small corpse
+ - *16* - Trapping skill
+ - *17* - medium or large shaft
+ - *18* - medium thread
+ - *19* - .308 rifle, no scope, no strap
+ - *20* - small or medium monocular optical zoom
+ - *21* - small mechanical parts
+ - *22* - Philips-head screwdriver
+ - *23* - Lockpicking skill
+ - *24* - handful of ashes
+ - *25* - small or medium rigid container
+ - *26* - large waterproof sheet
+ - *27* - small flammable, non-rigid sheet
+ - *28* - medium absorbent, non-rigid, non-springy sheet
+ - *29* - water (any)
+ - *30* - small absorbent, non-rigid sheet
+ - *31* - liquid disinfectant
+ - *32* - small or medium non-rigid sheet
+ - *33* - natural water source (non-chemical)
+ - *34* - forest
+ - *35* - Mechanic skill
+ - *36* - large non-rigid sheet
+ - *37* - HVAC (unheated)
+ - *38* - electrical panel
+ - *39* - electrician skill
+ - *40* - pliers
+ - *41* - small furry corpse
+ - *42* - small or medium flexible non-food object
+ - *43* - small flame and heat source
+ - *44* - medium flame and heat source
+ - *45* - medium shaft w/kindling (unlit)
+ - *46* - quality medium shaft w/kindling (unlit)
+ - *47* - optical zoom
+ - *48* - small kindling (unlit)
+ - *49* - handheld light source
+ - *50* - medium flammable, rigid shaft
+ - *51* - Ranged skill
+ - *52* - crowbar
+ - *53* - binocular optical zoom
+ - *54* - very large rigid container
+ - *55* - shopping cart frame
+ - *56* - caster wheel
+ - *57* - large fireproof basket
+ - *58* - very large rigid sheet container
+ - *59* - Botany skill
+ - *60* - large shaft
+ - *61* - medium brittle, rigid container
+ - *62* - medium brittle, non-flexible, rigid object
+ - *63* - small brittle, rigid, sharp handheld sheet object
+ - *64* - compound bow
+ - *65* - large rigid, flexible shaft
+ - *66* - small rigid, sharp edge with point
+ - *67* - small springy sheet
+ - *68* - small sharp point
+ - *69* - 12-gauge shotgun w/o strap
+ - *70* - large fireproof, waterproof container
+ - *71* - large corpse
+ - *72* - Dogman corpse
+ - *73* - large furry corpse
+ - *74* - medium fresh meat
+ - *75* - medium furry corpse
+ - *76* - any combat skill
+ - *77* - small rigid parts
+ - *78* - night vision
+ - *79* - medium paper
+ - *80* - medium rigid, springy shaft
+ - *81* - scoped .308, no strap
+ - *82* - strapped .308, no scope
+ - *83* - iSlab
+ - *84* - medium fresh human meat
+ - *85* - small fresh human meat
+ - *86* - water (chemical)
+ - *87* - water tester
+ - *88* - water (biohazard)
+ - *89* - water (non-biohazard, non-chemical)
+ - *90* - water (unidentified)
+ - *91* - large human corpse
+ - *92* - stuff Radiation Bob wants (big)
+ - *93* - stuff Radiation Bob wants (small)
+ - *94* - stuff Zom Zom's wants
+ - *95* - smartphone
+ - *96* - SBS4 shotgun
+ - *97* - medium brittle, flexible, rigid object
+ - *98* - anything except talisman and GUI items
+ - *99* - ZZ's items to confiscate
+ - *100* - 4mm Gauss rifle, no scope, no strap
+ - *101* - scoped 4mm Gauss rifle, no strap
+ - *102* - strapped 4mm Gauss rifle, no scope
+ - *103* - wooden rifle stock
+ - *104* - high-energy capacitor
+ - *105* - 4mm Gauss gun barrel
+ - *106* - 4mm Gauss gun receiver
+ - *107* - stage-switching circuit
+ - *108* - charging circuit
+ - *109* - DMC drone wreckage
+ - *110* - unobtainable item
+ - *111* - laptop battery
+ - *112* - smudge stick
+ - *113* - small or medium flexible, EM-reflective sheet
+ - *114* - medium non-rigid, EM-reflective sheet
+ - *115* - wire cutters
+ - *116* - tracking device
+ - *117* - vehicle too large to bring through fence breach
+ - *118* - blue jeans
+ - *119* - small battery
+ - *120* - medium battery
+ - *121* - handheld focusing lens or reflector
+ - *122* - sunlight
+ - *123* - sleeping bag
+ - *124* - large, non-rigid sheet
+ - *125* - large branch
+ - *126* - medium, waterproof, flexible sheet
+ - *127* - small-medium furry corpse
+
+====
+
+=== itemprops - vproperties / strRequiredProps
+.View content
+[%collapsible]
+====
+Itemprops are what you use on "vproperties" for items, and "strRequiredProps" for ingredients.
+
+Note: Recipes use ingredients not props, but in order to make something an ingredient you must first use "vproperties" to make it a prop.
+
+ - *1* - easily ignitable
+ - *2* - optical zoom
+ - *3* - igniter
+ - *4* - tannin source
+ - *5* - tool: Philips-head screwdriver
+ - *6* - tool: flathead screwdriver
+ - *7* - water purifier
+ - *8* - container
+ - *9* - waterproof
+ - *10* - fireproof
+ - *11* - hot
+ - *12* - meat
+ - *13* - shaft
+ - *14* - nourishing
+ - *15* - small
+ - *16* - medium
+ - *17* - large
+ - *18* - sharp point
+ - *19* - thread
+ - *20* - furry
+ - *21* - sharp edge
+ - *22* - corpse
+ - *23* - skill: trapping
+ - *24* - biohazard
+ - *25* - radioactive
+ - *26* - poison
+ - *27* - liquid
+ - *28* - rigid
+ - *29* - hydrator
+ - *30* - .308 rifle
+ - *31* - mechanical parts
+ - *32* - monocular
+ - *33* - binocular
+ - *34* - skill: lockpicking
+ - *35* - ash
+ - *36* - sheet
+ - *37* - absorbent
+ - *38* - disinfectant
+ - *39* - infinite
+ - *40* - forest
+ - *41* - skill: mechanic
+ - *42* - HVAC (unheated)
+ - *43* - electrical panel
+ - *44* - skill: electrician
+ - *45* - tool: lever grip/pliers
+ - *46* - fire fuel
+ - *47* - quality
+ - *48* - solid (not liquid/gas/idea)
+ - *49* - light source
+ - *50* - handheld
+ - *51* - skill: ranged
+ - *52* - crowbar
+ - *53* - caster wheel
+ - *54* - basket
+ - *55* - shopping cart frame
+ - *56* - water
+ - *57* - skill: botany
+ - *58* - brittle
+ - *59* - compound bow
+ - *60* - flexible/springy
+ - *61* - 12-gauge shotgun
+ - *62* - dogman
+ - *63* - any combat skill
+ - *64* - night vision
+ - *65* - very large
+ - *66* - raw
+ - *67* - cured
+ - *68* - strapped
+ - *69* - iSlab
+ - *70* - human
+ - *71* - tool: water analyzer
+ - *72* - identified
+ - *73* - stuff Radiation Bob wants (big)
+ - *74* - stuff Radiation Bob wants (small)
+ - *75* - stuff Zom Zom's wants
+ - *76* - ignore in crafting screen
+ - *77* - AI never loots
+ - *78* - AI never loots when player present
+ - *79* - smartphone
+ - *80* - SBS4 rifle
+ - *81* - ignore in quick recipes
+ - *82* - degrades silently when used
+ - *83* - degrades silently when equipped
+ - *84* - shoe
+ - *85* - don't unsocket when surrendering
+ - *86* - system object (e.g. GUI)
+ - *87* - confiscated at ZZ's
+ - *88* - ignore subgroup when stacking
+ - *89* - 4mm Gauss Rifle
+ - *90* - high-energy capacitor
+ - *91* - 4mm Gauss gun barrel
+ - *92* - 4mm Gauss gun receiver
+ - *93* - stage-switching circuit
+ - *94* - charging circuit
+ - *95* - wooden rifle stock
+ - *96* - DMC drone wreckage
+ - *97* - laptop battery
+ - *98* - smudge stick
+ - *99* - reflects EM waves
+ - *100* - wire cutters
+ - *101* - tracking device
+ - *102* - vehicle too large to fit through fence breach
+ - *103* - blue jeans
+ - *104* - battery
+ - *105* - sunlight
+ - *106* - focusing lens or reflector
+ - *107* - sleeping bag
+ - *108* - small-medium
+====
+
+=== containertypes - aContentIDs / nFormatID
+.View content
+[%collapsible]
+====
+"Which container types its container grid can hold" seems to matter for "nFormatID" and "aContentIDs".
+
+ - *1* - waterproof
+ - *2* - fine
+ - *3* - coarse
+ - *4* - encounter
+ - *5* - skill
+ - *6* - camps
+ - *7* - fireproof
+ - *8* - .308
+ - *9* - lar10
+ - *10* - electric
+ - *11* - trait
+ - *12* - craft yield
+ - *13* - jelly
+ - *14* - nanobot suspension
+ - *15* - terrain
+ - *16* - camp fixture
+ - *17* - craft inputs
+ - *18* - arrow (archery)
+ - *19* - .38
+ - *20* - .45
+ - *21* - 12-gauge
+ - *22* - military micro cell
+ - *23* - AA battery
+ - *24* - carts and wagons
+ - *25* - laptop battery
+ - *26* - software: PC
+ - *27* - software: tablet
+ - *28* - software: data
+ - *29* - islab battery
+ - *30* - cellphone battery
+ - *31* - smartphone battery
+ - *32* - software: smartphone
+ - *33* - pebble (sling)
+ - *34* - stone (sling)
+ - *35* - invalid (no items)
+ - *36* - 4mm
+ - *37* - XM54 Gas Mask Cartridge
+ - *38* - UVD
+ - *39* - non-nesting bags
+====
+
+=== aFieldNames
+.View content
+[%collapsible]
+====
+I believe these are for the Conditions subfield only. These are case sensitive.
+
+ - *AddRecipe*
+ - *ApplyCutDamage*
+ - *Asleep*
+ - *Attack*
+ - *AttDmgMult*
+ - *Bandaged*
+ - *BaseDetectionLevel*
+ - *BattleRange*
+ - *BodyInsulation*
+ - *ChangeRange*
+ - *ChangeRangeAll*
+ - *CleanAndDress*
+ - *Crippled*
+ - *DefDmgMult*
+ - *Discharge*
+ - *Disinfected*
+ - *DropAllItems*
+ - *EmptyGroundSlot*
+ - *ExitBattle*
+ - *fCoreTemp*
+ - *fFatigueModifier*
+ - *fFoodConsumptionRate*
+ - *fFoodDebt*
+ - *fMovesPerTurnModifier*
+ - *fPassiveRewarmPerHour*
+ - *fSleepDebt*
+ - *fSleepQuality*
+ - *fWaterConsumptionRate*
+ - *fWaterDebt*
+ - *GetDiagnostic*
+ - *Infected*
+ - *JustMoved*
+ - *KnockDown*
+ - *LightLevel*
+ - *LootTarget*
+ - *LoseAllItems*
+ - *LoseRandomItem*
+ - *m_fBloodLeft*
+ - *m_fBloodRestoreRate*
+ - *m_fDefense*
+ - *m_fEncumberanceLimit*
+ - *m_fFatigueModifier*
+ - *m_fHealPerHourMod*
+ - *m_fImmuneLeft*
+ - *m_fImmuneLeftBase*
+ - *m_fImmuneRestoreRate*
+ - *m_fMorale*
+ - *m_fMoraleHidden*
+ - *m_fMoveCost*
+ - *m_fMoveReserve*
+ - *m_fMoveReserveRemaining*
+ - *m_fMovesLeft*
+ - *m_fPain*
+ - *m_fPainLeft*
+ - *m_fPainLeftBase*
+ - *m_fScent*
+ - *m_fSleepAwareness*
+ - *m_fTrackingThreshold*
+ - *m_fVisibility*
+ - *m_nMorality*
+ - *MaxSafeTemp*
+ - *MinLightLevel*
+ - *MinSafeTemp*
+ - *Money*
+ - *ResetTemp*
+ - *ResetUsSpotted*
+ - *ScatterMissile*
+ - *SpawnNewCreature*
+ - *Splinted*
+ - *Threat*
+ - *TriggerEncounter*
+ - *Trip*
+ - *UseGPS*
+ - *VisionRange*
+ - *WetTempAdjustMod*
+ - *WoundBruise*
+ - *WoundCut*
+====
+
+=== aEffects
+.View content
+[%collapsible]
+====
+Found in "conditions". These are case sensitive.
+
+ - *ArmorWound*
+ - *AddSkill*
+ - *AddItemGround*
+ - *AddTrait*
+ - *SetImmunity*
+ - *ChainCondition*
+ - *ChangeFactionRep*
+ - *ChangeGlobalFactionRep*
+ - *Confiscate*
+ - *Despawn*
+ - *EndGame*
+ - *PassTime*
+ - *RemoveTrait*
+ - *RemoveSkill*
+ - *SetWaypoint*
+ - *SetPlayerCondition*
+====
+
+
+
 

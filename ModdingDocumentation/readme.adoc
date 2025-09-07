@@ -962,5 +962,357 @@ nX and nY map coordinates of the spawn point, creatures will spawn more often, t
 
 ====
 
+== Creature Fields
+Details the complete list of creature fields and functions, for AI, player, and shared fields. As well as Condition effects.
 
+.View content
+[%collapsible]
+====
+First list will be for all creatures, the second will be additional fields just for players, and the third will be additional fields just for AI.
+
+There are three types of fields. The first is the simplest, and looks like this:
+
+`public var fFoodConsumptionRate:Number; //kg food consumed per hour`
+
+It's basically a number field. You can safely ignore the "public var" as that's internal code, and the part you'll be interested in is the name of the field. In this case, it's "fFoodConsumptionRate." Any condition can modify this field by using the "aFieldNames" section of the condition, with a corresponding value in the condition's "aModifiers" area.
+
+After the field's name, you'll see a colon followed by the field value type. In the above example, it's ":Number," which just means it's a decimal point number like 0.1, or -5.33, etc. Other types include "int" (integer like 0, 5, -34), "uint" (an "int" >= 0), or a "Boolean" (true/false, with 1 = true, and 0 = false).
+
+Sometimes, there will be a description of the field and example values after that.
+
+A second field type looks a bit different:
+
+[source]
+ //lose all items in ground slot
+ public function set EmptyGroundSlot(value:int):void
+
+This type works exactly like the first type, it's just coded differently inside the game. Ignore the "public function set," and the name of the field will be next. "EmptyGroundSlot" in this case. In parentheses, we'll see that it takes a "value" of type "int." Usually, the code will have a brief description of the field's purpose and example values just above it.
+
+Use these fields just as you would the first type, with the aFieldNames/aModifiers part of the conditions.
+
+Finally, there's a special type that looks like this:
+[source]
+ /**
+  * Applies armor to a wound slot
+  * @param	aParams = [nWoundSlotID, m_fCutArmor, m_fBluntArmor]
+  */
+ public function ArmorWound(aParams:Array):void
+
+ This type still has the familiar "public function" to ignore, followed by the name "ArmorWound." In this case, though, it takes a special parameter type, "aParams." "aParams" is an array, or list of parameters, and the format is described above in the special notes.
+
+In this case, we see that:
+
+`aParams = [nWoundSlotID, m_fCutArmor, m_fBluntArmor]`
+
+which is to say that the function will be expecting three parameters: the slot ID, cut armor amount, and blunt armor amount. In the conditions data, this is specified under "aEffects" like so:
+
+`ArmorWound=100,0.02,0.01`
+
+or if you needed more than one such effect in the same condition, you could add more separated by semicolons:
+
+`ArmorWound=100,0.02,0.01;ArmorWound=110,0.2,0.1;ArmorWound=111,0.25,0.04`
+
+It may be useful to look at some other examples in neogame.xml to see how these are used.
+
+- Base Creature Fields
+```
+//base conditions
+public var m_nMovesPerTurn:uint;
+public var m_fScent:Number;
+public var m_nFaction:uint;
+public var fFoodConsumptionRate:Number; //kg food consumed per hour
+public var fWaterConsumptionRate:Number; //kg water consumed per hour
+public var fNormalBodyTemp:Number; //normal temperature of human body in F
+public var fPassiveRewarmPerHour:Number; //number of core temp degrees F restored if in safe ambient temp
+public var fWetTempAdjust:Number; //adjustment to min/max safe temperatures when raining/wet
+public var fHoursToStarve:Number; //number of hours a player can last without food
+public var fHoursToDehydrate:Number; //number of hours a player can last without water
+public var fHoursToBlackout:Number; //number of hours a player can last without rest
+public var m_fTrackingThreshold:Number; //minimum scent player can see
+public var m_fEncumberanceLimit:Number; //maximum weight (kg) player can carry and still move
+public var fFullyRested:Number; //number of hours of continuous sleep that is fully rested
+public var m_fMoveReserve:Number; //maximum number of moves this creature can have in reserve (e.g. running/sprinting)
+
+//current conditions
+public var m_fMovesLeft:Number;
+public var fMovesPerTurnModifier:Number; //adjustment to base movement rate, due to current conditions
+public var fSleepDebt:Number; //hours gone without sleep
+public var fFoodDebt:Number; //hours gone without food
+public var fWaterDebt:Number; //hours gone without water
+public var fCoreTemp:Number; //current core temperature of body
+public var fHoursSlept:Number; //how many hours of solid sleep does creature have
+public var fAdjMinSafeTemp:Number; //actual min safe temperature based on external conditions
+public var fAdjMaxSafeTemp:Number; //actual max safe temperature based on external conditions
+public var fAdjBodyInsulation:Number; //actual body insulation based on external conditions
+public var m_fFatigueModifier:Number; //coefficient of movement cost affect on fatigue (1.0 normal, 0.0 no effect, 2.0 double effect)
+public var m_fHealPerHourMod:Number; //modifier to wound healing rate. 0.1 is normal
+public var m_fSleepAwareness:Number; //probability that creature will notice being snuck up on during sleep
+public var m_fVisibility:Number; //probability that creature will be seen by enemies
+public var m_fDetectionLevel:Number; //how well the creature notices other hidden creatures. 0=perfect, 1=not at all. changes each turn.
+public var m_fMoveReserveRemaining:Number; //the number of moves this creature has in reserve (e.g. running/sprinting)
+public var m_fMoveCost:Number; //multiplier for movement cost per hex. 1.0 is normal, 0.0 is no cost, 2.0 is double cost.
+public var m_fCover:Number; //current amount of cover this creature has (used in battle screen)
+public var m_fMorale:Number; //my confidence in battle, based on applied conditions. anyone can see this.
+public var m_fMoraleHidden:Number; //my confidence in battle, based on conditions no one else can see
+public var m_fMoraleSitu:Number; //my confidence in battle, based on current turn and target
+public var m_fMoraleSituHidden:Number; //my confidence in battle, based on current turn and target, only I can see this
+public var m_fDefense:Number; //defense strength on this creature. +1 is perfect defense, -1 is vulnerable
+public var m_fOrder:Number; //current combat move execution order
+public var m_fBloodLeft:Number; //current blood remaining. >0.9l RBC blood loss is hypovolemic shock, which we'll round to 1.0
+public var m_fImmuneLeft:Number; //current immune system remaining.
+public var m_fPainLeft:Number; //current pain threshold remaining.
+public var m_fBloodLeftBase:Number; //base limit to blood remaining.
+public var m_fImmuneLeftBase:Number; //base limit to immune system remaining.
+public var m_fPainLeftBase:Number; //base limit to pain threshold remaining.
+public var m_fBloodRestoreRate:Number; //amount of blood restored per hour
+public var m_fImmuneRestoreRate:Number; //amount of immune restored per hour
+public var m_nMorality:int; //morality counter (used in random morality encounters)
+public var m_fLeader:Number; //used by AI to determine grouping and following behavior
+public var m_bLeader:Boolean; //is this AI the current leader for a group?
+public var m_bVisibleBefore:Boolean; //was this creature visible before player moved into hex?
+
+public function set x(value:Number):void //x position of sprite in game
+public function set y(value:Number):void //y position of sprite in game
+
+//preferred starting range of battle. 0.0 = close, 1.0 = far, -1.0 = random
+public function set BattleRange(value:Number):void
+
+/* Used during combat to take loot after checking body */
+public function set LootTarget(value:int):void
+
+//drop all items
+//if value >= 0, only drop items in that slot
+public function set DropAllItems(value:int):void
+
+//lose all items in ground slot
+public function set EmptyGroundSlot(value:int):void
+
+//lose all items
+//if value >= 0, only lose items in that slot
+public function set LoseAllItems(value:int):void
+
+//spawn new creature of ID nVal
+public function set SpawnNewCreature(nVal:int):void
+
+/**
+ * lose a random item from the hands or containers
+ * value = property ID of item type to lose. -1 is any.
+ */
+public function set LoseRandomItem(value:int):void
+
+    //apply encounter
+public function set TriggerEncounter(value:int):void
+
+    //apply attack mode threat modifier. 1.0 = normal attack mode effect, 2.0 = double
+public function set Threat(value:int):void
+
+//clean and dress wounds. nSlot is slot ID. nSlot = -1 means all slots.
+public function set CleanAndDress(nSlot:int):void
+
+    //cripple specified limb. 1 = LArm, 2 = RArm, 3 = LLeg, 4 = RLeg
+public function set Crippled(nLimb:int):void
+
+//set defensive damage multiplier. 1.0 is normal. 0.0 is invincible. 2.0 is double damage.
+public function set DefDmgMult(value:Number):void
+
+//set attack damage multiplier. humans start with 0.5. 1.0 is normal. 0.0 is no damage. 2.0 is double damage.
+public function set AttDmgMult(value:Number):void
+
+//effectiveness of sleeping on restoring fatigue, and how easy it is to wake up prematurely. 1.0 = perfect, 0.5 = poor sleep, 0.0 = cannot sleep ever
+public function set fSleepQuality(value:Number):void
+
+/**
+ * Adds an awareness penalty for moving recently
+ */
+public function set JustMoved(nValue:int):void
+
+/**
+ * Adds or removes specified condition
+ * 
+ * @param	aParams = [nConditionID, ...]
+ */
+public function ChainCondition(aParams:Array):void
+
+/**
+ * Sets or unsets immunity to specified condition. ID>0 = set, ID<0 =  unset
+ * 
+ * @param	aParams = [nConditionID,...]
+ */
+public function SetImmunity(aParams:Array):void
+
+/**
+ * Adds the specified treasure group to creature's ground slot.
+ * If ground is full, will try camp.
+ * 
+ * @param	aParams = [nTreasureID, bWeathered, bReward, bIdentify]
+ */
+public function AddItemGround(aParams:Array):void
+
+/**
+ *changes this creature's opinion of specified faction by specified amount. 
+ *affects all creatures in hex, too.
+ * 
+ * @param	aParams = [nFactionID, m_fAmount]
+ */
+public function ChangeFactionRep(aParams:Array):void
+
+/**
+ * Applies armor to a wound slot
+ * @param	aParams = [nWoundSlotID, m_fCutArmor, m_fBluntArmor]
+ */
+public function ArmorWound(aParams:Array):void
+
+/**
+ * Removes creature from game without killing it.
+ * @param	aParams - if [0] is > 0, force despawn no matter what. otherwise, wait until unseen.
+ */
+public function Despawn(aParams:Array):void
+
+/**
+ * Used by encounters to bruise creature. fAmount is wound severity.
+ */
+public function set WoundBruise(fAmount:Number):void
+
+/**
+ * Used by encounters to cut creature. fAmount is wound severity
+ */
+public function set WoundCut(fAmount:Number):void
+
+/**
+ * Adjust creature's encumberance. (in kg)
+ */
+public function set Encumberance(value:Number):void
+
+//adjust the minimum light level at which this creature sees normally
+public function set MinLightLevel(fVal:Number):void
+
+//how well the creature notices other hidden creatures. 0=perfect, 1=not at all. changes each turn.
+public function set BaseDetectionLevel(nVal:Number):void
+
+//how far the creature sees under normal lighting, in hexes
+public function get VisionRange():Number
+
+//adjustment to min/max safe temperatures when raining/wet. in degrees F.
+public function set WetTempAdjustMod(value:Number):void
+
+//insulation coefficient for body. 0.0 is perfect insulation, 4.0 is normal human
+public function set BodyInsulation(fVal:Number):void
+
+//maximum ambient temperature where body temp remains at equilibrium (degrees F)
+public function set MaxSafeTemp(fVal:Number):void
+
+//minimum ambient temperature where body temp remains at equilibrium (degrees F)
+public function set MinSafeTemp(fVal:Number):void
+
+//is the creature resting or not? 1 = yes, 0 = no.
+public function set Resting(value:Boolean):void
+
+//apply all fallen and related conditions. nRange is ignored.
+public function set KnockDown(nRange:int):void
+
+//clean up any battle-specific stuff applied to the creature. teleport nRange hexes away when done.
+public function set ExitBattle(nRange:int):void
+
+/**
+ * Advances time (metabolism, etc.) by specified amount. bWeather means apply weather or not. 1 = yes, 0 = no.
+ * @param	aParams - [fHours, bWeather]
+ */
+public function PassTime(aParams:Array):void
+
+//is the creature asleep or not? 1 = yes, 0 = no.
+public function set Asleep(value:Boolean):void
+
+//sets the current light level of this creature, due to hex, time of day, and items we are carrying. 0 = dark, 1 = light
+public function set LightLevel(value:Number):void
+```
+
+- Player-Specific Fields
+```
+//changes amount of money player has
+public function set Money(fVal:Number):void
+
+/**
+ * Adds recipe ID=value to player's quick recipe list
+ */
+override public function set AddRecipe(value:int):void
+
+/**
+ * adds the specified trait to the player
+ * 
+ * @param	aParams = [strItemID]
+ */
+public function AddTrait(aParams:Array):void
+
+/**
+ * removes the specified trait to the player
+ * 
+ * @param	aParams = [strItemID]
+ */
+public function RemoveTrait(aParams:Array):void
+
+/**
+ * adds the specified skill to the player
+ * 
+ * @param	aParams = [strItemID]
+ */
+public function AddSkill(aParams:Array):void
+
+/**
+ * Removes the specified skill from the player
+ * 
+ * @param	aParams = [strItemID]
+ */
+public function RemoveSkill(aParams:Array):void
+
+//uses a GPS tool to reveal info on nearby hexes. nValue is radius in hexes.
+public function set UseGPS(nValue:int):void
+
+//reset body temperature to normal. nValue is ignored
+public function set ResetTemp(nValue:int):void
+
+//gets a diagnostic encounter screen for the player. nValue is ignored
+public function set GetDiagnostic(nValue:int):void
+
+/**
+ * changes a faction's default opinion of this creature by specified amount. 
+ * if bOverride is true, change all existing AI in this faction, too.
+ * 
+ * @param	aParams = [nFactionID, m_fAmount, bOverride]
+ */
+public function ChangeGlobalFactionRep(aParams:Array):void
+
+/**
+ * Removes all player items matching ingredient ID and stores in a hidden locker item until they're needed again.
+ * bUndo - if true, current lockbox is given back to player instead of confiscating items.
+ * bClear - if true, locker is emptied (contents destroyed) before new items put in
+ * 
+ * @param	aParams = [nIngredientID, bUndo, bClear]
+ */
+public function Confiscate(aParams:Array):void
+
+/**
+ * Triggers the game's ending, which changes to a new state showing an encounter image and text, and player stats. Cue ending music.
+ * nID - encounter ID to use for final image and text
+ * 
+ * @param	aParams = [nID]
+ */
+public function EndGame(aParams:Array):void
+```
+
+- AI-Specific Fields
+```
+/**
+ * Adds a waypoint to this AI's waypoint list
+ * @param	aParams - [x, y, nEncounterID, bHome] x,y are hex coords, nEncounterID is the encounter to trigger when getting there, bHome is whether to set x,y as new home
+ */
+public function SetWaypoint(aParams:Array):void
+
+/**
+ * Adds/removes a condition to the Player (for plot advancement)
+ * @param	aParams - [nID]
+ */
+public function SetPlayerCondition(aParams:Array):void
+```
+
+====
 

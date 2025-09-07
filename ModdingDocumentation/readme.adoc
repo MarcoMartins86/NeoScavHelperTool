@@ -235,67 +235,36 @@ Complete list of slot IDs and properties. Also includes wound slot IDs and props
 |===
 
 |ID |Name |Image (Off) |Image (On) |Z-Depth |Carried |Mirrored |Layers
-
 |2 |"LEFT SHOE" |"btn_inv_body_shoel.png" |"btn_inv_body_shoel_on.png" |20 |true |true |
-
 |3 |"RIGHT SHOE" |"btn_inv_body_shoer.png" |"btn_inv_body_shoer_on.png" |30 |true |false |
-
 |4 |"LEGS" |"btn_inv_body_legs.png" |"btn_inv_body_legs_on.png" |40 |true |false |
-
 |5 |"LEFT WRIST" |"btn_inv_body_wristl.png" |"btn_inv_body_wristl_on.png" |50 |true |true |
-
 |6 |"RIGHT WRIST" |"btn_inv_body_wristr.png" |"btn_inv_body_wristr_on.png" |60 |true |false | 
-
 |7 |"LEFT HAND" |"btn_inv_body_handl.png" |"btn_inv_body_handl_on.png" |130 |true |true |
-
 |8 |"RIGHT HAND" |"btn_inv_body_handr.png" |"btn_inv_body_handr_on.png" |130 |true |false |
-
 |11 |"TORSO" |"btn_inv_body_torso.png" |"btn_inv_body_torso_on.png" |120 |true |false |3,1,1,1
-
 |12 |"BELT" |"btn_inv_body_belt.png" |"btn_inv_body_belt_on.png" |110 |true |false |
-
 |13 |"LEFT SHOULDER" |"btn_inv_body_shoulderl.png" |"btn_inv_body_shoulderl_on.png" |20 |true |true | 
-
 |14 |"RIGHT SHOULDER" |"btn_inv_body_shoulderr.png" |"btn_inv_body_shoulderr_on.png" |20 |true |false |
-
 |17 |"HEAD" |"btn_inv_body_head.png" |"btn_inv_body_head_on.png" |170 |true |false |1,1,1
-
 |20 |"HOLD IN LEFT HAND" |"btn_inv_body_holdl.png" |"btn_inv_body_holdl_on.png" |240 |true |false | 
-
 |21 |"HOLD IN RIGHT HAND" |"btn_inv_body_holdr.png" |"btn_inv_body_holdr_on.png" |240 |true |false |
-
 |22 |"BACKPACK" |"btn_inv_backpack.png" |"btn_inv_backpack_on.png" |10 |true |false |
-
 |23 |"NECK #1" |"btn_inv_neck.png" |"btn_inv_neck_on.png" |230 |true |false |3
- 
 |200 |"GROUND" |"blank.png" |"blank.png" |0 |false |false | 
-
 |201 |"ENCOUNTER RESPONSE" |"blank.png" |"blank.png" |0 |false |false | 
-
 |202 |"ENCOUNTER ITEMS" |"blank.png" |"blank.png" |0 |false |false |
-
 |203 |"AVAILABLE TRAITS" |"blank.png" |"blank.png" |0 |false |false | 
-
 |204 |"AVAILABLE SKILLS" |"blank.png" |"blank.png" |0 |false |false | 
-
 |213 |"Traits" |"blank.png" |"blank.png" |0 |false |false |
-
 |214 |"Skills" |"blank.png" |"blank.png" |0 |false |false | 
-
 |205 |"INGREDIENTS" |"blank.png" |"blank.png" |0 |false |false | 
-
 |206 |"YIELD" |"blank.png" |"blank.png" |0 |false |false | 
-
 |210 |"AVAILABLE CRAFTING ITEMS" |"blank.png" |"blank.png" |0 |false |false | 
-
 |207 |"VEHICLE" |"btn_vehicle.png" |"btn_vehicle_on.png" |0 |true |false | 
-
 |209 |"AVAILABLE CAMP SITES" |"blank.png" |"blank.png" |0 |false |false |  
-
 |208 |"CAMP" |"btn_camp.png" |"btn_camp_on.png" |0 |false |false |
-
 |211 |"USE" |"blank.png" |"blank.png" |0 |false |false | 
-
 |212 |"TEMP" |"blank.png" |"blank.png" |0 |false |false |1,1,1
 
 |===
@@ -322,39 +291,22 @@ These are still equipment slots, but they have some slight differences. The fiel
 [cols="1,2,1,1,2,2,2,2,2,1"] 
 |===
 |ID |Name |Probability |Z-Sort |Blood Images |Bruise Images |Infect Images |Cut Images |Pain Images |Mirrored
-
 |100 |upper left arm |0.1 |0 |WoundUACBloodMild.png, WoundUACBlood.png, WoundUACBloodSevere.png |WoundUACBruise.png, WoundUACBruiseSevere.png |WoundBlank.png, WoundUACInfect.png, WoundUACInfect.png, WoundUACInfect.png |WoundUACCutMild.png, WoundUACCut.png, WoundUACCutSevere.png |WoundUACPain.png |false
-
 |111 |upper right arm |0.1 |0 |WoundUACBloodMild.png, WoundUACBlood.png, WoundUACBloodSevere.png |WoundUACBruise.png, WoundUACBruiseSevere.png |WoundBlank.png, WoundUACInfect.png, WoundUACInfect.png, WoundUACInfect.png |WoundUACCutMild.png, WoundUACCut.png, WoundUACCutSevere.png |WoundUACPain.png |true
-
 |101 |head |0.1 |0 |WoundHCBloodMild.png, WoundHCBlood.png, WoundHCBloodSevere.png |WoundHCBruise.png, WoundHCBruiseSevere.png |WoundBlank.png, WoundHCInfect.png, WoundHCInfect.png, WoundHCInfect.png |WoundHCCutMild.png, WoundHCCut.png, WoundHCCutSevere.png |WoundHCPain.png |false
-
 |102 |lower left arm |0.1 |0 |WoundLACBloodMild.png, WoundLACBlood.png, WoundLACBloodSevere.png |WoundLACBruise.png, WoundLACBruiseSevere.png |WoundBlank.png, WoundLACInfect.png, WoundLACInfect.png, WoundLACInfect.png |WoundLACCutMild.png, WoundLACCut.png, WoundLACCutSevere.png |WoundLACPain.png |false
-
 |112 |lower right arm |0.1 |0 |WoundLACBloodMild.png, WoundLACBlood.png, WoundLACBloodSevere.png |WoundLACBruise.png, WoundLACBruiseSevere.png |WoundBlank.png, WoundLACInfect.png, WoundLACInfect.png, WoundLACInfect.png |WoundLACCutMild.png, WoundLACCut.png, WoundLACCutSevere.png |WoundLACPain.png |true
-
 |103 |left arm |0.1 |0 |WoundBlank.png |WoundAFBruiseMild.png, WoundAFBruise.png, WoundAFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundAFPain.png |false
-
 |113 |right arm |0.1 |0 |WoundBlank.png |WoundAFBruiseMild.png, WoundAFBruise.png, WoundAFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundAFPain.png |true
-
 |104 |upper chest |0.25 |0 |WoundUCCBloodMild.png, WoundUCCBlood.png, WoundUCCBloodSevere.png |WoundUCCBruise.png, WoundUCCBruiseSevere.png |WoundBlank.png, WoundUCCInfect.png, WoundUCCInfect.png, WoundUCCInfect.png |WoundUCCCutMild.png, WoundUCCCut.png, WoundUCCCutSevere.png |WoundUCCPain.png |false
-
 |105 |lower chest |0.35 |0 |WoundLCCBloodMild.png, WoundLCCBlood.png, WoundLCCBloodSevere.png |WoundLCCBruise.png, WoundLCCBruiseSevere.png |WoundBlank.png, WoundLCCInfect.png, WoundLCCInfect.png, WoundLCCInfect.png |WoundLCCCutMild.png, WoundLCCCut.png, WoundLCCCutSevere.png |WoundLCCPain.png |false
-
 |106 |upper stomach |0.3 |0 |WoundUSCBloodMild.png, WoundUSCBlood.png, WoundUSCBloodSevere.png |WoundUSCBruise.png, WoundUSCBruiseSevere.png |WoundBlank.png, WoundUSCInfect.png, WoundUSCInfect.png, WoundUSCInfect.png |WoundUSCCutMild.png, WoundUSCCut.png, WoundUSCCutSevere.png |WoundUSCPain.png |false
-
 |107 |lower stomach |0.25 |0 |WoundLSCBloodMild.png, WoundLSCBlood.png, WoundLSCBloodSevere.png |WoundLSCBruise.png, WoundLSCBruiseSevere.png |WoundBlank.png, WoundLSCInfect.png, WoundLSCInfect.png, WoundLSCInfect.png |WoundLSCCutMild.png, WoundLSCCut.png, WoundLSCCutSevere.png |WoundLSCPain.png |false
-
 |108 |upper left leg |0.25 |0 |WoundULCBloodMild.png, WoundULCBlood.png, WoundULCBloodSevere.png |WoundULCBruise.png, WoundULCBruiseSevere.png |WoundBlank.png, WoundULCInfect.png, WoundULCInfect.png, WoundULCInfect.png |WoundULCCutMild.png, WoundULCCut.png, WoundULCCutSevere.png |WoundULCPain.png |false
-
 |114 |upper right leg |0.1 |0 |WoundULCBloodMild.png, WoundULCBlood.png, WoundULCBloodSevere.png |WoundULCBruise.png, WoundULCBruiseSevere.png |WoundBlank.png, WoundULCInfect.png, WoundULCInfect.png, WoundULCInfect.png |WoundULCCutMild.png, WoundULCCut.png, WoundULCCutSevere.png |WoundULCPain.png |true
-
 |109 |lower left leg |0.1 |0 |WoundLLCBloodMild.png, WoundLLCBlood.png, WoundLLCBloodSevere.png |WoundLLCBruise.png, WoundLLCBruiseSevere.png |WoundBlank.png, WoundLLCInfect.png, WoundLLCInfect.png, WoundLLCInfect.png |WoundLLCCutMild.png, WoundLLCCut.png, WoundLLCCutSevere.png |WoundLLCPain.png |false
-
 |115 |lower right leg |0.1 |0 |WoundLLCBloodMild.png, WoundLLCBlood.png, WoundLLCBloodSevere.png |WoundLLCBruise.png, WoundLLCBruiseSevere.png |WoundBlank.png, WoundLLCInfect.png, WoundLLCInfect.png, WoundLLCInfect.png |WoundLLCCutMild.png, WoundLLCCut.png, WoundLLCCutSevere.png |WoundLLCPain.png |true
-
 |110 |left leg |0.1 |0 |WoundBlank.png |WoundLFBruiseMild.png, WoundLFBruise.png, WoundLFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundLFPain.png |false
-
 |116 |right leg |0.1 |0 |WoundBlank.png |WoundLFBruiseMild.png, WoundLFBruise.png, WoundLFBruiseSevere.png |WoundBlank.png |WoundBlank.png |WoundLFPain.png |true
 
 |===
@@ -776,6 +728,150 @@ Found in "conditions". These are case sensitive.
  - *SetPlayerCondition*
 ====
 
+== Condensed: Treasure table camp type
+
+.View content
+[%collapsible]
+====
+So in the games treasure tables is this:
+[source,xml]
+ <column name="strName">forest camp type</column>
+ <column name="strName">suburban ruins camp type</column>
+ <column name="strName">urban ruins camp type</column>
+ <column name="strName">forest shack camp type</column>
+ <column name="strName">rubble camp type</column>
+
+in my situation, i wanted and needed a camptype that shared one or less camptypes so that i could place an item in it without said item showing up just anywhere.
+
+[source]
+ Forest     .3.4
+ Suburban .2.3    .6
+ Urban    .2    .5  .7
+ Shack      .3.4  .6
+ Rubble             .7  .9
+
+so what you see above is what camptype each of the five use, and if it looks confusing it's because i removed the 12 from the first half of the numbers for easy reading.
+====
+
+== Complete List of Item nGroupIDs
+
+.View content
+[%collapsible]
+====
+Complete list of Item Group IDs (called 'nGroupID' in the neogame XML export file).
+
+The list might come in handy when adding or revising treasure tables and the likes, as looking up numbers in the XML file is a tad daunting :)
+
+
+[cols="1,2,3,4"] 
+|===
+|nGroupID |Group Name |Example Item(s) |Notes
+|1 |Data Storage |Memory stick, Hard disk, security footage |
+|2 |Traps |Squirrel Snare, Noise Trap |Handcrafted traps
+|3 |Vehicles |Shopping Cart, Sled |Items able to be used in the vehicle slot
+|4 |Rags & Hide |Clean/dirty rags, animal hides |
+|5 |Bags |Duffel bag, children's backpack |Wearable bags and chips bag
+|6 |Slings |Rifle shoulder strap |Contains only one item
+|7 |Newspaper |Old newspaper |Contains only one item
+|8 |Electronic Devices |Laptop, Smartphone, iSlab |
+|9 |Paper Scrap |Scrap of paper |Contains only one item
+|10 |Ammo |Pistol/rifle rounds, Power Cells |Arrows for bows, bullets for guns, "batteries" for laserguns
+|11 |Bottles |Water bottle, urn |Container for liquids, etc.
+|12 |Camp site |camp site |?
+|13 |Raw Wood |Twigs, Branches, |Wood from forest sites
+|14 |Bed rolls |Pearson "Pharaoh" mummy sleeping bag |Sleeping bags only
+|15 |Shelter |8x10 tarp |Contains only one item; Shelter materials?
+|16 |Corpses |Human corpse, Dogman corpse |Well, dead, rotting NPCs
+|17 |Tarp |8x10 tarp |Contains only one item; Duplicate of Group 15?
+|18 |Torches |Crude/Quality Torch, Smudge Stick |Contains on/off states
+|19 |Transponder |V-MADS transponder |Contains only one item
+|20 |Statuses |Crippled, No helmets |Debuffs/Negative status effects?
+|21 |Melee Weapons |Shiv, Meat Cleaver, Club, Wrench |Crowbar is in 23
+|22 |Splint |Rough splint |Medical splint
+|23 |Crowbar |Crowbar, Crowbar with Strap |normal and strap version
+|24 |Gloves |Tactical glove, Patchwork hide glove |Clothes, glove slot
+|25 |Terrain Resource |River, Trees, Lake, Sun, Power tap |Immovable Resources tied to hexes, can be used and yield something
+|26 |Ground fixture |Last Canteen Sign, Communal Thrash Barrel |Immovable Ground/camp fixtures; Used mostly to "enter" buildings/encounters
+|27 |Boxes |Cardboard Box |Container, Contains only one item
+|28 |Bows |Compound bow w/ strap |Hunting bows (weapons)
+|29 |Slings |Sling |Contains only one item
+|30 |Handguns |Pistol, Revolver |
+|31 |Spears |Sharpened spear |Melee weapons with longer range in combat
+|32 |Pans & Cans |Metal sauce pan, tin can |Cooking utensils/hardware?
+|33 |Batteries |AA Battery, Micro Cell, iSlab battery |For electronic devices, etc.
+|34 |Flashlights | |
+|35 |Software |Cracking Software, etc. |Can be stored on Data Storages (1)
+|36 |Data files |TXT |Contains only one item
+|37 |Films |60mm film |Contains only one item
+|38 |Books |Children's book |Contains only one item
+|39 |Lighters |Bic cigarette lighter, sparker |
+|40 |Gas Mask Cartridge |Clean/spent cartridge states |
+|41 |Lockpicks |Contains only one item |
+|42 |UVDs |Various "DVDs" |
+|43 |UVD Cases |Cases for "DVDs" |
+|44 |Vials | |
+|45 |Drums |Barrels |
+|46 |Multitools |Multitool |Contains only one item
+|47 |Keys | |
+|48 |Drone Armor |Contains only one item |
+|49 |Special Campfires |Contains only one item |
+|50 |Shoes |Boots, Flip Flops, Makeshift Shoes |Footwear
+|51 |ID Cards |Contains only one item |
+|52 |Road Maps |Road Map |Contains only one item
+|53 |- |- |-
+|54 |- |- |-
+|55 |Pills |White Pills, Red Pills |Antibiotics, Sleeping pills and the like
+|56 |- |- |-
+|57 |- |- |-
+|58 |- |- |-
+|59 |- |- |-
+|60 |Rifles |Hunting Rifle, Gauss Rifle |Contain "heavy" weapons
+|61 |- |- |-
+|62 |- |- |-
+|63 |- |- |-
+|64 |- |- |-
+|65 |- |- |-
+|66 |- |- |-
+|67 |- |- |-
+|68 |- |- |-
+|69 |- |- |-
+|70 |- |- |-
+|71 |- |- |-
+|72 |- |- |-
+|73 |- |- |-
+|74 |- |- |-
+|75 |- |- |-
+|76 |- |- |-
+|77 |- |- |-
+|78 |Clothes (Torso) |Shirts, Coats, Vests, Sashes.. |Clothing items for the torso slot, including the different layers
+|79 |- |- |-
+|80 |- |- |-
+|81 |- |- |-
+|82 |- |- |-
+|83 |- |- |-
+|84 |- |- |-
+|85 |- |- |-
+|86 |Parts |Shards, Small parts, shopping cart part |Generally contains Junk or crafting ingredients
+|87 |Ashes |Handful of ashes |
+|88 |Talismans |Bronze Talisma, Jar of Souls |
+|89 |Bracelets |Hospital Strap, DMC Strap |
+|90 |Encounter Reactions |Sneak away, Go down stairs, ... |From Combat reactions (attack, flee, etc.) to Hospital options..
+|91 |Skills |Trapping, Lockpicking, Night Vision |Contains abilities selectable at the start of the game and "legendary reputation"
+|92 |- |- |-
+|93 |GUI Container |? |
+|94 |Medical Kits |First-aid kit, Nanorobot medical kit |
+|95 |Pants |Black Cargo Pants |Clothes, leg slot
+|96 |Traits |Myopia, Feeble, Insomniac |Negative staring abilities, positive augmentations
+|97 |Campfires |Tiny and Medium Campfires, lit |Lit campfires
+|98 |Liquids |Water, blood, tea, lighter fluid |All sorts of liquid substances
+|99 |Documents |V-MADS blueprints, Blue Frog book pages |
+|100 |Optics |Binoculars, Scopes |Magnifying optics
+|101 |Food |Meat, Soup, Gelly bears, Ketchup, Chips.. |Yum!
+|102 |Headwear |Balaclava, NV-Goggles, Gasmask |Clothes, head slot
+|103 |Scavenge Locations |Locked Storage Shed, Open Field |Scavenge locations found in hexes
+|===
+
+====
 
 
 

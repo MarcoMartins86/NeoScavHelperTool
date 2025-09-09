@@ -13,5 +13,11 @@ namespace NeoScavHelperTool.Models
 
         [RegularExpression("^.+NEOScavenger\\.exe$", ErrorMessage = "Unexpected value")]
         public string NeoScavExePath { get; set; } = string.Empty;
+
+        [RegularExpression(
+            "^file$|^memory$",
+            ErrorMessage = "SQLite value can only be 'file' or 'memory'"
+        )]
+        public string SQLite { get; set; } = string.Empty;
     }
 }

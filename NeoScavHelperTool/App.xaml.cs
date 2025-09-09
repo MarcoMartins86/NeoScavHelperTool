@@ -18,6 +18,10 @@ using NeoScavHelperTool.ViewModels;
 using NeoScavHelperTool.Views;
 using Serilog;
 using Forms = System.Windows.Forms;
+#if NET462
+using NeoScavHelperTool.Framework;
+using SQLitePCL;
+#endif
 
 namespace NeoScavHelperTool
 {
@@ -51,6 +55,10 @@ namespace NeoScavHelperTool
             _logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             _dialogService = Ioc.Default.GetRequiredService<DialogService>();
 
+#if NET462
+            InitSQLiteProvider();
+#endif
+
             InitializeComponent();
         }
 
@@ -61,8 +69,6 @@ namespace NeoScavHelperTool
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             IConfigurationRoot config = builder.Build();
-
-            //string conn = config.GetConnectionString("Neenah_SFC_ConnectionString");
 
             services
                 .AddOptions<AppOptions>()
@@ -107,6 +113,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<LoadingService>();
             services.AddSingleton<NeoScavFolderPathResolverService>();
             services.AddSingleton<DialogService>();
+            services.AddSingleton<DatabaseService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();
@@ -137,5 +144,19 @@ namespace NeoScavHelperTool
                 );
             }
         }
+
+#if NET462
+        private void InitSQLiteProvider()
+        {
+            const string name = "e_sqlite3";
+            SQLite3Provider_dynamic_cdecl.Setup(name, new ModuleGetFunctionPointer(name));
+            raw.SetProvider(new SQLite3Provider_dynamic_cdecl());
+            string nativeLibaryName = raw.GetNativeLibraryName();
+            _logger.LogTrace(
+                "SQLite provider manually set to use {nativeLibaryName}",
+                nativeLibaryName
+            );
+        }
+#endif
     }
 }

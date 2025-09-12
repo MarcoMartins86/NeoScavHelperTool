@@ -114,6 +114,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<NeoScavFolderPathResolverService>();
             services.AddSingleton<DialogService>();
             services.AddSingleton<DatabaseService>();
+            services.AddSingleton<NeoScavPhpParserService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

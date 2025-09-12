@@ -6,6 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NeoScavHelperTool.Attributes;
+using NeoScavHelperTool.Extension;
+using NeoScavHelperTool.Helper;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.ViewModels;
 
@@ -16,26 +19,29 @@ namespace NeoScavHelperTool.Services
         private readonly ILogger<LoadingService> _logger;
         private readonly NeoScavFolderPathResolverService _gamePathResolverService;
         private readonly DatabaseService _dbService;
+        private readonly NeoScavPhpParserService _phpParserService;
 
         public LoadingService(
             ILogger<LoadingService> logger,
             NeoScavFolderPathResolverService folderPathResolverService,
-            DatabaseService dbService
+            DatabaseService dbService,
+            NeoScavPhpParserService phpParserService
         )
         {
             _logger = logger;
             _gamePathResolverService = folderPathResolverService;
             _dbService = dbService;
+            _phpParserService = phpParserService;
         }
 
-        public void Start(SplashScreenViewModel splashScreenViewModel)
+        public void Start(ISplashScreen splashScreen)
         {
             // Resolve game folder path
             string gamePath = _gamePathResolverService.NeoScavFolderPath;
 
-            _dbService.Query<int>();
+            List<ModInfo> mods = _phpParserService.GetMods(gamePath);
 
-            splashScreenViewModel.Message = gamePath;
+            splashScreen.SetProgress(50, gamePath);
             Thread.Sleep(5000);
         }
     }

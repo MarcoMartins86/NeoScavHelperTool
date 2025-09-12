@@ -29,16 +29,15 @@
     </Grid.RowDefinitions>
     <Image x:Name="image" Stretch="None" Source="/resources/images/SplashScreen.png" />
     <ProgressBar
-      x:Name="progress"
       Margin="0"
       Grid.Row="1"
       Height="30"
       VerticalAlignment="Center"
       Width="{Binding ActualWidth, ElementName=image, Mode=OneWay}"
-      IsIndeterminate="True"
+      IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}"
+      Value="{Binding Progress, Mode=OneWay}"
     />
     <TextBlock
-      x:Name="message"
       HorizontalAlignment="Center"
       VerticalAlignment="Center"
       FontSize="20"

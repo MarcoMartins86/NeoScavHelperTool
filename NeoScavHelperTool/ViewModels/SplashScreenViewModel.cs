@@ -15,7 +15,7 @@ using NeoScavHelperTool.Views;
 
 namespace NeoScavHelperTool.ViewModels
 {
-    public class SplashScreenViewModel : ObservableObject
+    public class SplashScreenViewModel : ObservableObject, ISplashScreen
     {
         private readonly ILogger<SplashScreenViewModel> _logger;
         private readonly MainWindow _mainWindow;
@@ -27,6 +27,20 @@ namespace NeoScavHelperTool.ViewModels
         {
             get => _message;
             set => SetProperty(ref _message, value);
+        }
+
+        private int _progress = 0;
+        public int Progress
+        {
+            get => _progress;
+            set => SetProperty(ref _progress, value);
+        }
+
+        private bool _isIndeterminate = true;
+        public bool IsIndeterminate
+        {
+            get => _isIndeterminate;
+            set => SetProperty(ref _isIndeterminate, value);
         }
 
         public SplashScreenViewModel(
@@ -66,5 +80,17 @@ namespace NeoScavHelperTool.ViewModels
             _logger.LogInformation($"{nameof(SplashScreenWindow)} closing");
             _dispatcher.Invoke(window.Close);
         }
+
+        public void SetProgress(int percentage, string message)
+        {
+            IsIndeterminate = false;
+            Progress = percentage;
+            Message = message;
+        }
+    }
+
+    public interface ISplashScreen
+    {
+        void SetProgress(int percentage, string message);
     }
 }

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace NeoScavHelperTool.Models
 {
-    public class ImageInfo
+    public enum ModType
     {
-        public static string IMAGES_FOLDER = "img";
-        public string Name { get; set; }
-        public string[] Files { get; set; }
+        Old,
+        New,
     }
 }

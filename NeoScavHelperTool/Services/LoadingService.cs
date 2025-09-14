@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -38,8 +40,11 @@ namespace NeoScavHelperTool.Services
         {
             // Resolve game folder path
             string gamePath = _gamePathResolverService.NeoScavFolderPath;
-
-            List<ModInfo> mods = _phpParserService.GetMods(gamePath);
+            // Get the list of mods info
+            IList<ModInfo> mods = _phpParserService.GetModsInfo(gamePath);
+            // Do a pre computation of total files we have to parse
+            int totalFilesToParse = mods.Select(mod => mod.Files.Count).Sum();
+            _logger.LogDebug("\"{totalFilesToParse}\" mod files to parse", totalFilesToParse);
 
             splashScreen.SetProgress(50, gamePath);
             Thread.Sleep(5000);

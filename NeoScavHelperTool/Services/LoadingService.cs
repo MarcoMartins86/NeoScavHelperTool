@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Schema;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NeoScavHelperTool.Attributes;
@@ -25,33 +26,39 @@ namespace NeoScavHelperTool.Services
     public class LoadingService
     {
         private readonly ILogger<LoadingService> _logger;
-        private readonly NeoScavFolderPathResolverService _gamePathResolverService;
-        private readonly DatabaseService _dbService;
+        private readonly NeoScavFolderPathResolverService _folderPathResolverService;
         private readonly NeoScavPhpParserService _phpParserService;
-
-        //private readonly AtackModesService _neoScavModXmlParser;
 
         public LoadingService(
             ILogger<LoadingService> logger,
             NeoScavFolderPathResolverService folderPathResolverService,
-            DatabaseService dbService,
-            NeoScavPhpParserService phpParserService,
-            Dispatcher dispatcher
+            NeoScavPhpParserService phpParserService
         )
         {
             _logger = logger;
-            _gamePathResolverService = folderPathResolverService;
-            _dbService = dbService;
+            _folderPathResolverService = folderPathResolverService;
             _phpParserService = phpParserService;
         }
 
         public void Start(ISplashScreen splashScreen)
         {
             // Resolve game folder path
-            string gamePath = _gamePathResolverService.NeoScavFolderPath;
+            string gamePath = _folderPathResolverService.NeoScavFolderPath;
             // Get the list of mods info
             IList<ModInfo> mods = _phpParserService.GetModsInfo(gamePath);
-            // Do a pre computation of total files we have to parse
+            // Load the mods data into db
+            LoadModsDataIntoDb(splashScreen, gamePath, mods);
+            // Update progress stating it has finished
+            splashScreen.SetProgress(100, "Finished loading");
+        }
+
+        private void LoadModsDataIntoDb(
+            ISplashScreen splashScreen,
+            string gamePath,
+            IList<ModInfo> mods
+        )
+        {
+            // Do a pre computation of total files we have to parse (helps to define progress)
             int totalFilesToParse = mods.Select(mod => mod.Files.Count).Sum();
             _logger.LogDebug("\"{totalFilesToParse}\" mod files to parse", totalFilesToParse);
 
@@ -60,35 +67,30 @@ namespace NeoScavHelperTool.Services
                 ModInfo mod = mods[i];
                 for (int x = 0; x < mod.Files.Count; x++, j++)
                 {
+                    DataType type = mod.Files.ElementAt(x);
+
                     splashScreen.SetProgress(
                         (j * 100) / totalFilesToParse,
-                        $"Validating {mod.Name}_{mod.Files.ElementAt(x)}"
+                        $"Loading {mod.Name}_{type}"
                     );
 
-                    for (int y = 0; y < 100000000; y++)
-                        ;
+                    if (!DataTypeHelper.TryGetAttributeFromDataType(type, out var attribute))
+                    {
+                        throw new Exception($"Unexpected error, unknown DataType: \"{type}\"");
+                    }
 
-                    /*xml.Load(
-                        Path.Combine(
-                            mod.Folder,
-                            ModInfo.NEW_MOD_TYPE_DATA_FOLDER,
-                            mod.Files.ElementAt(x).ToString() + ".xml"
-                        )
-                    );*/
-
-                    DataTypeBaseService.LoadDocumentWithValidation(
-                        Path.Combine(
-                            mod.Folder,
-                            ModInfo.NEW_MOD_TYPE_DATA_FOLDER,
-                            mod.Files.ElementAt(x).ToString() + ".xml"
-                        )
-                    );
+                    if (Ioc.Default.GetService(attribute.Handler) is IDataTypeHandler handler)
+                    {
+                        handler.LoadModIntoDb(gamePath, mod, attribute);
+                    }
+                    else
+                    {
+                        throw new Exception(
+                            "Unexpected error, check the Handler attribute assignement in DataType enum"
+                        );
+                    }
                 }
             }
-
-            splashScreen.SetProgress(100, "Finished loading");
-
-            Thread.Sleep(5000);
         }
     }
 }

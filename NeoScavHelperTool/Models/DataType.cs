@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Attributes;
+using NeoScavHelperTool.Services.DataTypeHandler;
 
 namespace NeoScavHelperTool.Models
 {
     public enum DataType
     {
-        [DataType(File = "attackmodes.xml", Type = ModType.New)]
+        [DataType(
+            File = "attackmodes.xml",
+            Type = ModType.New,
+            Table = AtackModesService.TABLE,
+            Handler = typeof(AtackModesService)
+        )]
         AttackModes,
 
         [DataType(File = "barterhexes.xml", Type = ModType.New)]

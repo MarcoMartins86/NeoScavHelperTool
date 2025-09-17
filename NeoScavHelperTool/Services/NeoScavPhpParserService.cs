@@ -12,15 +12,17 @@ namespace NeoScavHelperTool.Services
 {
     public class NeoScavPhpParserService
     {
-        private static string GET_MODS_PHP_NAME = "getmods.php";
-        private static int GET_MODS_PHP_DATA_OFFSET = 1;
-        private static string GET_IMAGES_PHP_NAME = "getimages.php";
-        private static int GET_IMAGES_PHP_DATA_OFFSET = 2;
-        private static string GET_IMAGES_PHP_BIG_IMAGE_TYPE_PREFIX = "x2_";
-        private static char[] LINE_SEPARATOR = { '&' };
-        private static char[] KEY_VALUE_SEPARATOR = { '=' };
-        private static string N_ROWS = "nRows";
-        private static string N_COLS = "nCols";
+        private const string GET_MODS_PHP_NAME = "getmods.php";
+        private const int GET_MODS_PHP_DATA_OFFSET = 1;
+        private const string GET_IMAGES_PHP_NAME = "getimages.php";
+        private const int GET_IMAGES_PHP_DATA_OFFSET = 2;
+        private const string GET_IMAGES_PHP_BIG_IMAGE_TYPE_PREFIX = "x2_";
+        private static readonly char[] LINE_SEPARATOR = { '&' };
+        private static readonly char[] KEY_VALUE_SEPARATOR = { '=' };
+        private const string N_ROWS = "nRows";
+        private const string N_COLS = "nCols";
+        private const string VANILLA_MOD_NAME = "0";
+        public const string NEW_MOD_TYPE_DATA_FOLDER = "data";
 
         private readonly ILogger<NeoScavPhpParserService> _logger;
 
@@ -37,23 +39,24 @@ namespace NeoScavHelperTool.Services
             int nEntries = ParseModsNumberEntries(getModsPhpContent) + 1;
             var mods = new List<ModInfo>(nEntries);
             // let's start by adding the vanilla game files
-            mods.Add(GetNewModInfo(ModInfo.VANILLA_MOD_NAME, rootFolder));
+            mods.Add(GetNewModInfo(VANILLA_MOD_NAME, rootFolder, "."));
             // TODO: add code to parse the other mods besides vanilla
             return mods;
         }
 
-        private ModInfo GetNewModInfo(string name, string folder)
+        private ModInfo GetNewModInfo(string name, string rootFolder, string modFolder)
         {
+            string folder = Path.Combine(rootFolder, modFolder);
             _logger.LogInformation(
                 "Gathering mod \"{name}\" info from folder \"{folder}\"",
                 name,
                 folder
             );
 
-            ModInfo modInfo = new ModInfo() { Name = name, Folder = folder };
+            ModInfo modInfo = new ModInfo() { Name = name, Folder = modFolder };
 
             IEnumerable<string> dirFiles = Directory.EnumerateFiles(
-                Path.Combine(folder, ModInfo.NEW_MOD_TYPE_DATA_FOLDER)
+                Path.Combine(folder, NEW_MOD_TYPE_DATA_FOLDER)
             );
 
             ISet<DataType> modFiles = new HashSet<DataType>();

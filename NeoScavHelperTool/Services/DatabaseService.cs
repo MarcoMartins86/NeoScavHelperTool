@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace NeoScavHelperTool.Services
         private readonly IConfiguration _configuration;
         private readonly IOptions<AppOptions> _options;
         private SQLiteConnection _connection = null;
-        protected SQLiteConnection Connection
+        public SQLiteConnection Connection
         {
             get
             {
@@ -43,8 +44,24 @@ namespace NeoScavHelperTool.Services
 
         private void Connect()
         {
+            string connectionStringValue = _configuration.GetConnectionString(
+                _options.Value.SQLite
+            );
+            if ("file".Equals(_options.Value.SQLite))
+            {
+                string fullPathToFile = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    connectionStringValue
+                );
+                if (File.Exists(fullPathToFile))
+                {
+                    File.Delete(fullPathToFile);
+                    _logger.LogTrace("Deleted old db file");
+                }
+            }
+
             SQLiteConnectionString connectionString = new SQLiteConnectionString(
-                _configuration.GetConnectionString(_options.Value.SQLite)
+                connectionStringValue
             );
             _logger.LogDebug(
                 "Connecting to DB: \"{connectionString}\"",
@@ -52,12 +69,6 @@ namespace NeoScavHelperTool.Services
             );
             _connection = new SQLiteConnection(connectionString);
             _logger.LogDebug("Successfully connected to DB");
-        }
-
-        public T Query<T>()
-        {
-            var cenas = Connection.QueryScalars<int>("Select 1");
-            return default(T);
         }
 
         public void Dispose()

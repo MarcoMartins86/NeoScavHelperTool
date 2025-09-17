@@ -11,5 +11,7 @@ namespace NeoScavHelperTool.Attributes
     {
         public string File { get; set; }
         public ModType Type { get; set; }
+        public string Table { get; set; }
+        public Type Handler { get; set; }
     }
 }

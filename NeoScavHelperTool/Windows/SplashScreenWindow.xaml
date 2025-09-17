@@ -27,7 +27,7 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
-    <Image x:Name="image" Stretch="None" Source="/resources/images/SplashScreen.png" />
+    <Image x:Name="image" Stretch="None" Source="/Resources/Images/SplashScreen.png" />
     <ProgressBar
       Margin="0"
       Grid.Row="1"

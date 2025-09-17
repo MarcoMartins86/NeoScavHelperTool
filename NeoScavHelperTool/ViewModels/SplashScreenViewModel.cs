@@ -83,9 +83,13 @@ namespace NeoScavHelperTool.ViewModels
 
         public void SetProgress(int percentage, string message)
         {
-            IsIndeterminate = false;
-            Progress = percentage;
-            Message = message;
+            // run this in the UI thread so that it can be refreshed
+            _dispatcher.Invoke(() =>
+            {
+                IsIndeterminate = false;
+                Progress = percentage;
+                Message = message;
+            });
         }
     }
 

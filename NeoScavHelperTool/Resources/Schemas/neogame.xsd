@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<schema
+  attributeFormDefault="unqualified"
+  elementFormDefault="qualified"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+>
+  <element name="pma_xml_export">
+    <!--root1-->
+    <complexType>
+      <sequence>
+        <!-- ignore the vanilla game files extra element 'pma:structure_schemas' -->
+        <any
+          minOccurs="0"
+          maxOccurs="1"
+          namespace="http://www.phpmyadmin.net/some_doc_url/"
+          processContents="skip"
+        />
+        <element name="database">
+          <!--root2-->
+          <complexType>
+            <sequence>
+              <element maxOccurs="unbounded" name="table">
+                <!--Parent-->
+                <complexType>
+                  <sequence>
+                    <element maxOccurs="unbounded" name="column">
+                      <!--Children-->
+                      <complexType>
+                        <simpleContent>
+                          <extension base="string">
+                            <attribute name="name" use="required">
+                              <!--Attributes-->
+                              <!-- Unfortunatly we cannot do data validations due to XSD 1.0 limitations and .Net don't support XSD 1.1-->
+                              <simpleType>
+                                <restriction base="string">
+                                  <enumeration value="id" />
+                                  <enumeration value="strID" />
+                                  <enumeration value="strName" />
+                                  <enumeration value="strNotes" />
+                                  <enumeration value="strImg" />
+                                  <enumeration value="nRange" />
+                                  <enumeration value="fDamageCut" />
+                                  <enumeration value="fDamageBlunt" />
+                                  <enumeration value="strChargeProfiles" />
+                                  <enumeration value="nPenetration" />
+                                  <enumeration value="nType" />
+                                  <enumeration value="strSnd" />
+                                  <enumeration value="bTransfer" />
+                                  <enumeration value="vAttackerConditions" />
+                                  <enumeration value="strIMG" />
+                                  <enumeration value="fMorale" />
+                                  <enumeration value="strWieldPhrase" />
+                                  <enumeration value="vAttackPhrases" />
+                                  <enumeration value="nX" />
+                                  <enumeration value="nY" />
+                                  <enumeration value="bBuys" />
+                                  <enumeration value="nRestockTreasureID" />
+                                  <enumeration value="strSuccess" />
+                                  <enumeration value="strFail" />
+                                  <enumeration value="strPopUp" />
+                                  <enumeration value="vChanceType" />
+                                  <enumeration value="vUsConditions" />
+                                  <enumeration value="vThemConditions" />
+                                  <enumeration value="vPairConditions" />
+                                  <enumeration value="vUsFailConditions" />
+                                  <enumeration value="vThemFailConditions" />
+                                  <enumeration value="vPairFailConditions" />
+                                  <enumeration value="vUsPreConditions" />
+                                  <enumeration value="vThemPreConditions" />
+                                  <enumeration value="nSeeThem" />
+                                  <enumeration value="nSeeUs" />
+                                  <enumeration value="bAllOutOfRange" />
+                                  <enumeration value="bInAttackRange" />
+                                  <enumeration value="nMinCharges" />
+                                  <enumeration value="nMinRange" />
+                                  <enumeration value="nMaxRange" />
+                                  <enumeration value="nAttackModeType" />
+                                  <enumeration value="vHexTypes" />
+                                  <enumeration value="fChance" />
+                                  <enumeration value="fPriority" />
+                                  <enumeration value="fDetect" />
+                                  <enumeration value="fOrder" />
+                                  <enumeration value="fFatigue" />
+                                  <enumeration value="bApproach" />
+                                  <enumeration value="bOffense" />
+                                  <enumeration value="bFallBack" />
+                                  <enumeration value="bRetreat" />
+                                  <enumeration value="bPosition" />
+                                  <enumeration value="bPassive" />
+                                  <enumeration value="strDesc" />
+                                  <enumeration value="vImageList" />
+                                  <enumeration value="aCapacities" />
+                                  <enumeration value="nTreasureID" />
+                                  <enumeration value="m_fAlertness" />
+                                  <enumeration value="m_fVisibility" />
+                                  <enumeration value="WetTempAdjustMod" />
+                                  <enumeration value="m_fHealPerHourMod" />
+                                  <enumeration value="fSleepQuality" />
+                                  <enumeration value="strItemID" />
+                                  <enumeration value="fPerUse" />
+                                  <enumeration value="fPerHour" />
+                                  <enumeration value="fPerHourEquipped" />
+                                  <enumeration value="fPerHex" />
+                                  <enumeration value="bDegrade" />
+                                  <enumeration value="aFieldNames" />
+                                  <enumeration value="aModifiers" />
+                                  <enumeration value="aEffects" />
+                                  <enumeration value="bFatal" />
+                                  <enumeration value="vIDNext" />
+                                  <enumeration value="fDuration" />
+                                  <enumeration value="bPermanent" />
+                                  <enumeration value="vChanceNext" />
+                                  <enumeration value="bStackable" />
+                                  <enumeration value="bDisplay" />
+                                  <enumeration value="bDisplayOther" />
+                                  <enumeration value="bDisplayGameOver" />
+                                  <enumeration value="nColor" />
+                                  <enumeration value="bResetTimer" />
+                                  <enumeration value="bRemoveAll" />
+                                  <enumeration value="bRemovePostCombat" />
+                                  <enumeration value="nTransferRange" />
+                                  <enumeration value="aThresholds" />
+                                  <enumeration value="strNamePublic" />
+                                  <enumeration value="vEncounterIDs" />
+                                  <enumeration value="nMovesPerTurn" />
+                                  <enumeration value="nFaction" />
+                                  <enumeration value="vAttackModes" />
+                                  <enumeration value="vBaseConditions" />
+                                  <enumeration value="nCorpseID" />
+                                  <enumeration value="vActivities" />
+                                  <enumeration value="nCreatureID" />
+                                  <enumeration value="nMin" />
+                                  <enumeration value="nMax" />
+                                  <enumeration value="fWeight" />
+                                  <enumeration value="fValue" />
+                                  <enumeration value="nEncounterID" />
+                                  <enumeration value="nRemoveTreasureID" />
+                                  <enumeration value="aConditions" />
+                                  <enumeration value="aPreConditions" />
+                                  <enumeration value="fPrice" />
+                                  <enumeration value="aResponses" />
+                                  <enumeration value="aMinimapHexes" />
+                                  <enumeration value="bRemoveCreatures" />
+                                  <enumeration value="bRemoveUsed" />
+                                  <enumeration value="nItemsID" />
+                                  <enumeration value="ptCreatureHex" />
+                                  <enumeration value="ptTeleport" />
+                                  <enumeration value="ptEditor" />
+                                  <enumeration value="fLootChance" />
+                                  <enumeration value="fAccidentChance" />
+                                  <enumeration value="fCreatureChance" />
+                                  <enumeration value="vAccidents" />
+                                  <enumeration value="vLoot" />
+                                  <enumeration value="bLocBased" />
+                                  <enumeration value="bDateBased" />
+                                  <enumeration value="bHexBased" />
+                                  <enumeration value="bUnique" />
+                                  <enumeration value="bAIPassable" />
+                                  <enumeration value="aArea" />
+                                  <enumeration value="dateMin" />
+                                  <enumeration value="dateMax" />
+                                  <enumeration value="aHexTypes" />
+                                  <enumeration value="dictFactions" />
+                                  <enumeration value="strValue" />
+                                  <enumeration value="strHeadline" />
+                                  <enumeration value="nTerrainCost" />
+                                  <enumeration value="nVizLimiter" />
+                                  <enumeration value="nVizIncrease" />
+                                  <enumeration value="bPassable" />
+                                  <enumeration value="nScavengeInitialID" />
+                                  <enumeration value="nScavengeItemsIDPerHour" />
+                                  <enumeration value="nCampItems" />
+                                  <enumeration value="vLightLevels" />
+                                  <enumeration value="nDefaultCampID" />
+                                  <enumeration value="vCondIDs" />
+                                  <enumeration value="strRequiredProps" />
+                                  <enumeration value="strForbidProps" />
+                                  <enumeration value="nID" />
+                                  <enumeration value="strPropertyName" />
+                                  <enumeration value="nGroupID" />
+                                  <enumeration value="nSubgroupID" />
+                                  <enumeration value="strDescAlt" />
+                                  <enumeration value="nCondID" />
+                                  <enumeration value="vSpriteList" />
+                                  <enumeration value="vImageUsage" />
+                                  <enumeration value="fMonetaryValue" />
+                                  <enumeration value="fMonetaryValueAlt" />
+                                  <enumeration value="fDurability" />
+                                  <enumeration value="fDegradePerHour" />
+                                  <enumeration value="fEquipDegradePerHour" />
+                                  <enumeration value="fDegradePerUse" />
+                                  <enumeration value="vDegradeTreasureIDs" />
+                                  <enumeration value="aEquipConditions" />
+                                  <enumeration value="aPossessConditions" />
+                                  <enumeration value="aUseConditions" />
+                                  <enumeration value="vEquipSlots" />
+                                  <enumeration value="vUseSlots" />
+                                  <enumeration value="bSocketLocked" />
+                                  <enumeration value="vProperties" />
+                                  <enumeration value="aContentIDs" />
+                                  <enumeration value="nFormatID" />
+                                  <enumeration value="nComponentID" />
+                                  <enumeration value="bMirrored" />
+                                  <enumeration value="nSlotDepth" />
+                                  <enumeration value="aAttackModes" />
+                                  <enumeration value="nStackLimit" />
+                                  <enumeration value="aSwitchIDs" />
+                                  <enumeration value="aSounds" />
+                                  <enumeration value="strDef" />
+                                  <enumeration value="strSecretName" />
+                                  <enumeration value="strTools" />
+                                  <enumeration value="strConsumed" />
+                                  <enumeration value="strDestroyed" />
+                                  <enumeration value="fHours" />
+                                  <enumeration value="nReverse" />
+                                  <enumeration value="nHiddenID" />
+                                  <enumeration value="bIdentify" />
+                                  <enumeration value="bTransferComponents" />
+                                  <enumeration value="vAlsoTry" />
+                                  <enumeration value="nTempTreasureID" />
+                                  <enumeration value="bDegradeOutput" />
+                                  <enumeration value="strType" />
+                                  <enumeration value="bScrap" />
+                                  <!--is optional-->
+                                  <enumeration value="aTreasures" />
+                                  <enumeration value="bNested" />
+                                  <enumeration value="bSuppress" />
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </extension>
+                        </simpleContent>
+                      </complexType>
+                    </element>
+                  </sequence>
+                  <attribute name="name" use="required">
+                    <simpleType>
+                      <restriction base="string">
+                        <enumeration value="attackmodes" />
+                        <enumeration value="barterhexes" />
+                        <enumeration value="battlemoves" />
+                        <enumeration value="camptypes" />
+                        <enumeration value="chargeprofiles" />
+                        <enumeration value="conditions" />
+                        <enumeration value="containertypes" />
+                        <enumeration value="creatures" />
+                        <enumeration value="creaturesources" />
+                        <enumeration value="datafiles" />
+                        <enumeration value="dmcplaces" />
+                        <enumeration value="encounters" />
+                        <enumeration value="encountertriggers" />
+                        <enumeration value="factions" />
+                        <enumeration value="forbiddenhexes" />
+                        <enumeration value="gamevars" />
+                        <enumeration value="headlines" />
+                        <enumeration value="hextypes" />
+                        <enumeration value="ingredients" />
+                        <enumeration value="itemprops" />
+                        <enumeration value="itemtypes" />
+                        <enumeration value="maps" />
+                        <enumeration value="recipes" />
+                        <enumeration value="treasuretable" />
+                      </restriction>
+                    </simpleType>
+                  </attribute>
+                </complexType>
+              </element>
+            </sequence>
+            <attribute name="name" type="string" use="required" fixed="neogame" />
+          </complexType>
+        </element>
+      </sequence>
+      <attribute name="version" type="decimal" use="required" fixed="1.0" />
+    </complexType>
+  </element>
+</schema>

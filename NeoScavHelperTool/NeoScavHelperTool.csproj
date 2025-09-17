@@ -92,6 +92,7 @@
     <Resource Include="Resources\Images\SplashScreen.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Schemas\neogame.xsd" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">

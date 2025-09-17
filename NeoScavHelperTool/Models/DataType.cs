@@ -10,7 +10,7 @@ namespace NeoScavHelperTool.Models
     public enum DataType
     {
         [DataType(File = "attackmodes.xml", Type = ModType.New)]
-        AtackModes,
+        AttackModes,
 
         [DataType(File = "barterhexes.xml", Type = ModType.New)]
         BarterHexes,

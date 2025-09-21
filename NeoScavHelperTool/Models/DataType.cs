@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Attributes;
-using NeoScavHelperTool.Services.DataTypeHandler;
+using NeoScavHelperTool.Services.DataTypeHandlers;
 
 namespace NeoScavHelperTool.Models
 {
@@ -13,8 +13,8 @@ namespace NeoScavHelperTool.Models
         [DataType(
             File = "attackmodes.xml",
             Type = ModType.New,
-            Table = AtackModesService.TABLE,
-            Handler = typeof(AtackModesService)
+            Table = AttackModesHandlerService.TABLE,
+            Handler = typeof(AttackModesHandlerService)
         )]
         AttackModes,
 

@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Services;
-using NeoScavHelperTool.Services.DataTypeHandler;
+using NeoScavHelperTool.Services.DataTypeHandlers;
 using NeoScavHelperTool.ViewModels;
 using NeoScavHelperTool.Views;
 using Serilog;
@@ -116,7 +116,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<DialogService>();
             services.AddSingleton<DatabaseService>();
             services.AddSingleton<NeoScavPhpParserService>();
-            services.AddSingleton<AtackModesService>();
+            services.AddSingleton<AttackModesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

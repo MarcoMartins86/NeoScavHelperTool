@@ -18,7 +18,7 @@ using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Extension;
 using NeoScavHelperTool.Helper;
 using NeoScavHelperTool.Models;
-using NeoScavHelperTool.Services.DataTypeHandler;
+using NeoScavHelperTool.Services.DataTypeHandlers;
 using NeoScavHelperTool.ViewModels;
 
 namespace NeoScavHelperTool.Services
@@ -79,7 +79,9 @@ namespace NeoScavHelperTool.Services
                         throw new Exception($"Unexpected error, unknown DataType: \"{type}\"");
                     }
 
-                    if (Ioc.Default.GetService(attribute.Handler) is IDataTypeHandler handler)
+                    if (
+                        Ioc.Default.GetService(attribute.Handler) is IDataTypeHandlerService handler
+                    )
                     {
                         handler.LoadModIntoDb(gamePath, mod, attribute);
                     }

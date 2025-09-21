@@ -117,6 +117,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<DatabaseService>();
             services.AddSingleton<NeoScavPhpParserService>();
             services.AddSingleton<AttackModesHandlerService>();
+            services.AddSingleton<BarterHexesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

@@ -18,7 +18,12 @@ namespace NeoScavHelperTool.Models
         )]
         AttackModes,
 
-        [DataType(File = "barterhexes.xml", Type = ModType.New)]
+        [DataType(
+            File = "barterhexes.xml",
+            Type = ModType.New,
+            Table = BarterHexesHandlerService.TABLE,
+            Handler = typeof(BarterHexesHandlerService)
+        )]
         BarterHexes,
 
         [DataType(File = "battlemoves.xml", Type = ModType.New)]

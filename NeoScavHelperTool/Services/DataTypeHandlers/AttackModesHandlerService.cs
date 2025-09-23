@@ -95,23 +95,6 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
         )
             : base(logger, dbService) { }
 
-        public override void ReadItemIntoDb(
-            XmlElement table,
-            string tableName,
-            ModInfo mod,
-            bool willOverride
-        )
-        {
-            if (!TABLE.Equals(tableName))
-            {
-                throw new Exception(
-                    $"Unexpected table name \"{tableName}\" at \"{nameof(AttackModesHandlerService)}\" on file \"{table.BaseURI}\""
-                );
-            }
-            XmlNodeList columnNodes = table.SelectNodes(XML_COLUMN_ELEMENT_NAME);
-            TrasverseColumnNodes(columnNodes, mod, willOverride);
-        }
-
         protected override void AssignColumnValueToItem(ref AttackModesItem item, XmlElement column)
         {
             string propertyName = column.GetAttribute(XML_COLUMN_NAME_ATTRIBUTE);

@@ -53,6 +53,23 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             );
         }
 
+        public override void ReadItemIntoDb(
+            XmlElement table,
+            string tableName,
+            ModInfo mod,
+            bool willOverride
+        )
+        {
+            if (!Table.Equals(tableName))
+            {
+                throw new Exception(
+                    $"Unexpected table name \"{tableName}\" at \"{typeof(T).Name}\" on file \"{table.BaseURI}\""
+                );
+            }
+            XmlNodeList columnNodes = table.SelectNodes(XML_COLUMN_ELEMENT_NAME);
+            TrasverseColumnNodes(columnNodes, mod, willOverride);
+        }
+
         protected void TrasverseColumnNodes(XmlNodeList columns, ModInfo mod, bool willOverride)
         {
             if (columns == null || columns.Count == 0)

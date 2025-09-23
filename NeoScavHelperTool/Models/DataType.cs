@@ -58,7 +58,12 @@ namespace NeoScavHelperTool.Models
         )]
         Conditions,
 
-        [DataType(File = "containertypes.xml", Type = ModType.New)]
+        [DataType(
+            File = "containertypes.xml",
+            Type = ModType.New,
+            Table = ContainerTypesHandlerService.TABLE,
+            Handler = typeof(ContainerTypesHandlerService)
+        )]
         ContainerTypes,
 
         [DataType(File = "creatures.xml", Type = ModType.New)]

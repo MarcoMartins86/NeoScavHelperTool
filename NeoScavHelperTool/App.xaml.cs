@@ -122,6 +122,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<CampTypesHandlerService>();
             services.AddSingleton<ChargeProfilesHandlerService>();
             services.AddSingleton<ConditionsHandlerService>();
+            services.AddSingleton<ContainerTypesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

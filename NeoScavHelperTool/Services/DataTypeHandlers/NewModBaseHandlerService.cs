@@ -46,11 +46,13 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         protected void TrasverseTableNodes(XmlNodeList tables, ModInfo mod, bool willOverride)
         {
+            _dbService.Connection.BeginTransaction();
             TrasverseTableNodes(
                 tables,
                 (tableElement, tableName) =>
                     ReadItemIntoDb(tableElement, tableName, mod, willOverride)
             );
+            _dbService.Connection.Commit();
         }
 
         public override void ReadItemIntoDb(

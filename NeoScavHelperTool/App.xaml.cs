@@ -120,6 +120,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<BarterHexesHandlerService>();
             services.AddSingleton<BattleMovesHandlerService>();
             services.AddSingleton<CampTypesHandlerService>();
+            services.AddSingleton<ChargeProfilesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

@@ -42,7 +42,12 @@ namespace NeoScavHelperTool.Models
         )]
         CampTypes,
 
-        [DataType(File = "chargeprofiles.xml", Type = ModType.New)]
+        [DataType(
+            File = "chargeprofiles.xml",
+            Type = ModType.New,
+            Table = ChargeProfilesHandlerService.TABLE,
+            Handler = typeof(ChargeProfilesHandlerService)
+        )]
         ChargeProfiles,
 
         [DataType(File = "conditions.xml", Type = ModType.New)]

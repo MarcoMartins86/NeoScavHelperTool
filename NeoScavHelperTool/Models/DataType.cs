@@ -50,7 +50,12 @@ namespace NeoScavHelperTool.Models
         )]
         ChargeProfiles,
 
-        [DataType(File = "conditions.xml", Type = ModType.New)]
+        [DataType(
+            File = "conditions.xml",
+            Type = ModType.New,
+            Table = ConditionsHandlerService.TABLE,
+            Handler = typeof(ConditionsHandlerService)
+        )]
         Conditions,
 
         [DataType(File = "containertypes.xml", Type = ModType.New)]

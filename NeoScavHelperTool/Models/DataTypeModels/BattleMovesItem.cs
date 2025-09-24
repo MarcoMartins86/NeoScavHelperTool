@@ -32,7 +32,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string PopUp { get; set; }
 
         [Column("vChanceType")]
-        public string ChanceType { get; set; } = "'0,0,0";
+        public string ChanceType { get; set; } = "0,0,0";
 
         [Column("vUsConditions")]
         public string UsConditions { get; set; }

@@ -98,7 +98,12 @@ namespace NeoScavHelperTool.Models
         )]
         DmcPlaces,
 
-        [DataType(File = "encounters.xml", Type = ModType.New)]
+        [DataType(
+            File = "encounters.xml",
+            Type = ModType.New,
+            Table = EncountersHandlerService.TABLE,
+            Handler = typeof(EncountersHandlerService)
+        )]
         Encounters,
 
         [DataType(File = "encountertriggers.xml", Type = ModType.New)]

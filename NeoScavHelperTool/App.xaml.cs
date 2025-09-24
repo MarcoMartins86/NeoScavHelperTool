@@ -127,6 +127,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<CreatureSourcesHandlerService>();
             services.AddSingleton<DataFilesHandlerService>();
             services.AddSingleton<DmcPlacesHandlerService>();
+            services.AddSingleton<EncountersHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

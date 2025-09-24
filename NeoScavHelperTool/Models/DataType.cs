@@ -82,10 +82,20 @@ namespace NeoScavHelperTool.Models
         )]
         CreatureSources,
 
-        [DataType(File = "datafiles.xml", Type = ModType.New)]
+        [DataType(
+            File = "datafiles.xml",
+            Type = ModType.New,
+            Table = DataFilesHandlerService.TABLE,
+            Handler = typeof(DataFilesHandlerService)
+        )]
         DataFiles,
 
-        [DataType(File = "dmcplaces.xml", Type = ModType.New)]
+        [DataType(
+            File = "dmcplaces.xml",
+            Type = ModType.New,
+            Table = DmcPlacesHandlerService.TABLE,
+            Handler = typeof(DmcPlacesHandlerService)
+        )]
         DmcPlaces,
 
         [DataType(File = "encounters.xml", Type = ModType.New)]

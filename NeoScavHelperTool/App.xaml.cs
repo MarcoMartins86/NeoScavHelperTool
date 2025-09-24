@@ -129,6 +129,10 @@ namespace NeoScavHelperTool
             services.AddSingleton<DmcPlacesHandlerService>();
             services.AddSingleton<EncountersHandlerService>();
             services.AddSingleton<EncounterTriggersHandlerService>();
+            services.AddSingleton<FactionsHandlerService>();
+            services.AddSingleton<ForbiddenHexesHandlerService>();
+            services.AddSingleton<GameVarsHandlerService>();
+            services.AddSingleton<HeadlinesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

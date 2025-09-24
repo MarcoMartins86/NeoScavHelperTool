@@ -114,16 +114,36 @@ namespace NeoScavHelperTool.Models
         )]
         EncounterTriggers,
 
-        [DataType(File = "factions.xml", Type = ModType.New)]
+        [DataType(
+            File = "factions.xml",
+            Type = ModType.New,
+            Table = FactionsHandlerService.TABLE,
+            Handler = typeof(FactionsHandlerService)
+        )]
         Factions,
 
-        [DataType(File = "forbiddenhexes.xml", Type = ModType.New)]
+        [DataType(
+            File = "forbiddenhexes.xml",
+            Type = ModType.New,
+            Table = ForbiddenHexesHandlerService.TABLE,
+            Handler = typeof(ForbiddenHexesHandlerService)
+        )]
         ForbiddenHexes,
 
-        [DataType(File = "gamevars.xml", Type = ModType.New)]
+        [DataType(
+            File = "gamevars.xml",
+            Type = ModType.New,
+            Table = GameVarsHandlerService.TABLE,
+            Handler = typeof(GameVarsHandlerService)
+        )]
         GameVars,
 
-        [DataType(File = "headlines.xml", Type = ModType.New)]
+        [DataType(
+            File = "headlines.xml",
+            Type = ModType.New,
+            Table = HeadlinesHandlerService.TABLE,
+            Handler = typeof(HeadlinesHandlerService)
+        )]
         Headlines,
 
         [DataType(File = "hextypes.xml", Type = ModType.New)]

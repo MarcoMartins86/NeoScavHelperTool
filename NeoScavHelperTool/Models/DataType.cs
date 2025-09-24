@@ -106,7 +106,12 @@ namespace NeoScavHelperTool.Models
         )]
         Encounters,
 
-        [DataType(File = "encountertriggers.xml", Type = ModType.New)]
+        [DataType(
+            File = "encountertriggers.xml",
+            Type = ModType.New,
+            Table = EncounterTriggersHandlerService.TABLE,
+            Handler = typeof(EncounterTriggersHandlerService)
+        )]
         EncounterTriggers,
 
         [DataType(File = "factions.xml", Type = ModType.New)]

@@ -18,7 +18,7 @@ using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Extension;
 using NeoScavHelperTool.Helper;
 using NeoScavHelperTool.Models;
-using NeoScavHelperTool.Services.DataTypeHandlers;
+using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using NeoScavHelperTool.ViewModels;
 
 namespace NeoScavHelperTool.Services

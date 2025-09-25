@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers

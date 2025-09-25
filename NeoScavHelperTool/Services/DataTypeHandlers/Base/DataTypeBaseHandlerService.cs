@@ -13,7 +13,7 @@ using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Helper;
 using NeoScavHelperTool.Models;
 
-namespace NeoScavHelperTool.Services.DataTypeHandlers
+namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
     public abstract class DataTypeBaseHandlerService<T> : IDataTypeHandlerService
         where T : DataTypeBaseHandlerService<T>
@@ -42,7 +42,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
         {
             //Resources
             var uri = new Uri("/Resources/Schemas/neogame.xsd", UriKind.Relative);
-            var file = App.GetResourceStream(uri);
+            var file = System.Windows.Application.GetResourceStream(uri);
             // WpfResourceXmlResolverHelper is not currently being used
             // still let's keep it just in case we need it in the future
             _schemas = new XmlSchemaSet() { XmlResolver = new WpfResourceXmlResolverHelper() { } };

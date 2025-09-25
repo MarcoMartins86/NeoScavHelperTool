@@ -7,7 +7,7 @@ using System.Xml;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 
-namespace NeoScavHelperTool.Services.DataTypeHandlers
+namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
     public interface IDataTypeHandlerService
     {

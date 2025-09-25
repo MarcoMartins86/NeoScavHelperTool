@@ -10,7 +10,7 @@ using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
 using SQLite;
 
-namespace NeoScavHelperTool.Services.DataTypeHandlers
+namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
     public abstract class NewModBaseHandlerService<T, I> : DataTypeBaseHandlerService<T>
         where T : DataTypeBaseHandlerService<T>

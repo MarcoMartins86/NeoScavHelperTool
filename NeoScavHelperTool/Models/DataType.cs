@@ -178,10 +178,20 @@ namespace NeoScavHelperTool.Models
         )]
         ItemTypes,
 
-        [DataType(File = "maps.xml", Type = ModType.New)]
+        [DataType(
+            File = "maps.xml",
+            Type = ModType.New,
+            Table = MapsHandlerService.TABLE,
+            Handler = typeof(MapsHandlerService)
+        )]
         Maps,
 
-        [DataType(File = "recipes.xml", Type = ModType.New)]
+        [DataType(
+            File = "recipes.xml",
+            Type = ModType.New,
+            Table = RecipesHandlerService.TABLE,
+            Handler = typeof(RecipesHandlerService)
+        )]
         Recipes,
 
         [DataType(File = "treasuretable.xml", Type = ModType.New)]

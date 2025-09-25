@@ -162,7 +162,12 @@ namespace NeoScavHelperTool.Models
         )]
         Ingredients,
 
-        [DataType(File = "itemprops.xml", Type = ModType.New)]
+        [DataType(
+            File = "itemprops.xml",
+            Type = ModType.New,
+            Table = ItemPropsHandlerService.TABLE,
+            Handler = typeof(ItemPropsHandlerService)
+        )]
         ItemProps,
 
         [DataType(File = "itemtypes.xml", Type = ModType.New)]

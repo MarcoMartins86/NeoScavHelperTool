@@ -194,7 +194,12 @@ namespace NeoScavHelperTool.Models
         )]
         Recipes,
 
-        [DataType(File = "treasuretable.xml", Type = ModType.New)]
+        [DataType(
+            File = "treasuretable.xml",
+            Type = ModType.New,
+            Table = TreasureTableHandlerService.TABLE,
+            Handler = typeof(TreasureTableHandlerService)
+        )]
         TreasureTable,
 
         [DataType(File = "neogame.xml", Type = ModType.Old)]

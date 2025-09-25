@@ -137,6 +137,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<HexTypesHandlerService>();
             services.AddSingleton<IngredientsHandlerService>();
             services.AddSingleton<ItemPropsHandlerService>();
+            services.AddSingleton<ItemTypesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

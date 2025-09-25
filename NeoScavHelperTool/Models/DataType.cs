@@ -146,7 +146,12 @@ namespace NeoScavHelperTool.Models
         )]
         Headlines,
 
-        [DataType(File = "hextypes.xml", Type = ModType.New)]
+        [DataType(
+            File = "hextypes.xml",
+            Type = ModType.New,
+            Table = HexTypesHandlerService.TABLE,
+            Handler = typeof(HexTypesHandlerService)
+        )]
         HexTypes,
 
         [DataType(File = "ingredients.xml", Type = ModType.New)]

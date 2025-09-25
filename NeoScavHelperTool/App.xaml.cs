@@ -133,6 +133,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<ForbiddenHexesHandlerService>();
             services.AddSingleton<GameVarsHandlerService>();
             services.AddSingleton<HeadlinesHandlerService>();
+            services.AddSingleton<HexTypesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

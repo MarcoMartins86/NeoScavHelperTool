@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Models;
+using NeoScavHelperTool.Models.DataTypeModels;
 using NeoScavHelperTool.Services;
 using NeoScavHelperTool.Services.DataTypeHandlers;
 using NeoScavHelperTool.ViewModels;
@@ -134,6 +135,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<GameVarsHandlerService>();
             services.AddSingleton<HeadlinesHandlerService>();
             services.AddSingleton<HexTypesHandlerService>();
+            services.AddSingleton<IngredientsHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

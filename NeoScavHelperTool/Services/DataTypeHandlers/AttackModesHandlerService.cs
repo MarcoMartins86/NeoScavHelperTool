@@ -26,7 +26,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             CREATE TABLE IF NOT EXISTS `{0}` (
               `id` INTEGER NOT NULL,
               `strName` TEXT NOT NULL,
-              `strNotes` TEXT NOT NULL,
+              `strNotes` TEXT NOT NULL DEFAULT '', /* added default value mods are working without this */
               `nRange` INTEGER NOT NULL DEFAULT 1,
               `fDamageCut` REAL NOT NULL DEFAULT 0,
               `fDamageBlunt` REAL NOT NULL DEFAULT 0,

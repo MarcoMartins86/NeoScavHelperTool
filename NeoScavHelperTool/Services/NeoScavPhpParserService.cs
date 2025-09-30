@@ -25,6 +25,7 @@ namespace NeoScavHelperTool.Services
         private const string MOD_NAME_PREFIX = "strModName";
         private const string MOD_URL_PREFIX = "strModURL";
         public const string NEW_MOD_TYPE_DATA_FOLDER = "data";
+        public const string OLD_MODE_TYPE_FILENAME = "neogame.xml";
 
         private readonly ILogger<NeoScavPhpParserService> _logger;
 
@@ -41,24 +42,51 @@ namespace NeoScavHelperTool.Services
             int nEntries = ParseModsNumberEntries(getModsPhpContent) + 1;
             var mods = new List<ModInfo>(nEntries);
             // Let's start by adding the vanilla game files
-            mods.Add(GetNewModInfo(VANILLA_MOD_NAME, rootFolder, "."));
+            mods.Add(GetNewModTypeInfo(VANILLA_MOD_NAME, rootFolder, "."));
             // Let's parse the other mods
             // Starts in 1 since first line is nRows
             // Adds 2 since strModName is one line and strModURL is another
             for (int i = 1; i < getModsPhpContent.Length; i += 2)
             {
                 (string name, string url) = ParseModsEntry(getModsPhpContent, i);
-                mods.Add(GetNewModInfo(name, rootFolder, url));
+                mods.Add(GetModInfo(name, rootFolder, url));
             }
 
             return mods;
         }
 
-        private ModInfo GetNewModInfo(string name, string rootFolder, string modFolder)
+        private ModInfo GetModInfo(string name, string rootFolder, string modFolder)
+        {
+            return File.Exists(Path.Combine(rootFolder, modFolder, OLD_MODE_TYPE_FILENAME))
+                ? GetOldModTypeInfo(name, rootFolder, modFolder)
+                : GetNewModTypeInfo(name, rootFolder, modFolder);
+        }
+
+        private ModInfo GetOldModTypeInfo(string name, string rootFolder, string modFolder)
         {
             string folder = Path.Combine(rootFolder, modFolder);
             _logger.LogInformation(
-                "Gathering mod \"{name}\" info from folder \"{folder}\"",
+                "Gathering old mod type \"{name}\" info from folder \"{folder}\"",
+                name,
+                folder
+            );
+
+            ModInfo modInfo = new ModInfo()
+            {
+                Name = name,
+                Folder = modFolder,
+                Files = new HashSet<DataType>() { DataType.Neogame },
+                Images = GetImagesInfo(folder),
+            };
+
+            return modInfo;
+        }
+
+        private ModInfo GetNewModTypeInfo(string name, string rootFolder, string modFolder)
+        {
+            string folder = Path.Combine(rootFolder, modFolder);
+            _logger.LogInformation(
+                "Gathering new mod type \"{name}\" info from folder \"{folder}\"",
                 name,
                 folder
             );
@@ -108,7 +136,7 @@ namespace NeoScavHelperTool.Services
             if (nEntries != Math.Max(0, getImagesPhpContent.Length - GET_IMAGES_PHP_DATA_OFFSET))
             {
                 throw new Exception(
-                    $"\"{GET_IMAGES_PHP_NAME}\" contains invalid \"{N_ROWS}\" value. Indicated \"{nEntries}\" but found \"{Math.Max(0, getImagesPhpContent.Length - GET_IMAGES_PHP_DATA_OFFSET)}\""
+                    $"\"{folder}{Path.DirectorySeparatorChar}{GET_IMAGES_PHP_NAME}\" contains invalid \"{N_ROWS}\" value. Indicated \"{nEntries}\" but found \"{Math.Max(0, getImagesPhpContent.Length - GET_IMAGES_PHP_DATA_OFFSET)}\""
                 );
             }
             // only continue if there's any entry

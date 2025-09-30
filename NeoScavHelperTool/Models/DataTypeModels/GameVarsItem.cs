@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoScavHelperTool.Models.DataTypeModels.Base;
 using SQLite;
 
 namespace NeoScavHelperTool.Models.DataTypeModels
 {
     public class GameVarsItem : DataTypeModelBase
     {
+        protected override DataType DataType => DataType.GameVars;
+        protected override string Identifier => Name;
+
         [PrimaryKey, Column("strName")]
         public string Name { get; set; }
 

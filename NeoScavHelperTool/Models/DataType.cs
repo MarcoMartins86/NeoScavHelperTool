@@ -202,7 +202,11 @@ namespace NeoScavHelperTool.Models
         )]
         TreasureTable,
 
-        [DataType(File = "neogame.xml", Type = ModType.Old)]
+        [DataType(
+            File = "neogame.xml",
+            Type = ModType.Old,
+            Handler = typeof(NeogameHandlerService)
+        )]
         Neogame,
     }
 }

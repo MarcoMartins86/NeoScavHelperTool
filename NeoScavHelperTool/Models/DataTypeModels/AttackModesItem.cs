@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoScavHelperTool.Models.DataTypeModels.Base;
 using SQLite;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -10,6 +11,9 @@ namespace NeoScavHelperTool.Models.DataTypeModels
 {
     public class AttackModesItem : DataTypeModelBase
     {
+        protected override DataType DataType => DataType.AttackModes;
+        protected override string Identifier => Id.ToString();
+
         [PrimaryKey, Column("id")]
         public int Id { get; set; }
 

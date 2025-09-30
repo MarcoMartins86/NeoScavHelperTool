@@ -67,7 +67,16 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
             {
                 // Create and load the XmlDocument (will trigger validations)
                 XmlDocument xml = new XmlDocument();
-                xml.Load(reader);
+                try
+                {
+                    xml.Load(reader);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(
+                        $"Validation failed on \"{file}\" with message: \"{ex.Message}\""
+                    );
+                }
 
                 return xml;
             }

@@ -50,7 +50,6 @@ namespace NeoScavHelperTool.Services
             LoadModsDataIntoDb(splashScreen, gamePath, mods);
             // Update progress stating it has finished
             splashScreen.SetProgress(100, "Finished loading");
-            // TODO clean garbage collector
         }
 
         private void LoadModsDataIntoDb(

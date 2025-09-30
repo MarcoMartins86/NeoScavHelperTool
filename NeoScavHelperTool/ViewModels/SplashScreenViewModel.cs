@@ -60,6 +60,7 @@ namespace NeoScavHelperTool.ViewModels
         {
             window.Closing += (sender, e) =>
             {
+                GC.Collect();
                 _logger.LogInformation($"{nameof(MainWindow)} launching");
                 _mainWindow.Show();
             };

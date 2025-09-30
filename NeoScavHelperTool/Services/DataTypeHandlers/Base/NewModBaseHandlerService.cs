@@ -7,7 +7,7 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
-using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.DataTypeModels.Base;
 using SQLite;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
@@ -91,13 +91,21 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
                 }
                 AssignColumnValueToItem(ref item, (XmlElement)columnNode);
             }
-
-            BuildUpsertCommand(
-                    mod,
-                    item,
-                    (sql, parameters) => _dbService.Connection.CreateCommand(sql, parameters)
-                )
-                .ExecuteNonQuery();
+            SQLiteCommand command = BuildUpsertCommand(
+                mod,
+                item,
+                (sql, parameters) => _dbService.Connection.CreateCommand(sql, parameters)
+            );
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    $"Failed to insert \"{mod.Name}\" {item.ItemDescription()} and message: \"{ex.Message}\""
+                );
+            }
         }
 
         protected abstract void AssignColumnValueToItem(ref I item, XmlElement columnElement);

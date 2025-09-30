@@ -22,6 +22,8 @@ namespace NeoScavHelperTool.Services
         private const string N_ROWS = "nRows";
         private const string N_COLS = "nCols";
         private const string VANILLA_MOD_NAME = "0";
+        private const string MOD_NAME_PREFIX = "strModName";
+        private const string MOD_URL_PREFIX = "strModURL";
         public const string NEW_MOD_TYPE_DATA_FOLDER = "data";
 
         private readonly ILogger<NeoScavPhpParserService> _logger;
@@ -38,9 +40,17 @@ namespace NeoScavHelperTool.Services
             // Parse the number of entries and +1 to address vanilla game content
             int nEntries = ParseModsNumberEntries(getModsPhpContent) + 1;
             var mods = new List<ModInfo>(nEntries);
-            // let's start by adding the vanilla game files
+            // Let's start by adding the vanilla game files
             mods.Add(GetNewModInfo(VANILLA_MOD_NAME, rootFolder, "."));
-            // TODO: add code to parse the other mods besides vanilla
+            // Let's parse the other mods
+            // Starts in 1 since first line is nRows
+            // Adds 2 since strModName is one line and strModURL is another
+            for (int i = 1; i < getModsPhpContent.Length; i += 2)
+            {
+                (string name, string url) = ParseModsEntry(getModsPhpContent, i);
+                mods.Add(GetNewModInfo(name, rootFolder, url));
+            }
+
             return mods;
         }
 
@@ -214,6 +224,61 @@ namespace NeoScavHelperTool.Services
             return nRows.Value;
         }
 
+        private (string name, string url) ParseModsEntry(string[] getModsPhpContent, int i)
+        {
+            int modNumber = i / 2;
+            _logger.LogTrace($"Parsing mod entry \"{modNumber}\" name and url");
+            if (getModsPhpContent.Length <= i + 1)
+            {
+                throw new Exception(
+                    $"\"{GET_MODS_PHP_NAME}\" mod entry \"{modNumber}\" does not contain the definition for \"{MOD_NAME_PREFIX}{modNumber}\" and/or \"{MOD_URL_PREFIX}{modNumber}\""
+                );
+            }
+
+            KeyValuePair<string, string> modName = ParseRow<string>(
+                getModsPhpContent[i],
+                GET_MODS_PHP_NAME
+            );
+
+            if (
+                !modName.Key.Equals(
+                    $"{MOD_NAME_PREFIX}{modNumber}",
+                    StringComparison.InvariantCulture
+                )
+            )
+            {
+                throw new Exception(
+                    $"\"{GET_MODS_PHP_NAME}\" mod entry \"{modNumber}\" name is not equal to \"{MOD_NAME_PREFIX}{modNumber}\""
+                );
+            }
+
+            string name = modName.Value;
+
+            KeyValuePair<string, string> modUrl = ParseRow<string>(
+                getModsPhpContent[i + 1],
+                GET_MODS_PHP_NAME
+            );
+
+            if (
+                !modUrl.Key.Equals(
+                    $"{MOD_URL_PREFIX}{modNumber}",
+                    StringComparison.InvariantCulture
+                )
+            )
+            {
+                throw new Exception(
+                    $"\"{GET_MODS_PHP_NAME}\" mod entry \"{modNumber}\" url is not equal to \"{MOD_URL_PREFIX}{modNumber}\""
+                );
+            }
+
+            string url = modUrl.Value;
+
+            _logger.LogTrace($"\"{MOD_NAME_PREFIX}{modNumber}\" is \"{{name}}\"", name);
+            _logger.LogTrace($"\"{MOD_URL_PREFIX}{modNumber}\" is \"{{url}}\"", url);
+
+            return (name, url);
+        }
+
         private void ParseImagesNumberEntriesAndColumns(
             string[] getImagesPhpContent,
             out int nEntries,
@@ -260,18 +325,19 @@ namespace NeoScavHelperTool.Services
 
         private KeyValuePair<string, T> ParseRow<T>(string entry, string file)
         {
-            _logger.LogTrace("Parsing \"{file}\" entry: \"{entry}\"", file, entry);
-            string[] splitEntry = entry.Split(
+            string entryTrimmed = entry.Trim();
+            _logger.LogTrace("Parsing \"{file}\" entry: \"{entry}\"", file, entryTrimmed);
+            string[] splitEntry = entryTrimmed.Split(
                 KEY_VALUE_SEPARATOR,
                 StringSplitOptions.RemoveEmptyEntries
             );
             if (splitEntry.Length != 2)
             {
-                throw new Exception($"\"{file}\" contains invalid entry: \"{entry}\"");
+                throw new Exception($"\"{file}\" contains invalid entry: \"{entryTrimmed}\"");
             }
             return new KeyValuePair<string, T>(
-                splitEntry[0].Trim(),
-                (T)Convert.ChangeType(splitEntry[1].Trim(), typeof(T))
+                splitEntry[0],
+                (T)Convert.ChangeType(splitEntry[1], typeof(T))
             );
         }
     }

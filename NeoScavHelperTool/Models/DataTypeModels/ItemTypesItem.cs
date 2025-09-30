@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -29,10 +30,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string DescriptionAlternative { get; set; }
 
         [Column("nCondID")]
-        public int ConditionId { get; set; } = 1;
+        public ModRefValue<int> ConditionId { get; set; } = ModRefValue<int>.Of(1);
 
         [Column("vImageList")]
-        public string ImageList { get; set; }
+        public ListModRefValue<string> ImageList { get; set; }
 
         [Column("vSpriteList")]
         public string SpriteList { get; set; }
@@ -86,19 +87,19 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public bool SocketLocked { get; set; } = false;
 
         [Column("vProperties")]
-        public string Properties { get; set; }
+        public ListModRefValue<int> Properties { get; set; }
 
         [Column("aContentIDs")]
-        public string ContentIds { get; set; }
+        public ListModRefValue<int> ContentIds { get; set; }
 
         [Column("nFormatID")]
-        public int FormatId { get; set; } = 3;
+        public ModRefValue<int> FormatId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("nTreasureID")]
-        public int TreasureId { get; set; } = 3;
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("nComponentID")]
-        public int ComponentId { get; set; } = 3;
+        public ModRefValue<int> ComponentId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("bMirrored")]
         public bool Mirrored { get; set; } = false;
@@ -119,6 +120,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string SwitchIds { get; set; } = "";
 
         [Column("aSounds")]
-        public string Sounds { get; set; } = "cuePickup,cuePutdown";
+        public ListModRefValue<string> Sounds { get; set; } =
+            ListModRefValue<string>.Of("cuePickup", "cuePutdown");
     }
 }

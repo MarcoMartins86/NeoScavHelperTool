@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 
 namespace NeoScavHelperTool.Models.DataTypeModels
@@ -16,7 +17,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Name { get; set; }
 
         [Column("aTreasures")]
-        public string Treasures { get; set; }
+        public ListModRefValue<string> Treasures { get; set; }
 
         [Column("bNested")]
         public bool Nested { get; set; } = false;

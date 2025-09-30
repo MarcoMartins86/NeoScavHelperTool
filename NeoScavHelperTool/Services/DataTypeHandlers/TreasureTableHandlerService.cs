@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -82,7 +83,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "aTreasures":
-                    item.Treasures = value;
+                    item.Treasures = ListModRefValue<string>.Parse(value);
                     break;
                 case "bNested":
                     item.Nested = int.Parse(value) == 1;
@@ -110,7 +111,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@aTreasures", item.Treasures },
+                { "@aTreasures", item.Treasures.ToString() },
                 { "@bNested", item.Nested },
                 { "@bSuppress", item.Suppress },
                 { "@bIdentify", item.Identify },

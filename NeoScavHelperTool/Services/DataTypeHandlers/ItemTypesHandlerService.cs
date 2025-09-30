@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -30,7 +31,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `strName` TEXT NOT NULL,
               `strDesc` TEXT NOT NULL,
               `strDescAlt` TEXT NOT NULL,
-              `nCondID` INTEGER NOT NULL DEFAULT 1,
+              `nCondID` TEXT NOT NULL DEFAULT '1', /* mod:value */
               `vImageList` TEXT NOT NULL, 
               `vSpriteList` TEXT NOT NULL, 
               `vImageUsage` TEXT NOT NULL,
@@ -51,9 +52,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `bSocketLocked` INTEGER NOT NULL DEFAULT 0,
               `vProperties` TEXT NOT NULL, 
               `aContentIDs` TEXT NOT NULL, 
-              `nFormatID` INTEGER NOT NULL DEFAULT 3,
-              `nTreasureID` INTEGER NOT NULL DEFAULT 3,
-              `nComponentID` INTEGER NOT NULL DEFAULT 3,
+              `nFormatID` TEXT NOT NULL DEFAULT '3', /* mod:value */
+              `nTreasureID` TEXT NOT NULL DEFAULT '3', /* mod:value */
+              `nComponentID` TEXT NOT NULL DEFAULT '3', /* mod:value */
               `bMirrored` INTEGER NOT NULL DEFAULT 0,
               `nSlotDepth` INTEGER NOT NULL DEFAULT 0,
               `strChargeProfiles` TEXT NOT NULL,
@@ -184,10 +185,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.DescriptionAlternative = value;
                     break;
                 case "nCondID":
-                    item.ConditionId = int.Parse(value);
+                    item.ConditionId = ModRefValue<int>.Parse(value);
                     break;
                 case "vImageList":
-                    item.ImageList = value;
+                    item.ImageList = ListModRefValue<string>.Parse(value);
                     break;
                 case "vSpriteList":
                     item.SpriteList = value;
@@ -241,19 +242,19 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.SocketLocked = int.Parse(value) == 1;
                     break;
                 case "vProperties":
-                    item.Properties = value;
+                    item.Properties = ListModRefValue<int>.Parse(value);
                     break;
                 case "aContentIDs":
-                    item.ContentIds = value;
+                    item.ContentIds = ListModRefValue<int>.Parse(value);
                     break;
                 case "nFormatID":
-                    item.FormatId = int.Parse(value);
+                    item.FormatId = ModRefValue<int>.Parse(value);
                     break;
                 case "nTreasureID":
-                    item.TreasureId = int.Parse(value);
+                    item.TreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "nComponentID":
-                    item.ComponentId = int.Parse(value);
+                    item.ComponentId = ModRefValue<int>.Parse(value);
                     break;
                 case "bMirrored":
                     item.Mirrored = int.Parse(value) == 1;
@@ -274,7 +275,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.SwitchIds = value;
                     break;
                 case "aSounds":
-                    item.Sounds = value;
+                    item.Sounds = ListModRefValue<string>.Parse(value);
                     break;
                 default:
                     throw new Exception(
@@ -297,8 +298,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strName", item.Name },
                 { "@strDesc", item.Description },
                 { "@strDescAlt", item.DescriptionAlternative },
-                { "@nCondID", item.ConditionId },
-                { "@vImageList", item.ImageList },
+                { "@nCondID", item.ConditionId.ToString() },
+                { "@vImageList", item.ImageList.ToString() },
                 { "@vSpriteList", item.SpriteList },
                 { "@vImageUsage", item.ImageUsage },
                 { "@fWeight", item.Weight },
@@ -316,18 +317,18 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@vEquipSlots", item.EquipSlots },
                 { "@vUseSlots", item.UseSlots },
                 { "@bSocketLocked", item.SocketLocked },
-                { "@vProperties", item.Properties },
-                { "@aContentIDs", item.ContentIds },
-                { "@nFormatID", item.FormatId },
-                { "@nTreasureID", item.TreasureId },
-                { "@nComponentID", item.ComponentId },
+                { "@vProperties", item.Properties.ToString() },
+                { "@aContentIDs", item.ContentIds.ToString() },
+                { "@nFormatID", item.FormatId.ToString() },
+                { "@nTreasureID", item.TreasureId.ToString() },
+                { "@nComponentID", item.ComponentId.ToString() },
                 { "@bMirrored", item.Mirrored },
                 { "@nSlotDepth", item.SlotDepth },
                 { "@strChargeProfiles", item.ChargeProfiles },
                 { "@aAttackModes", item.AttackModes },
                 { "@nStackLimit", item.StackLimit },
                 { "@aSwitchIDs", item.SwitchIds },
-                { "@aSounds", item.Sounds },
+                { "@aSounds", item.Sounds.ToString() },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },
             };

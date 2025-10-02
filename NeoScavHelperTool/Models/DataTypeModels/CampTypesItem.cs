@@ -27,7 +27,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Capacities { get; set; } = "30x30";
 
         [Column("nTreasureID")]
-        public int TreasureId { get; set; } = 3;
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("m_fAlertness")]
         public double Alertness { get; set; } = 0;

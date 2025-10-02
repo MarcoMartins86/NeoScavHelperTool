@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -124,7 +125,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Destroyed = value;
                     break;
                 case "nTreasureID":
-                    item.TreasureId = int.Parse(value);
+                    item.TreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "fHours":
                     item.Hours = double.Parse(value);
@@ -133,7 +134,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Reverse = int.Parse(value);
                     break;
                 case "nHiddenID":
-                    item.HiddenId = int.Parse(value);
+                    item.HiddenId = ModRefValue<int>.Parse(value);
                     break;
                 case "bIdentify":
                     item.Identify = int.Parse(value) == 1;
@@ -145,7 +146,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.AlsoTry = value;
                     break;
                 case "nTempTreasureID":
-                    item.TempTreasureId = int.Parse(value);
+                    item.TempTreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "bDegradeOutput":
                     item.DegradeOutput = int.Parse(value) == 1;
@@ -177,14 +178,14 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strTools", item.Tools },
                 { "@strConsumed", item.Consumed },
                 { "@strDestroyed", item.Destroyed },
-                { "@nTreasureID", item.TreasureId },
+                { "@nTreasureID", item.TreasureId.ToString() },
                 { "@fHours", item.Hours },
                 { "@nReverse", item.Reverse },
-                { "@nHiddenID", item.HiddenId },
+                { "@nHiddenID", item.HiddenId.ToString() },
                 { "@bIdentify", item.Identify },
                 { "@bTransferComponents", item.TransferComponents },
                 { "@vAlsoTry", item.AlsoTry },
-                { "@nTempTreasureID", item.TempTreasureId },
+                { "@nTempTreasureID", item.TempTreasureId.ToString() },
                 { "@bDegradeOutput", item.DegradeOutput },
                 { "@strType", item.Type },
                 { "@bScrap", item.Scrap },

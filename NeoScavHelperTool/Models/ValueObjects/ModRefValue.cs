@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoScavHelperTool.Models.ValueObjects.Base;
 
 namespace NeoScavHelperTool.Models.ValueObjects
 {
-    public class ModRefValue<T> : ValueObject
+    public class ModRefValue<T> : ValueObject, IStringListItem<T>
     {
         private static readonly char[] MODREF_VALUE_SEPARATOR = { ':' };
 
         public string ModRef { get; private set; }
         public T Value { get; private set; }
-
-        protected ModRefValue() { }
 
         protected ModRefValue(string modRef, T value)
         {

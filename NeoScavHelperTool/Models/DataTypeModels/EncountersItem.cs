@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Models.DataTypeModels.Base;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -27,10 +28,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Image { get; set; } = "EncBlank.png";
 
         [Column("nTreasureID")]
-        public int TreasureId { get; set; } = 3;
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("nRemoveTreasureID")]
-        public int RemoveTreasureId { get; set; } = 3;
+        public ModRefValue<int> RemoveTreasureId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("aConditions")]
         public string Conditions { get; set; } = "1";
@@ -54,10 +55,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public bool RemoveUsed { get; set; } = false;
 
         [Column("nItemsID")]
-        public int ItemsId { get; set; } = 3;
+        public ModRefValue<int> ItemsId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("nCreatureID")]
-        public int CreatureId { get; set; } = 0;
+        public ModRefValue<int> CreatureId { get; set; } = ModRefValue<int>.Of(0);
 
         [Column("ptCreatureHex")]
         public string CreatureHex { get; set; } = "0,0";

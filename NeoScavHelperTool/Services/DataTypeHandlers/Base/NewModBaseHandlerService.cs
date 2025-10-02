@@ -89,7 +89,17 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
                         $"Unexpected Xml NodeType \"{columnNode.NodeType}\" for \"{XML_COLUMN_ELEMENT_NAME}\" on file \"{columnNode.BaseURI}\""
                     );
                 }
-                AssignColumnValueToItem(ref item, (XmlElement)columnNode);
+                try
+                {
+                    AssignColumnValueToItem(ref item, (XmlElement)columnNode);
+                }
+                catch (Exception ex)
+                {
+                    XmlElement column = (XmlElement)columnNode;
+                    throw new Exception(
+                        $"Failed to parse \"{column.GetAttribute(XML_COLUMN_NAME_ATTRIBUTE)}\": \"{column.InnerText}\" on file \"{columnNode.BaseURI}\" with message: \"{ex.Message}\""
+                    );
+                }
             }
             SQLiteCommand command = BuildUpsertCommand(
                 mod,

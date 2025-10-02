@@ -44,7 +44,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `bRemoveAll` INTEGER NOT NULL DEFAULT 0, 
               `bRemovePostCombat` INTEGER NOT NULL DEFAULT 0,
               `nTransferRange` INTEGER NOT NULL DEFAULT -1,
-              `aThresholds` TEXT NOT NULL,
+              `aThresholds` TEXT NOT NULL DEFAULT '', /* added default value, mods are working without this */
               `isOverriden` INTEGER NOT NULL,
               `valueModFolder` TEXT NOT NULL,
               PRIMARY KEY(`id`)

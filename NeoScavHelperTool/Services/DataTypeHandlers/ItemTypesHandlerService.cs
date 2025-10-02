@@ -188,7 +188,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.ConditionId = ModRefValue<int>.Parse(value);
                     break;
                 case "vImageList":
-                    item.ImageList = ListModRefValue<string>.Parse(value);
+                    item.ImageList = StringList<ModRefValue<string>, string>.Parse(value);
                     break;
                 case "vSpriteList":
                     item.SpriteList = value;
@@ -242,10 +242,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.SocketLocked = int.Parse(value) == 1;
                     break;
                 case "vProperties":
-                    item.Properties = ListModRefValue<int>.Parse(value);
+                    item.Properties = StringList<ModRefValue<int>, int>.Parse(value);
                     break;
                 case "aContentIDs":
-                    item.ContentIds = ListModRefValue<int>.Parse(value);
+                    item.ContentIds = StringList<ModRefValue<int>, int>.Parse(value);
                     break;
                 case "nFormatID":
                     item.FormatId = ModRefValue<int>.Parse(value);
@@ -275,7 +275,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.SwitchIds = value;
                     break;
                 case "aSounds":
-                    item.Sounds = ListModRefValue<string>.Parse(value);
+                    item.Sounds = StringList<ModRefValue<string>, string>.Parse(value);
                     break;
                 default:
                     throw new Exception(

@@ -83,7 +83,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "aTreasures":
-                    item.Treasures = ListModRefValue<string>.Parse(value);
+                    item.Treasures = StringList<OrModRefValues<string>, string>.Parse(value);
                     break;
                 case "bNested":
                     item.Nested = int.Parse(value) == 1;

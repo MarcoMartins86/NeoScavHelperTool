@@ -37,7 +37,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public ModRefValue<int> ConditionId { get; set; } = ModRefValue<int>.Of(1);
 
         [Column("vImageList")]
-        public ListModRefValue<string> ImageList { get; set; }
+        public StringList<ModRefValue<string>, string> ImageList { get; set; }
 
         [Column("vSpriteList")]
         public string SpriteList { get; set; }
@@ -91,10 +91,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public bool SocketLocked { get; set; } = false;
 
         [Column("vProperties")]
-        public ListModRefValue<int> Properties { get; set; }
+        public StringList<ModRefValue<int>, int> Properties { get; set; }
 
         [Column("aContentIDs")]
-        public ListModRefValue<int> ContentIds { get; set; }
+        public StringList<ModRefValue<int>, int> ContentIds { get; set; }
 
         [Column("nFormatID")]
         public ModRefValue<int> FormatId { get; set; } = ModRefValue<int>.Of(3);
@@ -124,7 +124,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string SwitchIds { get; set; } = "";
 
         [Column("aSounds")]
-        public ListModRefValue<string> Sounds { get; set; } =
-            ListModRefValue<string>.Of("cuePickup", "cuePutdown");
+        public StringList<ModRefValue<string>, string> Sounds { get; set; } =
+            StringList<ModRefValue<string>, string>.Of("cuePickup", "cuePutdown");
     }
 }

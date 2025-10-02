@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -139,10 +140,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Image = value;
                     break;
                 case "nTreasureID":
-                    item.TreasureId = int.Parse(value);
+                    item.TreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "nRemoveTreasureID":
-                    item.RemoveTreasureId = int.Parse(value);
+                    item.RemoveTreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "aConditions":
                     item.Conditions = value;
@@ -166,10 +167,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.RemoveUsed = int.Parse(value) == 1;
                     break;
                 case "nItemsID":
-                    item.ItemsId = int.Parse(value);
+                    item.ItemsId = ModRefValue<int>.Parse(value);
                     break;
                 case "nCreatureID":
-                    item.CreatureId = int.Parse(value);
+                    item.CreatureId = ModRefValue<int>.Parse(value);
                     break;
                 case "ptCreatureHex":
                     item.CreatureHex = value;
@@ -217,8 +218,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strName", item.Name },
                 { "@strDesc", item.Description },
                 { "@strImg", item.Image },
-                { "@nTreasureID", item.TreasureId },
-                { "@nRemoveTreasureID", item.RemoveTreasureId },
+                { "@nTreasureID", item.TreasureId.ToString() },
+                { "@nRemoveTreasureID", item.RemoveTreasureId.ToString() },
                 { "@aConditions", item.Conditions },
                 { "@aPreConditions", item.PreConditions },
                 { "@fPrice", item.Price },
@@ -226,8 +227,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@aMinimapHexes", item.MinimapHexes },
                 { "@bRemoveCreatures", item.RemoveCreatures },
                 { "@bRemoveUsed", item.RemoveUsed },
-                { "@nItemsID", item.ItemsId },
-                { "@nCreatureID", item.CreatureId },
+                { "@nItemsID", item.ItemsId.ToString() },
+                { "@nCreatureID", item.CreatureId.ToString() },
                 { "@ptCreatureHex", item.CreatureHex },
                 { "@ptTeleport", item.Teleport },
                 { "@ptEditor", item.Editor },

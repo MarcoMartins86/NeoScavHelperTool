@@ -21,7 +21,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Name { get; set; }
 
         [Column("strNotes")]
-        public string Notes { get; set; }
+        public string Notes { get; set; } = "";
 
         [Column("nRange")]
         public int Range { get; set; } = 1;

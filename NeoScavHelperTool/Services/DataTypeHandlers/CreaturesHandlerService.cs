@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -115,10 +116,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.MovesPerTurn = int.Parse(value);
                     break;
                 case "nTreasureID":
-                    item.TreasureId = int.Parse(value);
+                    item.TreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "nFaction":
-                    item.Faction = int.Parse(value);
+                    item.Faction = ModRefValue<int>.Parse(value);
                     break;
                 case "vAttackModes":
                     item.AttackModes = value;
@@ -127,7 +128,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.BaseConditions = value;
                     break;
                 case "nCorpseID":
-                    item.CorpseId = int.Parse(value);
+                    item.CorpseId = ModRefValue<int>.Parse(value);
                     break;
                 case "vActivities":
                     item.Activities = value;
@@ -154,11 +155,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strImg", item.Image },
                 { "@vEncounterIDs", item.EncounterIds },
                 { "@nMovesPerTurn", item.MovesPerTurn },
-                { "@nTreasureID", item.TreasureId },
-                { "@nFaction", item.Faction },
+                { "@nTreasureID", item.TreasureId.ToString() },
+                { "@nFaction", item.Faction.ToString() },
                 { "@vAttackModes", item.AttackModes },
                 { "@vBaseConditions", item.BaseConditions },
-                { "@nCorpseID", item.CorpseId },
+                { "@nCorpseID", item.CorpseId.ToString() },
                 { "@vActivities", item.Activities },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },

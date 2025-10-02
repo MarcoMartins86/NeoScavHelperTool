@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Models.DataTypeModels.Base;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -36,10 +37,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public int MovesPerTurn { get; set; }
 
         [Column("nTreasureID")]
-        public int TreasureId { get; set; } = 3;
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("nFaction")]
-        public int Faction { get; set; } = 0;
+        public ModRefValue<int> Faction { get; set; } = ModRefValue<int>.Of(0);
 
         [Column("vAttackModes")]
         public string AttackModes { get; set; }
@@ -48,7 +49,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string BaseConditions { get; set; }
 
         [Column("nCorpseID")]
-        public int CorpseId { get; set; } = 3;
+        public ModRefValue<int> CorpseId { get; set; } = ModRefValue<int>.Of(3);
 
         [Column("vActivities")]
         public string Activities { get; set; }

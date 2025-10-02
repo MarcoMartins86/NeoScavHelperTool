@@ -21,7 +21,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Name { get; set; }
 
         [Column("aTreasures")]
-        public ListModRefValue<string> Treasures { get; set; }
+        public StringList<OrModRefValues<string>, string> Treasures { get; set; }
 
         [Column("bNested")]
         public bool Nested { get; set; } = false;

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -97,7 +98,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Capacities = value;
                     break;
                 case "nTreasureID":
-                    item.TreasureId = int.Parse(value);
+                    item.TreasureId = ModRefValue<int>.Parse(value);
                     break;
                 case "m_fAlertness":
                     item.Alertness = double.Parse(value);
@@ -133,7 +134,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strDesc", item.Description },
                 { "@vImageList", item.ImageList },
                 { "@aCapacities", item.Capacities },
-                { "@nTreasureID", item.TreasureId },
+                { "@nTreasureID", item.TreasureId.ToString() },
                 { "@m_fAlertness", item.Alertness },
                 { "@m_fVisibility", item.Visibility },
                 { "@WetTempAdjustMod", item.WetTempAdjustMod },

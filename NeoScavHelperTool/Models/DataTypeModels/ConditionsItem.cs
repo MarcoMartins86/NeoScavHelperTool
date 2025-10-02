@@ -74,6 +74,6 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public int nTransferRange { get; set; } = -1;
 
         [Column("aThresholds")]
-        public string Thresholds { get; set; }
+        public string Thresholds { get; set; } = "";
     }
 }

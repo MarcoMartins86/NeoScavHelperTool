@@ -31,7 +31,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `fDamageCut` REAL NOT NULL DEFAULT 0,
               `fDamageBlunt` REAL NOT NULL DEFAULT 0,
               `strChargeProfiles` TEXT NOT NULL,
-              `nPenetration` INTEGER NOT NULL DEFAULT 0,
+              `nPenetration` REAL NOT NULL DEFAULT 0, /* change to REAL, mods are working with this */
               `nType` INTEGER NOT NULL DEFAULT 0,
               `strSnd`TEXT NOT NULL,
               `bTransfer` INTEGER NOT NULL DEFAULT 0,
@@ -124,7 +124,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.ChargeProfiles = value;
                     break;
                 case "nPenetration":
-                    item.Penetration = int.Parse(value);
+                    item.Penetration = double.Parse(value);
                     break;
                 case "nType":
                     item.Type = int.Parse(value);

@@ -37,10 +37,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public int MovesPerTurn { get; set; }
 
         [Column("nTreasureID")]
-        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("nFaction")]
-        public ModRefValue<int> Faction { get; set; } = ModRefValue<int>.Of(0);
+        public ModRefValue<int> Faction { get; set; } = ModRefValue<int>.Of("0", 0);
 
         [Column("vAttackModes")]
         public string AttackModes { get; set; }
@@ -49,7 +49,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string BaseConditions { get; set; }
 
         [Column("nCorpseID")]
-        public ModRefValue<int> CorpseId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> CorpseId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("vActivities")]
         public string Activities { get; set; }

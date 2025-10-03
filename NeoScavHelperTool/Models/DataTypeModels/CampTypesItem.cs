@@ -21,13 +21,14 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Description { get; set; }
 
         [Column("vImageList")]
-        public string ImageList { get; set; } = "ItmScavengeGrass01.png";
+        public ModRefValue<string> ImageList { get; set; } =
+            ModRefValue<string>.Of("0", "ItmScavengeGrass01.png");
 
         [Column("aCapacities")]
         public string Capacities { get; set; } = "30x30";
 
         [Column("nTreasureID")]
-        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("m_fAlertness")]
         public double Alertness { get; set; } = 0;

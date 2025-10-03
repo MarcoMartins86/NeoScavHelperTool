@@ -28,10 +28,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Image { get; set; } = "EncBlank.png";
 
         [Column("nTreasureID")]
-        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("nRemoveTreasureID")]
-        public ModRefValue<int> RemoveTreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> RemoveTreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("aConditions")]
         public string Conditions { get; set; } = "1";
@@ -55,10 +55,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public bool RemoveUsed { get; set; } = false;
 
         [Column("nItemsID")]
-        public ModRefValue<int> ItemsId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> ItemsId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("nCreatureID")]
-        public ModRefValue<int> CreatureId { get; set; } = ModRefValue<int>.Of(0);
+        public ModRefValue<int> CreatureId { get; set; } = ModRefValue<int>.Of("0", 0);
 
         [Column("ptCreatureHex")]
         public string CreatureHex { get; set; } = "0,0";
@@ -70,7 +70,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Editor { get; set; } = "0,0";
 
         [Column("nType")]
-        public int Type { get; set; } = 0;
+        public ModRefValue<int> Type { get; set; } = ModRefValue<int>.Of("0", 0);
 
         [Column("fLootChance")]
         public double LootChance { get; set; } = 0;

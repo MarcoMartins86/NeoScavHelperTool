@@ -31,16 +31,16 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `strTools` TEXT NOT NULL DEFAULT '',
               `strConsumed` TEXT NOT NULL DEFAULT '',
               `strDestroyed` TEXT NOT NULL DEFAULT '',
-              `nTreasureID` INTEGER NOT NULL DEFAULT 3, 
+              `nTreasureID` TEXT NOT NULL DEFAULT '0:3', /* mod:value */
               `fHours` REAL NOT NULL DEFAULT 0,
               `nReverse` INTEGER NOT NULL DEFAULT 0, 
-              `nHiddenID` INTEGER NOT NULL DEFAULT 0,
+              `nHiddenID` TEXT NOT NULL DEFAULT '0:0', /* mod:value */
               `bIdentify` INTEGER NOT NULL DEFAULT 0,
               `bTransferComponents` INTEGER NOT NULL DEFAULT 0,
               `vAlsoTry` TEXT NOT NULL, 
-              `nTempTreasureID` INTEGER NOT NULL DEFAULT 3, 
+              `nTempTreasureID` TEXT NOT NULL DEFAULT '0:3', /* mod:value */
               `bDegradeOutput` INTEGER NOT NULL DEFAULT 1,
-              `strType` TEXT NOT NULL,
+              `strType` TEXT NOT NULL DEFAULT '', /* added default value, mods are working without this */
               `bScrap` INTEGER NOT NULL DEFAULT 1, 
               `isOverriden` INTEGER NOT NULL,
               `valueModFolder` TEXT NOT NULL,
@@ -131,7 +131,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Hours = double.Parse(value);
                     break;
                 case "nReverse":
-                    item.Reverse = int.Parse(value);
+                    item.Reverse = string.IsNullOrEmpty(value) /* a mod was like this */
+                        ? 0
+                        : int.Parse(value);
                     break;
                 case "nHiddenID":
                     item.HiddenId = ModRefValue<int>.Parse(value);
@@ -178,14 +180,14 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strTools", item.Tools },
                 { "@strConsumed", item.Consumed },
                 { "@strDestroyed", item.Destroyed },
-                { "@nTreasureID", item.TreasureId.ToString() },
+                { "@nTreasureID", item.TreasureId?.ToString() },
                 { "@fHours", item.Hours },
                 { "@nReverse", item.Reverse },
-                { "@nHiddenID", item.HiddenId.ToString() },
+                { "@nHiddenID", item.HiddenId?.ToString() },
                 { "@bIdentify", item.Identify },
                 { "@bTransferComponents", item.TransferComponents },
                 { "@vAlsoTry", item.AlsoTry },
-                { "@nTempTreasureID", item.TempTreasureId.ToString() },
+                { "@nTempTreasureID", item.TempTreasureId?.ToString() },
                 { "@bDegradeOutput", item.DegradeOutput },
                 { "@strType", item.Type },
                 { "@bScrap", item.Scrap },

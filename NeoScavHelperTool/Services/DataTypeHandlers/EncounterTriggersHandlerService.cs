@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -26,7 +27,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             CREATE TABLE IF NOT EXISTS `{0}` (
               `id` INTEGER NOT NULL,
               `strName` TEXT NOT NULL, 
-              `nEncounterID` INTEGER NOT NULL, 
+              `nEncounterID` TEXT NOT NULL, /* mod:value */ 
               `fChance` REAL NOT NULL,
               `bLocBased` INTEGER NOT NULL, 
               `bDateBased` INTEGER NOT NULL,
@@ -103,7 +104,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "nEncounterID":
-                    item.EncounterId = int.Parse(value);
+                    item.EncounterId = ModRefValue<int>.Parse(value);
                     break;
                 case "fChance":
                     item.Chance = double.Parse(value);
@@ -152,7 +153,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@nEncounterID", item.EncounterId },
+                { "@nEncounterID", item.EncounterId?.ToString() },
                 { "@fChance", item.Chance },
                 { "@bLocBased", item.LocBased },
                 { "@bDateBased", item.DateBased },

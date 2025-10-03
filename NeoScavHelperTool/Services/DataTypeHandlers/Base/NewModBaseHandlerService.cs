@@ -97,7 +97,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
                 {
                     XmlElement column = (XmlElement)columnNode;
                     throw new Exception(
-                        $"Failed to parse \"{column.GetAttribute(XML_COLUMN_NAME_ATTRIBUTE)}\": \"{column.InnerText}\" on file \"{columnNode.BaseURI}\" with message: \"{ex.Message}\""
+                        $"Failed to parse \"{mod.Name}\" {item.ItemDescription()} \"{column.GetAttribute(XML_COLUMN_NAME_ATTRIBUTE)}\": \"{column.InnerText}\" on file \"{columnNode.BaseURI}\" with message: \"{ex.Message}\""
                     );
                 }
             }

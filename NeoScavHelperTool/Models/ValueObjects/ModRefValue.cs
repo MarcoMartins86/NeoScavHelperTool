@@ -9,7 +9,7 @@ namespace NeoScavHelperTool.Models.ValueObjects
 {
     public class ModRefValue<T> : ValueObject, IStringListItem<T>
     {
-        private static readonly char[] MODREF_VALUE_SEPARATOR = { ':' };
+        private const string SEPARATOR = ":";
 
         public string ModRef { get; private set; }
         public T Value { get; private set; }
@@ -29,15 +29,18 @@ namespace NeoScavHelperTool.Models.ValueObjects
 
         public override string ToString()
         {
-            return string.IsNullOrEmpty(ModRef)
-                ? Value.ToString()
-                : $"{ModRef}{MODREF_VALUE_SEPARATOR[0]}{Value}";
+            return string.IsNullOrEmpty(ModRef) ? Value.ToString() : $"{ModRef}{SEPARATOR}{Value}";
         }
 
         public static ModRefValue<T> Parse(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
             string[] split = value.Split(
-                MODREF_VALUE_SEPARATOR,
+                SEPARATOR.ToCharArray(),
                 StringSplitOptions.RemoveEmptyEntries
             );
             if (split.Length == 2)
@@ -58,7 +61,12 @@ namespace NeoScavHelperTool.Models.ValueObjects
 
         public static ModRefValue<T> Of(T value)
         {
-            return new ModRefValue<T>("", value);
+            return value == null ? null : new ModRefValue<T>("", value);
+        }
+
+        public static ModRefValue<T> Of(string mod, T value)
+        {
+            return value == null ? null : new ModRefValue<T>(mod, value);
         }
     }
 }

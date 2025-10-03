@@ -19,7 +19,7 @@
           <!--root2-->
           <complexType>
             <sequence>
-              <element maxOccurs="unbounded" name="table">
+              <element minOccurs="0" maxOccurs="unbounded" name="table">
                 <!--Parent-->
                 <complexType>
                   <sequence>

@@ -29,8 +29,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `strName` TEXT NOT NULL,
               `strDesc` TEXT NOT NULL, 
               `strImg` TEXT NOT NULL DEFAULT 'EncBlank.png', 
-              `nTreasureID` INTEGER NOT NULL DEFAULT 3, 
-              `nRemoveTreasureID` INTEGER NOT NULL DEFAULT 3,
+              `nTreasureID` TEXT NOT NULL DEFAULT '0:3', /* mod:value */
+              `nRemoveTreasureID` TEXT NOT NULL DEFAULT '0:3', /* mod:value */
               `aConditions` TEXT NOT NULL DEFAULT '1',
               `aPreConditions` TEXT NOT NULL DEFAULT '', 
               `fPrice` REAL NOT NULL DEFAULT 0,
@@ -38,12 +38,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `aMinimapHexes` TEXT NOT NULL DEFAULT '',
               `bRemoveCreatures` INTEGER NOT NULL DEFAULT 0,
               `bRemoveUsed` INTEGER NOT NULL DEFAULT 0, 
-              `nItemsID` INTEGER NOT NULL DEFAULT 3, 
-              `nCreatureID` INTEGER NOT NULL DEFAULT 0,
+              `nItemsID` TEXT NOT NULL DEFAULT '0:3', /* mod:value */
+              `nCreatureID` TEXT NOT NULL DEFAULT '0:0', /* mod:value */
               `ptCreatureHex` TEXT NOT NULL DEFAULT '0,0', 
               `ptTeleport` TEXT NOT NULL DEFAULT '0,0',
               `ptEditor` TEXT NOT NULL DEFAULT '0,0',
-              `nType` INTEGER NOT NULL DEFAULT 0,
+              `nType` TEXT NOT NULL DEFAULT '0:0', /* mod:value */
               `fLootChance` REAL NOT NULL DEFAULT 0,
               `fAccidentChance` REAL NOT NULL DEFAULT 0,
               `fCreatureChance` REAL NOT NULL DEFAULT 0,
@@ -152,7 +152,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.PreConditions = value;
                     break;
                 case "fPrice":
-                    item.Price = double.Parse(value);
+                    item.Price = string.IsNullOrEmpty(value) /* a mod was like this */
+                        ? 0
+                        : double.Parse(value);
                     break;
                 case "aResponses":
                     item.Responses = value;
@@ -182,7 +184,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Editor = value;
                     break;
                 case "nType":
-                    item.Type = int.Parse(value);
+                    item.Type = ModRefValue<int>.Parse(value);
                     break;
                 case "fLootChance":
                     item.LootChance = double.Parse(value);
@@ -218,8 +220,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strName", item.Name },
                 { "@strDesc", item.Description },
                 { "@strImg", item.Image },
-                { "@nTreasureID", item.TreasureId.ToString() },
-                { "@nRemoveTreasureID", item.RemoveTreasureId.ToString() },
+                { "@nTreasureID", item.TreasureId?.ToString() },
+                { "@nRemoveTreasureID", item.RemoveTreasureId?.ToString() },
                 { "@aConditions", item.Conditions },
                 { "@aPreConditions", item.PreConditions },
                 { "@fPrice", item.Price },
@@ -227,12 +229,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@aMinimapHexes", item.MinimapHexes },
                 { "@bRemoveCreatures", item.RemoveCreatures },
                 { "@bRemoveUsed", item.RemoveUsed },
-                { "@nItemsID", item.ItemsId.ToString() },
-                { "@nCreatureID", item.CreatureId.ToString() },
+                { "@nItemsID", item.ItemsId?.ToString() },
+                { "@nCreatureID", item.CreatureId?.ToString() },
                 { "@ptCreatureHex", item.CreatureHex },
                 { "@ptTeleport", item.Teleport },
                 { "@ptEditor", item.Editor },
-                { "@nType", item.Type },
+                { "@nType", item.Type?.ToString() },
                 { "@fLootChance", item.LootChance },
                 { "@fAccidentChance", item.AccidentChance },
                 { "@fCreatureChance", item.CreatureChance },

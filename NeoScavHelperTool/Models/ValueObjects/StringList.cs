@@ -18,7 +18,9 @@ namespace NeoScavHelperTool.Models.ValueObjects
 
         public static StringList<T, V> Parse(string value)
         {
-            return new StringList<T, V>(ParseInternal(value, SEPARATOR));
+            return string.IsNullOrEmpty(value)
+                ? null
+                : new StringList<T, V>(ParseInternal(value, SEPARATOR));
         }
 
         public override string ToString()
@@ -28,7 +30,7 @@ namespace NeoScavHelperTool.Models.ValueObjects
 
         public static StringList<T, V> Of(params V[] values)
         {
-            return new StringList<T, V>(OfInternal(values));
+            return values == null ? null : new StringList<T, V>(OfInternal(values));
         }
     }
 }

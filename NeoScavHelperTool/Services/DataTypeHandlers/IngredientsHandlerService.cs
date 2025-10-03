@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -26,8 +27,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             CREATE TABLE IF NOT EXISTS `{0}` (
               `nID` INTEGER NOT NULL,
               `strName` TEXT NOT NULL, 
-              `strRequiredProps` TEXT NOT NULL,
-              `strForbidProps` TEXT NOT NULL,
+              `strRequiredProps` TEXT NOT NULL DEFAULT '', /* added default value, vanilla is working without this */
+              `strForbidProps` TEXT NOT NULL DEFAULT '', /* added default value, vanilla is working without this */
               `isOverriden` INTEGER NOT NULL,
               `valueModFolder` TEXT NOT NULL,
               PRIMARY KEY(`nID`)
@@ -73,10 +74,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "strRequiredProps":
-                    item.RequiredProps = value;
+                    item.RequiredProps = StringList<AndModRefValues<int>, int>.Parse(value);
                     break;
                 case "strForbidProps":
-                    item.ForbidProps = value;
+                    item.ForbidProps = StringList<AndModRefValues<int>, int>.Parse(value);
                     break;
                 default:
                     throw new Exception(
@@ -95,8 +96,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@nID", item.Id },
                 { "@strName", item.Name },
-                { "@strRequiredProps", item.RequiredProps },
-                { "@strForbidProps", item.ForbidProps },
+                { "@strRequiredProps", item.RequiredProps?.ToString() },
+                { "@strForbidProps", item.ForbidProps?.ToString() },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },
             };

@@ -17,7 +17,9 @@ namespace NeoScavHelperTool.Models.ValueObjects
 
         public static OrModRefValues<V> Parse(string value)
         {
-            return new OrModRefValues<V>(ParseInternal(value, SEPARATOR));
+            return string.IsNullOrEmpty(value)
+                ? null
+                : new OrModRefValues<V>(ParseInternal(value, SEPARATOR));
         }
 
         public override string ToString()
@@ -27,7 +29,12 @@ namespace NeoScavHelperTool.Models.ValueObjects
 
         public static OrModRefValues<V> Of(params V[] values)
         {
-            return new OrModRefValues<V>(OfInternal(values));
+            return values == null ? null : new OrModRefValues<V>(OfInternal(values));
+        }
+
+        public static OrModRefValues<V> Of(string mod, params V[] values)
+        {
+            return values == null ? null : new OrModRefValues<V>(OfInternal(mod, values));
         }
     }
 }

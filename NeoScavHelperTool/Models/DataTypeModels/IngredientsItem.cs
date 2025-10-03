@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Models.DataTypeModels.Base;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 
 namespace NeoScavHelperTool.Models.DataTypeModels
@@ -20,9 +21,9 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Name { get; set; }
 
         [Column("strRequiredProps")]
-        public string RequiredProps { get; set; }
+        public StringList<AndModRefValues<int>, int> RequiredProps { get; set; }
 
         [Column("strForbidProps")]
-        public string ForbidProps { get; set; }
+        public StringList<AndModRefValues<int>, int> ForbidProps { get; set; }
     }
 }

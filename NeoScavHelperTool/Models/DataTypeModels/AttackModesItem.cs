@@ -36,7 +36,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string ChargeProfiles { get; set; }
 
         [Column("nPenetration")]
-        public int Penetration { get; set; } = 0;
+        public double Penetration { get; set; } = 0;
 
         [Column("nType")]
         public int Type { get; set; } = 0;

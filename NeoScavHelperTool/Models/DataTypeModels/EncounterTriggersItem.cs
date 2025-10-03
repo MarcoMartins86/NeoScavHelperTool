@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Models.DataTypeModels.Base;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -21,7 +22,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Name { get; set; }
 
         [Column("nEncounterID")]
-        public int EncounterId { get; set; }
+        public ModRefValue<int> EncounterId { get; set; }
 
         [Column("fChance")]
         public double Chance { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Xml;
@@ -53,6 +54,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
         {
             // Set the validation settings
             XmlReaderSettings settings = new XmlReaderSettings();
+            settings.CloseInput = true;
+            settings.DtdProcessing = DtdProcessing.Ignore;
+            settings.IgnoreComments = true;
+            settings.IgnoreProcessingInstructions = true;
+            settings.IgnoreWhitespace = true;
             settings.Schemas = _schemas;
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationEventHandler += (sender, e) =>
@@ -61,9 +67,14 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
                     $"Failed to validate XML file \"{file}\" on \"{e.Exception.LineNumber}:{e.Exception.LinePosition}\" with: \"{e.Message}\""
                 );
             };
-
-            // Create the XmlReader object.
-            using (XmlReader reader = XmlReader.Create(file, settings))
+            // Since many mods have wrong comments we need to remove them
+            // Otherwise Microsoft XML parser will complain
+            string strXMLFile = File.ReadAllText(file);
+            strXMLFile = Regex.Replace(strXMLFile, "<!--[\\s\\S]*?(?=-->)-->", string.Empty);
+            // Create the XmlReader object
+            using (
+                XmlReader reader = XmlReader.Create(new StringReader(strXMLFile), settings, file)
+            )
             {
                 // Create and load the XmlDocument (will trigger validations)
                 XmlDocument xml = new XmlDocument();

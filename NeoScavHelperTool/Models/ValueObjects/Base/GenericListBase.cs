@@ -60,6 +60,10 @@ namespace NeoScavHelperTool.Models.ValueObjects.Base
             {
                 parser = (v) => (T)(object)OrModRefValues<V>.Parse(v);
             }
+            else if (typeof(T) == typeof(AndModRefValues<V>))
+            {
+                parser = (v) => (T)(object)AndModRefValues<V>.Parse(v);
+            }
             else
             {
                 throw new NotImplementedException(
@@ -80,6 +84,34 @@ namespace NeoScavHelperTool.Models.ValueObjects.Base
             else if (typeof(T) == typeof(OrModRefValues<V>))
             {
                 factory = (v) => (T)(object)OrModRefValues<V>.Of(v);
+            }
+            else if (typeof(T) == typeof(AndModRefValues<V>))
+            {
+                factory = (v) => (T)(object)AndModRefValues<V>.Of(v);
+            }
+            else
+            {
+                throw new NotImplementedException(
+                    $"Need to implement \"{typeof(T).Name}\" for factory"
+                );
+            }
+            return values.Select(factory.Invoke).ToList();
+        }
+
+        protected static List<T> OfInternal(string mod, params V[] values)
+        {
+            Func<V, T> factory;
+            if (typeof(T) == typeof(ModRefValue<V>))
+            {
+                factory = (v) => (T)(object)ModRefValue<V>.Of(mod, v);
+            }
+            else if (typeof(T) == typeof(OrModRefValues<V>))
+            {
+                factory = (v) => (T)(object)OrModRefValues<V>.Of(mod, v);
+            }
+            else if (typeof(T) == typeof(AndModRefValues<V>))
+            {
+                factory = (v) => (T)(object)AndModRefValues<V>.Of(mod, v);
             }
             else
             {

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
+using NeoScavHelperTool.Models.ValueObjects;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using SQLite;
 
@@ -32,11 +33,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
               `nVizIncrease` INTEGER NOT NULL,
               `nTreasureID` INTEGER NOT NULL,
               `bPassable` INTEGER NOT NULL, 
-              `nScavengeInitialID` INTEGER NOT NULL DEFAULT 3, 
-              `nScavengeItemsIDPerHour` INTEGER NOT NULL DEFAULT 25,
+              `nScavengeInitialID` TEXT NOT NULL DEFAULT '0:3', /* mod:value */
+              `nScavengeItemsIDPerHour` TEXT NOT NULL DEFAULT '0:25', /* mod:value */
               `nCampItems` INTEGER NOT NULL DEFAULT 5, 
               `vLightLevels` TEXT NOT NULL DEFAULT '0.57,1.0,0.57,0.15',
-              `nDefaultCampID` INTEGER NOT NULL DEFAULT 517,
+              `nDefaultCampID` TEX NOT NULL DEFAULT '0:517', /* mod:value */
               `nMinRange` INTEGER NOT NULL DEFAULT 3,
               `nMaxRange` INTEGER NOT NULL DEFAULT 6,
               `vCondIDs` TEXT NOT NULL,
@@ -127,10 +128,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Passable = int.Parse(value) == 1;
                     break;
                 case "nScavengeInitialID":
-                    item.ScavengeInitialId = int.Parse(value);
+                    item.ScavengeInitialId = ModRefValue<int>.Parse(value);
                     break;
                 case "nScavengeItemsIDPerHour":
-                    item.ScavengeItemsIdPerHour = int.Parse(value);
+                    item.ScavengeItemsIdPerHour = ModRefValue<int>.Parse(value);
                     break;
                 case "nCampItems":
                     item.CampItems = int.Parse(value);
@@ -139,7 +140,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.LightLevels = value;
                     break;
                 case "nDefaultCampID":
-                    item.DefaultCampId = int.Parse(value);
+                    item.DefaultCampId = ModRefValue<int>.Parse(value);
                     break;
                 case "nMinRange":
                     item.MinRange = int.Parse(value);
@@ -173,11 +174,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@nVizIncrease", item.VizIncrease },
                 { "@nTreasureID", item.TreasureId },
                 { "@bPassable", item.Passable },
-                { "@nScavengeInitialID", item.ScavengeInitialId },
-                { "@nScavengeItemsIDPerHour", item.ScavengeItemsIdPerHour },
+                { "@nScavengeInitialID", item.ScavengeInitialId?.ToString() },
+                { "@nScavengeItemsIDPerHour", item.ScavengeItemsIdPerHour?.ToString() },
                 { "@nCampItems", item.CampItems },
                 { "@vLightLevels", item.LightLevels },
-                { "@nDefaultCampID", item.DefaultCampId },
+                { "@nDefaultCampID", item.DefaultCampId?.ToString() },
                 { "@nMinRange", item.MinRange },
                 { "@nMaxRange", item.MaxRange },
                 { "@vCondIDs", item.ConditionsIds },

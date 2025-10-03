@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Models.DataTypeModels.Base;
+using NeoScavHelperTool.Models.ValueObjects;
 using SQLite;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -39,10 +40,10 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public bool Passable { get; set; }
 
         [Column("nScavengeInitialID")]
-        public int ScavengeInitialId { get; set; } = 3;
+        public ModRefValue<int> ScavengeInitialId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("nScavengeItemsIDPerHour")]
-        public int ScavengeItemsIdPerHour { get; set; } = 25;
+        public ModRefValue<int> ScavengeItemsIdPerHour { get; set; } = ModRefValue<int>.Of("0", 25);
 
         [Column("nCampItems")]
         public int CampItems { get; set; } = 5;
@@ -51,7 +52,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string LightLevels { get; set; } = "0.57,1.0,0.57,0.15";
 
         [Column("nDefaultCampID")]
-        public int DefaultCampId { get; set; } = 517;
+        public ModRefValue<int> DefaultCampId { get; set; } = ModRefValue<int>.Of("0", 517);
 
         [Column("nMinRange")]
         public int MinRange { get; set; } = 3;

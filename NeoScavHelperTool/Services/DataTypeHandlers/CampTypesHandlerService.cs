@@ -27,9 +27,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             CREATE TABLE IF NOT EXISTS `{0}` (
               `id` INTEGER NOT NULL, 
               `strDesc` TEXT NOT NULL,
-              `vImageList` TEXT NOT NULL DEFAULT 'ItmScavengeGrass01.png',
+              `vImageList` TEXT NOT NULL DEFAULT '0:ItmScavengeGrass01.png',
               `aCapacities` TEXT NOT NULL DEFAULT '30x30',
-              `nTreasureID` INTEGER NOT NULL DEFAULT 3, 
+              `nTreasureID` TEXT NOT NULL DEFAULT '0:3', 
               `m_fAlertness` REAL NOT NULL DEFAULT 0,
               `m_fVisibility` REAL NOT NULL DEFAULT -0.05,
               `WetTempAdjustMod` REAL NOT NULL DEFAULT 0,
@@ -92,7 +92,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Description = value;
                     break;
                 case "vImageList":
-                    item.ImageList = value;
+                    item.ImageList = ModRefValue<string>.Parse(value);
                     break;
                 case "aCapacities":
                     item.Capacities = value;
@@ -132,9 +132,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strDesc", item.Description },
-                { "@vImageList", item.ImageList },
+                { "@vImageList", item.ImageList?.ToString() },
                 { "@aCapacities", item.Capacities },
-                { "@nTreasureID", item.TreasureId.ToString() },
+                { "@nTreasureID", item.TreasureId?.ToString() },
                 { "@m_fAlertness", item.Alertness },
                 { "@m_fVisibility", item.Visibility },
                 { "@WetTempAdjustMod", item.WetTempAdjustMod },

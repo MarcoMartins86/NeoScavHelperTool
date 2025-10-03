@@ -34,7 +34,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string DescriptionAlternative { get; set; }
 
         [Column("nCondID")]
-        public ModRefValue<int> ConditionId { get; set; } = ModRefValue<int>.Of(1);
+        public ModRefValue<int> ConditionId { get; set; } = ModRefValue<int>.Of("0", 1);
 
         [Column("vImageList")]
         public StringList<ModRefValue<string>, string> ImageList { get; set; }
@@ -97,13 +97,13 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public StringList<ModRefValue<int>, int> ContentIds { get; set; }
 
         [Column("nFormatID")]
-        public ModRefValue<int> FormatId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> FormatId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("nTreasureID")]
-        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("nComponentID")]
-        public ModRefValue<int> ComponentId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> ComponentId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("bMirrored")]
         public bool Mirrored { get; set; } = false;
@@ -125,6 +125,6 @@ namespace NeoScavHelperTool.Models.DataTypeModels
 
         [Column("aSounds")]
         public StringList<ModRefValue<string>, string> Sounds { get; set; } =
-            StringList<ModRefValue<string>, string>.Of("cuePickup", "cuePutdown");
+            StringList<ModRefValue<string>, string>.Of("0", "cuePickup", "cuePutdown");
     }
 }

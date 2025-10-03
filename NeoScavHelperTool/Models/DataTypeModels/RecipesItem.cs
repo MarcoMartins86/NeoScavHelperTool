@@ -34,7 +34,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string Destroyed { get; set; } = "";
 
         [Column("nTreasureID")]
-        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("fHours")]
         public double Hours { get; set; } = 0;
@@ -43,7 +43,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public int Reverse { get; set; } = 0;
 
         [Column("nHiddenID")]
-        public ModRefValue<int> HiddenId { get; set; } = ModRefValue<int>.Of(0);
+        public ModRefValue<int> HiddenId { get; set; } = ModRefValue<int>.Of("0", 0);
 
         [Column("bIdentify")]
         public bool Identify { get; set; } = false;
@@ -55,13 +55,13 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         public string AlsoTry { get; set; }
 
         [Column("nTempTreasureID")]
-        public ModRefValue<int> TempTreasureId { get; set; } = ModRefValue<int>.Of(3);
+        public ModRefValue<int> TempTreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
         [Column("bDegradeOutput")]
         public bool DegradeOutput { get; set; } = true;
 
         [Column("strType")]
-        public string Type { get; set; }
+        public string Type { get; set; } = "";
 
         [Column("bScrap")]
         public bool Scrap { get; set; } = true;

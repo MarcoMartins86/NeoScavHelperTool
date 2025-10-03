@@ -27,7 +27,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             CREATE TABLE IF NOT EXISTS `{0}` (
               `id` INTEGER NOT NULL,
               `strName` TEXT NOT NULL,
-              `aTreasures` TEXT NOT NULL,
+              `aTreasures` TEXT NOT NULL DEFAULT '', /* added default value, mods are working without this */
               `bNested` INTEGER NOT NULL DEFAULT 0,
               `bSuppress` INTEGER NOT NULL DEFAULT 0,
               `bIdentify` INTEGER NOT NULL DEFAULT 0,
@@ -111,7 +111,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@aTreasures", item.Treasures.ToString() },
+                { "@aTreasures", item.Treasures?.ToString() },
                 { "@bNested", item.Nested },
                 { "@bSuppress", item.Suppress },
                 { "@bIdentify", item.Identify },

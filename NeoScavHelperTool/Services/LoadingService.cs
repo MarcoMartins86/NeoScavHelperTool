@@ -44,7 +44,7 @@ namespace NeoScavHelperTool.Services
         public void Start(ISplashScreen splashScreen)
         {
             // Resolve game folder path
-            string gamePath = _folderPathResolverService.NeoScavFolderPath;
+            string gamePath = App.Current.GamePath = _folderPathResolverService.NeoScavFolderPath;
             // Get the list of mods info
             IList<ModInfo> mods = _phpParserService.GetModsInfo(gamePath);
             // Load the mods data into db

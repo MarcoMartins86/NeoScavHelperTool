@@ -35,6 +35,8 @@ namespace NeoScavHelperTool
         private ILogger<App> _logger;
         private DialogService _dialogService;
 
+        public string GamePath { get; set; }
+
         public static new App Current => (App)Application.Current;
 
         public App()

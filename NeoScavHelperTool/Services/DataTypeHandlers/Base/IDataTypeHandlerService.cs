@@ -9,16 +9,11 @@ using NeoScavHelperTool.Models;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
-    public interface IDataTypeHandlerService
+    public interface IDataTypeHandlerService<T>
     {
         public string Table { get; }
-        public void LoadModIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute);
+        public void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute);
         public bool CreateTableIfNotExists(ModInfo mod);
-        public void ReadItemIntoDb(
-            XmlElement table,
-            string tableName,
-            ModInfo mod,
-            bool willOverride
-        );
+        public void ReadItemIntoDb(T context, ModInfo mod, bool willOverride);
     }
 }

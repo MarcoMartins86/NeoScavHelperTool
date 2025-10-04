@@ -18,6 +18,7 @@ using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Extension;
 using NeoScavHelperTool.Helper;
 using NeoScavHelperTool.Models;
+using NeoScavHelperTool.Services.DataTypeHandlers;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using NeoScavHelperTool.ViewModels;
 
@@ -59,12 +60,14 @@ namespace NeoScavHelperTool.Services
         )
         {
             // Do a pre computation of total files we have to parse (helps to define progress)
-            int totalFilesToParse = mods.Select(mod => mod.Files.Count).Sum();
+            // mod files + images
+            int totalFilesToParse = mods.Select(mod => mod.Files.Count).Sum() + mods.Count;
             _logger.LogDebug("\"{totalFilesToParse}\" mod files to parse", totalFilesToParse);
 
             for (int i = 0, j = 0; i < mods.Count; i++)
             {
                 ModInfo mod = mods[i];
+                // Load the XML files
                 for (int x = 0; x < mod.Files.Count; x++, j++)
                 {
                     DataType type = mod.Files.ElementAt(x);
@@ -80,10 +83,11 @@ namespace NeoScavHelperTool.Services
                     }
 
                     if (
-                        Ioc.Default.GetService(attribute.Handler) is IDataTypeHandlerService handler
+                        Ioc.Default.GetService(attribute.Handler)
+                        is IDataTypeHandlerService<XmlElement> handler
                     )
                     {
-                        handler.LoadModIntoDb(gamePath, mod, attribute);
+                        handler.LoadIntoDb(gamePath, mod, attribute);
                     }
                     else
                     {
@@ -92,6 +96,13 @@ namespace NeoScavHelperTool.Services
                         );
                     }
                 }
+                // Load the images
+                splashScreen.SetProgress(
+                    (j++ * 100) / totalFilesToParse,
+                    $"Loading {mod.Name}_images"
+                );
+                Ioc.Default.GetRequiredService<ImagesHandlerService>()
+                    .LoadIntoDb(gamePath, mod, null);
             }
         }
     }

@@ -142,6 +142,7 @@ namespace NeoScavHelperTool
             services.AddSingleton<RecipesHandlerService>();
             services.AddSingleton<TreasureTableHandlerService>();
             services.AddSingleton<NeogameHandlerService>();
+            services.AddSingleton<ImagesHandlerService>();
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();

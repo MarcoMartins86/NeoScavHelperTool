@@ -12,22 +12,18 @@ using SQLite;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
-    public abstract class NewModBaseHandlerService<T, I> : DataTypeBaseHandlerService<T>
-        where T : DataTypeBaseHandlerService<T>
+    public abstract class NewModBaseHandlerService<T, I> : XmlDataTypeBaseHandlerService<T>
+        where T : XmlDataTypeBaseHandlerService<T>
         where I : DataTypeModelBase, new()
     {
         protected NewModBaseHandlerService(ILogger<T> logger, DatabaseService dbService)
             : base(logger, dbService) { }
 
-        public override void LoadModIntoDb(
-            string gamePath,
-            ModInfo mod,
-            DataTypeAttribute attribute
-        )
+        public override void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute)
         {
             // Create the XmlDocument from file
             // XSD valitations will run at loading time
-            string file = GetFileFullPath(gamePath, mod, attribute);
+            string file = GetXmlFileFullPath(gamePath, mod, attribute);
             XmlDocument doc = CreateXmlDocument(file);
 
             _logger.LogTrace("\"{mod}\" \"{file}\" validated successfully", mod.Name, file);
@@ -49,25 +45,13 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
             _dbService.Connection.BeginTransaction();
             TrasverseTableNodes(
                 tables,
-                (tableElement, tableName) =>
-                    ReadItemIntoDb(tableElement, tableName, mod, willOverride)
+                (tableElement, _) => ReadItemIntoDb(tableElement, mod, willOverride)
             );
             _dbService.Connection.Commit();
         }
 
-        public override void ReadItemIntoDb(
-            XmlElement table,
-            string tableName,
-            ModInfo mod,
-            bool willOverride
-        )
+        public override void ReadItemIntoDb(XmlElement table, ModInfo mod, bool willOverride)
         {
-            if (!Table.Equals(tableName))
-            {
-                throw new Exception(
-                    $"Unexpected table name \"{tableName}\" at \"{typeof(T).Name}\" on file \"{table.BaseURI}\""
-                );
-            }
             XmlNodeList columnNodes = table.SelectNodes(XML_COLUMN_ELEMENT_NAME);
             TrasverseColumnNodes(columnNodes, mod, willOverride);
         }

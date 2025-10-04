@@ -13,7 +13,7 @@ using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers
 {
-    public class NeogameHandlerService : DataTypeBaseHandlerService<NeogameHandlerService>
+    public class NeogameHandlerService : XmlDataTypeBaseHandlerService<NeogameHandlerService>
     {
         public override string Table => throw new NotImplementedException();
 
@@ -25,15 +25,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
         )
             : base(logger, dbService) { }
 
-        public override void LoadModIntoDb(
-            string gamePath,
-            ModInfo mod,
-            DataTypeAttribute attribute
-        )
+        public override void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute)
         {
             // Create the XmlDocument from file
             // XSD valitations will run at loading time
-            string file = GetFileFullPath(gamePath, mod, attribute);
+            string file = GetXmlFileFullPath(gamePath, mod, attribute);
             XmlDocument doc = CreateXmlDocument(file);
 
             _logger.LogTrace("\"{mod}\" \"{file}\" validated successfully", mod.Name, file);
@@ -61,11 +57,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                         );
                     }
 
-                    if (Ioc.Default.GetService(type) is IDataTypeHandlerService handler)
+                    if (Ioc.Default.GetService(type) is IDataTypeHandlerService<XmlElement> handler)
                     {
                         // Create the DB table if needed
                         bool willOverride = !handler.CreateTableIfNotExists(mod);
-                        handler.ReadItemIntoDb(tableElement, tableName, mod, willOverride);
+                        handler.ReadItemIntoDb(tableElement, mod, willOverride);
                     }
                     else
                     {
@@ -78,14 +74,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             _dbService.Connection.Commit();
         }
 
-        public override void ReadItemIntoDb(
-            XmlElement table,
-            string tableName,
-            ModInfo mod,
-            bool willOverride
-        )
+        public override void ReadItemIntoDb(XmlElement table, ModInfo mod, bool willOverride)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Neogame file does not have a DB table");
         }
     }
 }

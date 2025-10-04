@@ -208,5 +208,8 @@ namespace NeoScavHelperTool.Models
             Handler = typeof(NeogameHandlerService)
         )]
         Neogame,
+
+        [DataType(Table = ImagesHandlerService.TABLE, Handler = typeof(ImagesHandlerService))]
+        Images,
     }
 }

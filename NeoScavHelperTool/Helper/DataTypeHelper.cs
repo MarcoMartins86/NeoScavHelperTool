@@ -25,7 +25,10 @@ namespace NeoScavHelperTool.Helper
             foreach (DataType item in dataTypes)
             {
                 DataTypeAttribute attribute = item.GetAttributeOfType<DataTypeAttribute>();
-                _fileToDataType.Add(attribute.File, item);
+                if (!string.IsNullOrEmpty(attribute.File))
+                {
+                    _fileToDataType.Add(attribute.File, item);
+                }
                 _dataTypeToAttributes.Add(item, attribute);
                 if (!string.IsNullOrEmpty(attribute.Table))
                 {

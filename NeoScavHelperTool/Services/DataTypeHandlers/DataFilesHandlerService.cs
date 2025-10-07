@@ -59,9 +59,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public DataFilesHandlerService(
             ILogger<DataFilesHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref DataFilesItem item, XmlElement column)
         {

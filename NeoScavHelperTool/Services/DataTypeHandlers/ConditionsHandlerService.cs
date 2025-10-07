@@ -107,9 +107,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public ConditionsHandlerService(
             ILogger<ConditionsHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref ConditionsItem item, XmlElement column)
         {

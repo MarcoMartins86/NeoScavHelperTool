@@ -156,9 +156,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public ItemTypesHandlerService(
             ILogger<ItemTypesHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref ItemTypesItem item, XmlElement column)
         {

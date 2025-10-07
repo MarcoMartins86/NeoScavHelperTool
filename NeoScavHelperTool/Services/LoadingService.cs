@@ -29,16 +29,19 @@ namespace NeoScavHelperTool.Services
         private readonly ILogger<LoadingService> _logger;
         private readonly NeoScavFolderPathResolverService _folderPathResolverService;
         private readonly NeoScavPhpParserService _phpParserService;
+        private readonly ModsMetadataService _modsMetadataService;
 
         public LoadingService(
             ILogger<LoadingService> logger,
             NeoScavFolderPathResolverService folderPathResolverService,
-            NeoScavPhpParserService phpParserService
+            NeoScavPhpParserService phpParserService,
+            ModsMetadataService modsMetadataService
         )
         {
             _logger = logger;
             _folderPathResolverService = folderPathResolverService;
             _phpParserService = phpParserService;
+            _modsMetadataService = modsMetadataService;
         }
 
         public void Start(ISplashScreen splashScreen)
@@ -104,6 +107,8 @@ namespace NeoScavHelperTool.Services
                 Ioc.Default.GetRequiredService<ImagesHandlerService>()
                     .LoadIntoDb(gamePath, mod, null);
             }
+
+            _modsMetadataService.PersistModsMetadata();
         }
     }
 }

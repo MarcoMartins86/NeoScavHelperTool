@@ -93,9 +93,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public HexTypesHandlerService(
             ILogger<HexTypesHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref HexTypesItem item, XmlElement column)
         {

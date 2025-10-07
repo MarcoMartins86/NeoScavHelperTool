@@ -152,9 +152,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public BattleMovesHandlerService(
             ILogger<BattleMovesHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref BattleMovesItem item, XmlElement column)
         {

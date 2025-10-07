@@ -25,10 +25,17 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
         protected readonly ILogger<T> _logger;
         protected readonly DatabaseService _dbService;
 
-        protected DataTypeBaseHandlerService(ILogger<T> logger, DatabaseService dbService)
+        private readonly ModsMetadataService _modsMetadataService;
+
+        protected DataTypeBaseHandlerService(
+            ILogger<T> logger,
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
+        )
         {
             _logger = logger;
             _dbService = dbService;
+            _modsMetadataService = modsMetadataService;
         }
 
         // returns:
@@ -48,6 +55,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
                     string.Format(CreateTableSql, modTableName)
                 );
                 _logger.LogTrace("\"{table} created\"", modTableName);
+                _modsMetadataService.AddTableToMod(mod, Table);
             }
 
             return !tableAlreadyExists;

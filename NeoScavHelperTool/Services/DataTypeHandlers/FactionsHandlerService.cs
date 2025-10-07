@@ -53,9 +53,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public FactionsHandlerService(
             ILogger<FactionsHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref FactionsItem item, XmlElement column)
         {

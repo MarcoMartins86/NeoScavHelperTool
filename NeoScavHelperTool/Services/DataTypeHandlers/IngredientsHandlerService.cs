@@ -57,9 +57,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public IngredientsHandlerService(
             ILogger<IngredientsHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref IngredientsItem item, XmlElement column)
         {

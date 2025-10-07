@@ -39,8 +39,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
             _schemas.Add(null, XmlReader.Create(file.Stream));
         }
 
-        protected XmlDataTypeBaseHandlerService(ILogger<T> logger, DatabaseService dbService)
-            : base(logger, dbService) { }
+        protected XmlDataTypeBaseHandlerService(
+            ILogger<T> logger,
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
+        )
+            : base(logger, dbService, modsMetadataService) { }
 
         protected static XmlDocument CreateXmlDocument(string file)
         {

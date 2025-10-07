@@ -59,9 +59,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public BarterHexesHandlerService(
             ILogger<BarterHexesHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref BarterHexesItem item, XmlElement column)
         {

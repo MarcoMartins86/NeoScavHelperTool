@@ -52,8 +52,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             );
             ";
 
-        public ImagesHandlerService(ILogger<ImagesHandlerService> logger, DatabaseService dbService)
-            : base(logger, dbService) { }
+        public ImagesHandlerService(
+            ILogger<ImagesHandlerService> logger,
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
+        )
+            : base(logger, dbService, modsMetadataService) { }
 
         public override void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute _)
         {

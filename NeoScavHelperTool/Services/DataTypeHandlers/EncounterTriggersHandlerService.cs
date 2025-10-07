@@ -84,9 +84,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public EncounterTriggersHandlerService(
             ILogger<EncounterTriggersHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(
             ref EncounterTriggersItem item,

@@ -68,6 +68,8 @@ namespace NeoScavHelperTool.Services
                 connectionString.DatabasePath
             );
             _connection = new SQLiteConnection(connectionString);
+            // Create all the tables that are not dynamically generated
+            _connection.CreateTables(CreateFlags.None, typeof(ModMetadata));
             _logger.LogDebug("Successfully connected to DB");
         }
 

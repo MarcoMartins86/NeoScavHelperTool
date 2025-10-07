@@ -92,9 +92,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public AttackModesHandlerService(
             ILogger<AttackModesHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref AttackModesItem item, XmlElement column)
         {

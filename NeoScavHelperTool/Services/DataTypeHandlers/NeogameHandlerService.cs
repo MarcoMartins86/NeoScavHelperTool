@@ -21,9 +21,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
 
         public NeogameHandlerService(
             ILogger<NeogameHandlerService> logger,
-            DatabaseService dbService
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
         )
-            : base(logger, dbService) { }
+            : base(logger, dbService, modsMetadataService) { }
 
         public override void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute)
         {

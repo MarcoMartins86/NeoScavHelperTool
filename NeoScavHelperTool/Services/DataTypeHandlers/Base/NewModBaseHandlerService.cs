@@ -16,8 +16,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
         where T : XmlDataTypeBaseHandlerService<T>
         where I : DataTypeModelBase, new()
     {
-        protected NewModBaseHandlerService(ILogger<T> logger, DatabaseService dbService)
-            : base(logger, dbService) { }
+        protected NewModBaseHandlerService(
+            ILogger<T> logger,
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
+        )
+            : base(logger, dbService, modsMetadataService) { }
 
         public override void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute)
         {

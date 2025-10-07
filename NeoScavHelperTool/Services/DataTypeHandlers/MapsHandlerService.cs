@@ -50,8 +50,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             );
             ";
 
-        public MapsHandlerService(ILogger<MapsHandlerService> logger, DatabaseService dbService)
-            : base(logger, dbService) { }
+        public MapsHandlerService(
+            ILogger<MapsHandlerService> logger,
+            DatabaseService dbService,
+            ModsMetadataService modsMetadataService
+        )
+            : base(logger, dbService, modsMetadataService) { }
 
         protected override void AssignColumnValueToItem(ref MapsItem item, XmlElement column)
         {

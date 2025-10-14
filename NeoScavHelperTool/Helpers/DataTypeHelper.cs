@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoScavHelperTool.Attributes;
-using NeoScavHelperTool.Extension;
+using NeoScavHelperTool.Extensions;
 using NeoScavHelperTool.Models;
 
-namespace NeoScavHelperTool.Helper
+namespace NeoScavHelperTool.Helpers
 {
     public static class DataTypeHelper
     {

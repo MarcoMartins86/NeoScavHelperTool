@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NeoScavHelperTool.Helper;
+using NeoScavHelperTool.Helpers;
 using NeoScavHelperTool.Models;
 
 namespace NeoScavHelperTool.Services

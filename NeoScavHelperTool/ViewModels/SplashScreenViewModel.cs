@@ -18,7 +18,7 @@ namespace NeoScavHelperTool.ViewModels
     public class SplashScreenViewModel : ObservableObject, ISplashScreen
     {
         private readonly ILogger<SplashScreenViewModel> _logger;
-        private readonly MainWindow _mainWindow;
+        private readonly Lazy<MainWindow> _mainWindow;
         private readonly Dispatcher _dispatcher;
         private readonly LoadingService _loadingService;
 
@@ -45,7 +45,7 @@ namespace NeoScavHelperTool.ViewModels
 
         public SplashScreenViewModel(
             ILogger<SplashScreenViewModel> logger,
-            MainWindow mainWindow,
+            Lazy<MainWindow> mainWindow,
             Dispatcher dispatcher,
             LoadingService loadingService
         )
@@ -62,7 +62,7 @@ namespace NeoScavHelperTool.ViewModels
             {
                 GC.Collect();
                 _logger.LogInformation($"{nameof(MainWindow)} launching");
-                _mainWindow.Show();
+                _mainWindow.Value.Show();
             };
 
             await Task.Run(() =>

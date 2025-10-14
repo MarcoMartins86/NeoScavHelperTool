@@ -12,5 +12,7 @@ namespace NeoScavHelperTool.Services
     {
         public static SplashScreenViewModel SplashScreenViewModel =>
             Ioc.Default.GetRequiredService<SplashScreenViewModel>();
+        public static HamburgerPaneViewModel HamburgerPaneViewModel =>
+            Ioc.Default.GetRequiredService<HamburgerPaneViewModel>();
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeoScavHelperTool.Extension
+namespace NeoScavHelperTool.Extensions
 {
     public static class EnumExtension
     {

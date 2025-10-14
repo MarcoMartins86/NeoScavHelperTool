@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Models;
 
-namespace NeoScavHelperTool.Extension
+namespace NeoScavHelperTool.Extensions
 {
     public static class DataTypeExtension
     {

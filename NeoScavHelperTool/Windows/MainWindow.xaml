@@ -5,7 +5,8 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-  xmlns:local="clr-namespace:NeoScavHelperTool.Views"
+  xmlns:views="clr-namespace:NeoScavHelperTool.Views"
+  xmlns:converters="clr-namespace:NeoScavHelperTool.Converters"
   mc:Ignorable="d"
   Title="NeoScavHelperTool"
   MinWidth="640"
@@ -13,6 +14,273 @@
   WindowState="Maximized"
   mah:TitleCharacterCasing="Normal"
   SnapsToDevicePixels="True"
+  mah:ResizeMode="CanResizeWithGrip"
 >
-  <Grid></Grid>
+  <mah:MetroWindow.Resources>
+    <converters:InvertConverter x:Key="InvertConverter" />
+    <converters:SumConverter x:Key="SumConverter" />
+  </mah:MetroWindow.Resources>
+  <mah:HamburgerMenu
+    x:Name="ViewerHamburgerMenu"
+    DisplayMode="CompactOverlay"
+    IsPaneOpen="True"
+    HamburgerWidth="48"
+    OpenPaneLength="300"
+    DataContext="{Binding HamburgerPaneViewModel, Source={StaticResource ViewModelLocator}}"
+  >
+    <!--  Header  -->
+    <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+      <DataTemplate>
+        <DockPanel>
+          <DockPanel.Resources>
+            <Style
+              BasedOn="{StaticResource MahApps.Styles.ComboBox}"
+              TargetType="{x:Type ComboBox}"
+            >
+              <Setter
+                Property="Background"
+                Value="{DynamicResource MahApps.HamburgerMenu.Pane.Background}"
+              />
+            </Style>
+            <Style
+              BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}"
+              TargetType="{x:Type ComboBoxItem}"
+            >
+              <Setter
+                Property="Background"
+                Value="{DynamicResource MahApps.HamburgerMenu.Pane.Background}"
+              />
+            </Style>
+          </DockPanel.Resources>
+          <Label
+            Content="_Display:"
+            VerticalAlignment="Center"
+            Target="{Binding ElementName=DisplayModeComboBox}"
+          />
+          <ComboBox
+            x:Name="DisplayModeComboBox"
+            VerticalAlignment="Center"
+            Margin="6,0"
+            DataContext="{Binding ElementName=ViewerHamburgerMenu, Path=DataContext}"
+            SelectedIndex="{Binding DisplayMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+          >
+            <ComboBoxItem Content="by Mod" />
+            <ComboBoxItem Content="by Type" />
+            <ComboBoxItem Content="Consolidated" />
+          </ComboBox>
+        </DockPanel>
+      </DataTemplate>
+    </mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
+    <mah:HamburgerMenu.Resources>
+      <Style
+        BasedOn="{StaticResource MahApps.Styles.HamburgerMenuListBox}"
+        TargetType="{x:Type mah:HamburgerMenuListBox}"
+      >
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type mah:HamburgerMenuListBox}">
+              <Grid>
+                <!-- Original template -->
+                <Border
+                  Name="OptionItemsBorder"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                >
+                  <ScrollViewer
+                    Padding="{TemplateBinding Padding}"
+                    mah:ScrollViewerHelper.VerticalScrollBarOnLeftSide="{TemplateBinding mah:ScrollViewerHelper.VerticalScrollBarOnLeftSide}"
+                    CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                    Focusable="False"
+                    HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                    Style="{StaticResource MahApps.Styles.ScrollViewer.Hamburger}"
+                    VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                  >
+                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                  </ScrollViewer>
+                </Border>
+                <!-- Custom template -->
+                <Border
+                  Name="ItemsBorder"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                >
+                  <Grid>
+                    <Grid.Resources>
+                      <Style
+                        BasedOn="{StaticResource MahApps.Styles.ListBox}"
+                        TargetType="{x:Type ListBox}"
+                      >
+                        <Setter
+                          Property="Background"
+                          Value="{DynamicResource ahApps.HamburgerMenu.Pane.Background}"
+                        />
+                      </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}" />
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Padding="{TemplateBinding Padding}"
+                      mah:ScrollViewerHelper.VerticalScrollBarOnLeftSide="{TemplateBinding mah:ScrollViewerHelper.VerticalScrollBarOnLeftSide}"
+                      CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                      Focusable="False"
+                      HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                      Style="{StaticResource MahApps.Styles.ScrollViewer.Hamburger}"
+                      VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                    >
+                      <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </ScrollViewer>
+                    <Expander
+                      x:Name="FirstExpander"
+                      Grid.Column="3"
+                      ExpandDirection="Right"
+                      IsExpanded="True"
+                      HorizontalAlignment="Left"
+                      Margin="3,0,6,0"
+                    >
+                      <Expander.Header>
+                        <TextBlock
+                          Text="Choose mod"
+                          RenderTransformOrigin="0.5,0.5"
+                          VerticalAlignment="Center"
+                        >
+                          <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="-90" />
+                          </TextBlock.LayoutTransform>
+                        </TextBlock>
+                      </Expander.Header>
+                      <Expander.Content>
+                        <ListBox x:Name="FirstExpanderListBox" />
+                      </Expander.Content>
+                    </Expander>
+                    <Expander
+                      x:Name="SecondExpander"
+                      Grid.Column="2"
+                      ExpandDirection="Right"
+                      HorizontalAlignment="Left"
+                      Margin="6,0,3,0"
+                    >
+                      <Expander.Header>
+                        <TextBlock
+                          Text="Pick Game Item"
+                          Width="Auto"
+                          VerticalAlignment="Top"
+                          RenderTransformOrigin="0.5,0.5"
+                        >
+                          <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="-90" />
+                          </TextBlock.LayoutTransform>
+                        </TextBlock>
+                      </Expander.Header>
+                      <Expander.Content>
+                        <TextBlock Text="coisas" />
+                      </Expander.Content>
+                    </Expander>
+                  </Grid>
+                </Border>
+              </Grid>
+              <ControlTemplate.Triggers>
+                <Trigger Property="Name" Value="ButtonsListView">
+                  <Setter TargetName="OptionItemsBorder" Property="Visibility" Value="Collapsed" />
+                </Trigger>
+                <Trigger Property="Name" Value="OptionsListView">
+                  <Setter TargetName="ItemsBorder" Property="Visibility" Value="Collapsed" />
+                </Trigger>
+                <MultiTrigger>
+                  <MultiTrigger.Conditions>
+                    <Condition Property="IsGrouping" Value="true" />
+                    <Condition
+                      Property="VirtualizingPanel.IsVirtualizingWhenGrouping"
+                      Value="false"
+                    />
+                  </MultiTrigger.Conditions>
+                  <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                </MultiTrigger>
+                <!-- Handling Display Mode Combobox changes -->
+                <MultiDataTrigger>
+                  <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding DisplayMode}" Value="0" />
+                  </MultiDataTrigger.Conditions>
+                  <MultiDataTrigger.Setters>
+                    <Setter
+                      TargetName="FirstExpanderListBox"
+                      Property="ItemsSource"
+                      Value="{Binding Mods}"
+                    />
+                  </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </mah:HamburgerMenu.Resources>
+    <mah:HamburgerMenu.ItemsSource>
+      <mah:HamburgerMenuItemCollection>
+        <mah:HamburgerMenuGlyphItem Label="Account" Tag="fgfgh" Glyph="gh" />
+        <mah:HamburgerMenuGlyphItem Label="Coisas" Tag="bn" />
+        <mah:HamburgerMenuGlyphItem Label="Cenas" />
+        <mah:HamburgerMenuGlyphItem Label="Tretas" />
+      </mah:HamburgerMenuItemCollection>
+    </mah:HamburgerMenu.ItemsSource>
+    <mah:HamburgerMenu.ItemTemplate>
+      <DataTemplate>
+        <DockPanel
+          Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}"
+          LastChildFill="True"
+        >
+          <Grid
+            x:Name="IconPart"
+            Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}"
+            DockPanel.Dock="Left"
+          >
+            <Image
+              Margin="12"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Source="{Binding Glyph}"
+            />
+          </Grid>
+          <TextBlock
+            x:Name="TextPart"
+            FontSize="16"
+            Text="{Binding Label}"
+            DockPanel.Dock="Right"
+          />
+        </DockPanel>
+      </DataTemplate>
+    </mah:HamburgerMenu.ItemTemplate>
+    <!--  Options  -->
+    <mah:HamburgerMenu.OptionsItemsSource>
+      <mah:HamburgerMenuItemCollection>
+        <mah:HamburgerMenuIconItem x:Name="AboutOption" Label="About"></mah:HamburgerMenuIconItem>
+      </mah:HamburgerMenuItemCollection>
+    </mah:HamburgerMenu.OptionsItemsSource>
+    <mah:HamburgerMenu.OptionsItemTemplate>
+      <DataTemplate>
+        <DockPanel
+          Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}"
+          LastChildFill="True"
+        >
+          <TextBlock
+            x:Name="TextPart"
+            VerticalAlignment="Center"
+            FontSize="16"
+            Text="{Binding Label}"
+          />
+        </DockPanel>
+      </DataTemplate>
+    </mah:HamburgerMenu.OptionsItemTemplate>
+  </mah:HamburgerMenu>
 </mah:MetroWindow>

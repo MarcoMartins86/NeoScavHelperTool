@@ -11,7 +11,7 @@ using System.Xml.Resolvers;
 using System.Xml.Schema;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
-using NeoScavHelperTool.Helper;
+using NeoScavHelperTool.Helpers;
 using NeoScavHelperTool.Models;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base

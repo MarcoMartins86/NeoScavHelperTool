@@ -7,7 +7,7 @@ using System.Xml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Attributes;
-using NeoScavHelperTool.Helper;
+using NeoScavHelperTool.Helpers;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 

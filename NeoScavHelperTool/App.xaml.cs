@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NeoScavHelperTool.Helpers;
 using NeoScavHelperTool.Models;
 using NeoScavHelperTool.Models.DataTypeModels;
 using NeoScavHelperTool.Services;
@@ -149,10 +150,14 @@ namespace NeoScavHelperTool
 
             // Register ViewModels
             services.AddTransient<SplashScreenViewModel>();
+            services.AddSingleton<HamburgerPaneViewModel>();
 
             // Register Views
             services.AddSingleton<SplashScreenWindow>();
             services.AddSingleton<MainWindow>();
+
+            // Register Lazier Helper to resolve Lazy DI
+            services.AddTransient(typeof(Lazy<>), typeof(LazierHelper<>));
         }
 
         private void OnExit(object sender, ExitEventArgs e)

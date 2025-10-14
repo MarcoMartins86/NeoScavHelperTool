@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NeoScavHelperTool.Helper;
+using NeoScavHelperTool.Helpers;
 using NeoScavHelperTool.Models;
 
 namespace NeoScavHelperTool.Services
@@ -17,6 +17,8 @@ namespace NeoScavHelperTool.Services
 
         private int _nextOrder = -1;
         private Dictionary<string, ModMetadata> _modsMetadata = new();
+
+        public List<string> Mods => _modsMetadata.Keys.ToList();
 
         public ModsMetadataService(ILogger<ModsMetadataService> logger, DatabaseService dbService)
         {

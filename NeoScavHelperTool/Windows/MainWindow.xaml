@@ -7,6 +7,7 @@
   xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
   xmlns:views="clr-namespace:NeoScavHelperTool.Views"
   xmlns:converters="clr-namespace:NeoScavHelperTool.Converters"
+  xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
   mc:Ignorable="d"
   Title="NeoScavHelperTool"
   MinWidth="640"
@@ -17,8 +18,7 @@
   mah:ResizeMode="CanResizeWithGrip"
 >
   <mah:MetroWindow.Resources>
-    <converters:InvertConverter x:Key="InvertConverter" />
-    <converters:SumConverter x:Key="SumConverter" />
+    <converters:NotEqualConverter x:Key="NotEqualConverter" />
   </mah:MetroWindow.Resources>
   <mah:HamburgerMenu
     x:Name="ViewerHamburgerMenu"
@@ -112,12 +112,40 @@
                   <Grid>
                     <Grid.Resources>
                       <Style
+                        BasedOn="{StaticResource MahApps.Styles.Expander}"
+                        TargetType="{x:Type Expander}"
+                      >
+                        <Style.Triggers>
+                          <DataTrigger
+                            Binding="{Binding Content.HasItems, RelativeSource={RelativeSource Self}}"
+                            Value="False"
+                          >
+                            <Setter Property="Visibility" Value="Collapsed" />
+                          </DataTrigger>
+                          <DataTrigger
+                            Binding="{Binding Content.SelectedIndex, RelativeSource={RelativeSource Self}}"
+                            Value="-1"
+                          >
+                            <Setter Property="IsExpanded" Value="True" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                      <Style
                         BasedOn="{StaticResource MahApps.Styles.ListBox}"
                         TargetType="{x:Type ListBox}"
                       >
                         <Setter
                           Property="Background"
-                          Value="{DynamicResource ahApps.HamburgerMenu.Pane.Background}"
+                          Value="{DynamicResource MahApps.HamburgerMenu.Pane.Background}"
+                        />
+                      </Style>
+                      <Style
+                        BasedOn="{StaticResource MahApps.Styles.ListBoxItem}"
+                        TargetType="{x:Type ListBoxItem}"
+                      >
+                        <Setter
+                          Property="Background"
+                          Value="{DynamicResource MahApps.HamburgerMenu.Pane.Background}"
                         />
                       </Style>
                     </Grid.Resources>
@@ -145,20 +173,69 @@
                       x:Name="FirstExpander"
                       Grid.Column="3"
                       ExpandDirection="Right"
-                      IsExpanded="True"
                       HorizontalAlignment="Left"
                       Margin="3,0,6,0"
                     >
                       <Expander.Header>
-                        <TextBlock
-                          Text="Choose mod"
-                          RenderTransformOrigin="0.5,0.5"
-                          VerticalAlignment="Center"
+                        <!-- for some reason I had to bind the Content because he is the one acting as DataContext in Framework 462 at least -->
+                        <ContentPresenter
+                          Content="{Binding DataContext, ElementName=ViewerHamburgerMenu}"
+                          DataContext="{Binding DataContext, ElementName=ViewerHamburgerMenu}"
                         >
-                          <TextBlock.LayoutTransform>
-                            <RotateTransform Angle="-90" />
-                          </TextBlock.LayoutTransform>
-                        </TextBlock>
+                          <ContentPresenter.ContentTemplate>
+                            <DataTemplate>
+                              <StackPanel
+                                RenderTransformOrigin="0.5,0.5"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                              >
+                                <StackPanel.LayoutTransform>
+                                  <RotateTransform Angle="-90" />
+                                </StackPanel.LayoutTransform>
+                                <iconPacks:PackIconMaterial x:Name="ArrowDown1" Kind="ArrowDown" />
+                                <TextBlock
+                                  x:Name="FirstExpanderHeaderText"
+                                  FontWeight="Bold"
+                                  Margin="6,0"
+                                >
+                                  <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                      <Style.Triggers></Style.Triggers>
+                                    </Style>
+                                  </TextBlock.Style>
+                                </TextBlock>
+                                <iconPacks:PackIconMaterial x:Name="ArrowDown2" Kind="ArrowDown" />
+                              </StackPanel>
+                              <DataTemplate.Triggers>
+                                <MultiDataTrigger>
+                                  <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding DisplayMode}" Value="0" />
+                                    <Condition
+                                      Binding="{Binding Content.SelectedIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}}"
+                                      Value="-1"
+                                    />
+                                  </MultiDataTrigger.Conditions>
+                                  <Setter
+                                    TargetName="FirstExpanderHeaderText"
+                                    Property="Text"
+                                    Value="Choose a mod"
+                                  />
+                                </MultiDataTrigger>
+                                <DataTrigger
+                                  Binding="{Binding Content.SelectedIndex, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}, Converter={StaticResource NotEqualConverter}, ConverterParameter=-1}"
+                                  Value="True"
+                                >
+                                  <Setter
+                                    TargetName="FirstExpanderHeaderText"
+                                    Property="Text"
+                                    Value="cenas"
+                                  />
+                                  <!-- TODO: add the composite name + description -->
+                                </DataTrigger>
+                              </DataTemplate.Triggers>
+                            </DataTemplate>
+                          </ContentPresenter.ContentTemplate>
+                        </ContentPresenter>
                       </Expander.Header>
                       <Expander.Content>
                         <ListBox x:Name="FirstExpanderListBox" />
@@ -184,7 +261,7 @@
                         </TextBlock>
                       </Expander.Header>
                       <Expander.Content>
-                        <TextBlock Text="coisas" />
+                        <ListBox x:Name="SecondExpanderListBox" />
                       </Expander.Content>
                     </Expander>
                   </Grid>
@@ -208,18 +285,13 @@
                   <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                 </MultiTrigger>
                 <!-- Handling Display Mode Combobox changes -->
-                <MultiDataTrigger>
-                  <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding DisplayMode}" Value="0" />
-                  </MultiDataTrigger.Conditions>
-                  <MultiDataTrigger.Setters>
-                    <Setter
-                      TargetName="FirstExpanderListBox"
-                      Property="ItemsSource"
-                      Value="{Binding Mods}"
-                    />
-                  </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding DisplayMode}" Value="0">
+                  <Setter
+                    TargetName="FirstExpanderListBox"
+                    Property="ItemsSource"
+                    Value="{Binding Mods}"
+                  />
+                </DataTrigger>
               </ControlTemplate.Triggers>
             </ControlTemplate>
           </Setter.Value>

@@ -15,6 +15,11 @@ namespace NeoScavHelperTool.Extensions
             return enumVal.GetAttributeOfType<DataTypeAttribute>().File;
         }
 
+        public static string GetTable(this DataType enumVal)
+        {
+            return enumVal.GetAttributeOfType<DataTypeAttribute>().Table;
+        }
+
         public static ModType GetModType(this DataType enumVal)
         {
             return enumVal.GetAttributeOfType<DataTypeAttribute>().Type;

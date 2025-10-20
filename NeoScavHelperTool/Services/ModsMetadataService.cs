@@ -18,7 +18,7 @@ namespace NeoScavHelperTool.Services
         private int _nextOrder = -1;
         private Dictionary<string, ModMetadata> _modsMetadata = new();
 
-        public List<string> Mods => _modsMetadata.Keys.ToList();
+        public ICollection<string> Mods => _modsMetadata.Keys;
 
         public ModsMetadataService(ILogger<ModsMetadataService> logger, DatabaseService dbService)
         {
@@ -120,6 +120,11 @@ namespace NeoScavHelperTool.Services
         public void PersistModsMetadata()
         {
             _dbService.Connection.InsertAll(_modsMetadata.Select((pair) => pair.Value));
+        }
+
+        public ICollection<string> GetModTypes(string modName)
+        {
+            return _modsMetadata[modName].Types;
         }
     }
 }

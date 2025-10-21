@@ -348,7 +348,7 @@
                                   <TextBlock
                                     x:Name="ShowText"
                                     Margin="6,0"
-                                    Text="{Binding FirstExpanderHeaderShowText}"
+                                    Text="{Binding SecondExpanderHeaderShowText}"
                                     FontSize="16"
                                     VerticalAlignment="Center"
                                   ></TextBlock>
@@ -374,7 +374,7 @@
                                     x:Name="ChooseText"
                                     FontSize="16"
                                     Margin="6,0"
-                                    Text="{Binding FirstExpanderHeaderChooseText}"
+                                    Text="{Binding SecondExpanderHeaderChooseText}"
                                     VerticalAlignment="Center"
                                   ></TextBlock>
                                   <iconPacks:PackIconMaterial
@@ -460,7 +460,10 @@
                         </ContentPresenter>
                       </Expander.Header>
                       <Expander.Content>
-                        <ListBox x:Name="SecondExpanderListBox" />
+                        <ListBox
+                          x:Name="SecondExpanderListBox"
+                          SelectedIndex="{Binding ChosenSecondExpanderIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
                       </Expander.Content>
                     </Expander>
                   </Grid>

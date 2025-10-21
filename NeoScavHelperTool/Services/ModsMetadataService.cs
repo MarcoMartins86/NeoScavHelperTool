@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NeoScavHelperTool.Helpers;
 using NeoScavHelperTool.Models;
+using NeoScavHelperTool.Services.DataTypeHandlers;
 
 namespace NeoScavHelperTool.Services
 {
@@ -37,79 +38,79 @@ namespace NeoScavHelperTool.Services
 
             switch (table)
             {
-                case "attackmodes":
+                case AttackModesHandlerService.TABLE:
                     modMetadata.HasAttackModes = true;
                     break;
-                case "barterhexes":
+                case BarterHexesHandlerService.TABLE:
                     modMetadata.HasBarterHexes = true;
                     break;
-                case "battlemoves":
+                case BattleMovesHandlerService.TABLE:
                     modMetadata.HasBattleMoves = true;
                     break;
-                case "camptypes":
+                case CampTypesHandlerService.TABLE:
                     modMetadata.HasCampTypes = true;
                     break;
-                case "chargeprofiles":
+                case ChargeProfilesHandlerService.TABLE:
                     modMetadata.HasChargeProfiles = true;
                     break;
-                case "conditions":
+                case ConditionsHandlerService.TABLE:
                     modMetadata.HasConditions = true;
                     break;
-                case "containertypes":
+                case ContainerTypesHandlerService.TABLE:
                     modMetadata.HasContainerTypes = true;
                     break;
-                case "creatures":
+                case CreaturesHandlerService.TABLE:
                     modMetadata.HasCreatures = true;
                     break;
-                case "creaturesources":
+                case CreatureSourcesHandlerService.TABLE:
                     modMetadata.HasCreatureSources = true;
                     break;
-                case "datafiles":
+                case DataFilesHandlerService.TABLE:
                     modMetadata.HasDataFiles = true;
                     break;
-                case "dmcplaces":
+                case DmcPlacesHandlerService.TABLE:
                     modMetadata.HasDmcPlaces = true;
                     break;
-                case "encounters":
+                case EncountersHandlerService.TABLE:
                     modMetadata.HasEncounters = true;
                     break;
-                case "encountertriggers":
+                case EncounterTriggersHandlerService.TABLE:
                     modMetadata.HasEncounterTriggers = true;
                     break;
-                case "factions":
+                case FactionsHandlerService.TABLE:
                     modMetadata.HasFactions = true;
                     break;
-                case "forbiddenhexes":
+                case ForbiddenHexesHandlerService.TABLE:
                     modMetadata.HasForbiddenHexes = true;
                     break;
-                case "gamevars":
+                case GameVarsHandlerService.TABLE:
                     modMetadata.HasGameVars = true;
                     break;
-                case "headlines":
+                case HeadlinesHandlerService.TABLE:
                     modMetadata.HasHeadlines = true;
                     break;
-                case "hextypes":
+                case HexTypesHandlerService.TABLE:
                     modMetadata.HasHexTypes = true;
                     break;
-                case "ingredients":
+                case IngredientsHandlerService.TABLE:
                     modMetadata.HasIngredients = true;
                     break;
-                case "itemprops":
+                case ItemPropsHandlerService.TABLE:
                     modMetadata.HasItemProps = true;
                     break;
-                case "itemtypes":
+                case ItemTypesHandlerService.TABLE:
                     modMetadata.HasItemTypes = true;
                     break;
-                case "maps":
+                case MapsHandlerService.TABLE:
                     modMetadata.HasMaps = true;
                     break;
-                case "recipes":
+                case RecipesHandlerService.TABLE:
                     modMetadata.HasRecipes = true;
                     break;
-                case "treasuretable":
+                case TreasureTableHandlerService.TABLE:
                     modMetadata.HasTreasureTable = true;
                     break;
-                case "images":
+                case ImagesHandlerService.TABLE:
                     modMetadata.HasImages = true;
                     break;
                 default:

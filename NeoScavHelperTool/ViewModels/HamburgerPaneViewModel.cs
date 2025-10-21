@@ -26,8 +26,11 @@ namespace NeoScavHelperTool.ViewModels
                 {
                     case HamburgerDisplayMode.ByMod:
                         FirstExpanderHeaderChooseText = "Choose a mod";
+                        SecondExpanderHeaderChooseText = "Choose a type";
                         break;
                     case HamburgerDisplayMode.ByType:
+                        FirstExpanderHeaderChooseText = "Choose a type";
+                        SecondExpanderHeaderChooseText = "Choose a mod";
                         break;
                     case HamburgerDisplayMode.Consolidated:
                         break;
@@ -35,6 +38,7 @@ namespace NeoScavHelperTool.ViewModels
                 IsFirstExpanderExtended = true;
                 IsSecondExpanderExtended = false;
                 ChosenFirstExpanderIndex = -1;
+                ChosenSecondExpanderIndex = -1;
                 SetProperty(ref _displayMode, (HamburgerDisplayMode)value);
             }
         }
@@ -67,6 +71,20 @@ namespace NeoScavHelperTool.ViewModels
             set => SetProperty(ref _isSecondExpanderExtended, value);
         }
 
+        public string _secondExpanderHeaderChooseText = "Choose a type";
+        public string SecondExpanderHeaderChooseText
+        {
+            get => _secondExpanderHeaderChooseText;
+            set => SetProperty(ref _secondExpanderHeaderChooseText, value);
+        }
+
+        public string _secondExpanderHeaderShowText = string.Empty;
+        public string SecondExpanderHeaderShowText
+        {
+            get => _secondExpanderHeaderShowText;
+            set => SetProperty(ref _secondExpanderHeaderShowText, value);
+        }
+
         public ICollection<string> Mods => _modsMetadata.Mods;
 
         public int _chosenFirstExpanderIndex = -1;
@@ -75,31 +93,30 @@ namespace NeoScavHelperTool.ViewModels
             get => _chosenFirstExpanderIndex;
             set
             {
-                switch (_displayMode)
+                if (value == -1)
                 {
-                    case HamburgerDisplayMode.ByMod:
-                        if (value != -1)
-                        {
+                    SelectedModTypes = null;
+                    IsFirstExpanderExtended = true;
+                }
+                else
+                {
+                    switch (_displayMode)
+                    {
+                        case HamburgerDisplayMode.ByMod:
                             string modName = Mods.ElementAt(value);
                             FirstExpanderHeaderShowText = $"\"{modName}\" types";
                             SelectedModTypes = _modsMetadata.GetModTypes(modName);
-                        }
-                        else
-                        {
-                            SelectedModTypes = null;
-                        }
-                        IsFirstExpanderExtended = false;
-                        IsSecondExpanderExtended = true;
-                        break;
-                    case HamburgerDisplayMode.ByType:
-                        IsFirstExpanderExtended = true;
-                        IsSecondExpanderExtended = false;
-                        break;
-                    case HamburgerDisplayMode.Consolidated:
-                        // TODO
-                        break;
+                            break;
+                        case HamburgerDisplayMode.ByType:
+                            break;
+                        case HamburgerDisplayMode.Consolidated:
+                            // TODO
+                            break;
+                    }
+                    ChosenSecondExpanderIndex = -1;
+                    IsFirstExpanderExtended = false;
+                    IsSecondExpanderExtended = true;
                 }
-
                 SetProperty(ref _chosenFirstExpanderIndex, value);
             }
         }
@@ -117,26 +134,28 @@ namespace NeoScavHelperTool.ViewModels
             get => _chosenSecondExpanderIndex;
             set
             {
-                /*
-                switch (_displayMode)
+                if (value == -1)
                 {
-                    case HamburgerDisplayMode.ByMod:
-                        if (value != -1)
-                        {
-                            FirstExpanderHeaderShowText = $"\"{Mods[value]}\" types";
-                        }
-                        IsFirstExpanderExtended = false;
-                        IsSecondExpanderExtended = true;
-                        break;
-                    case HamburgerDisplayMode.ByType:
-                        IsFirstExpanderExtended = true;
-                        IsSecondExpanderExtended = false;
-                        break;
-                    case HamburgerDisplayMode.Consolidated:
-                        // TODO
-                        break;
-                }*/
-
+                    IsSecondExpanderExtended = true;
+                }
+                else
+                {
+                    switch (_displayMode)
+                    {
+                        case HamburgerDisplayMode.ByMod:
+                            string typeName = SelectedModTypes.ElementAt(value);
+                            SecondExpanderHeaderShowText = $"\"{typeName}\" data";
+                            //SelectedModTypes = _modsMetadata.GetModTypes(modName);
+                            break;
+                        case HamburgerDisplayMode.ByType:
+                            break;
+                        case HamburgerDisplayMode.Consolidated:
+                            // TODO
+                            break;
+                    }
+                    IsFirstExpanderExtended = false;
+                    IsSecondExpanderExtended = false;
+                }
                 SetProperty(ref _chosenSecondExpanderIndex, value);
             }
         }

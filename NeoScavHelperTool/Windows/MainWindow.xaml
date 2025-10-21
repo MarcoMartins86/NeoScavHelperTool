@@ -189,28 +189,48 @@
                                   <RotateTransform Angle="-90" />
                                 </StackPanel.LayoutTransform>
                                 <StackPanel x:Name="ShowStack" Orientation="Horizontal">
-                                  <iconPacks:PackIconMaterial Kind="ArrowUp" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowUp"
+                                    Width="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                   <TextBlock
-                                    FontWeight="Bold"
+                                    x:Name="ShowText"
                                     Margin="6,0"
                                     Text="{Binding FirstExpanderHeaderShowText}"
+                                    FontSize="16"
+                                    VerticalAlignment="Center"
                                   ></TextBlock>
-                                  <iconPacks:PackIconMaterial Kind="ArrowUp" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowUp"
+                                    Width="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                 </StackPanel>
                                 <TextBlock
                                   x:Name="OrText"
-                                  FontWeight="Bold"
+                                  FontSize="16"
                                   Margin="6,0"
                                   Text="OR"
                                 ></TextBlock>
                                 <StackPanel x:Name="ChooseStack" Orientation="Horizontal">
-                                  <iconPacks:PackIconMaterial Kind="ArrowDown" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowDown"
+                                    Width="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                   <TextBlock
-                                    FontWeight="Bold"
+                                    x:Name="ChooseText"
+                                    FontSize="16"
                                     Margin="6,0"
                                     Text="{Binding FirstExpanderHeaderChooseText}"
+                                    VerticalAlignment="Center"
                                   ></TextBlock>
-                                  <iconPacks:PackIconMaterial Kind="ArrowDown" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowDown"
+                                    Width="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                 </StackPanel>
                               </StackPanel>
                               <DataTemplate.Triggers>
@@ -320,28 +340,48 @@
                                   <RotateTransform Angle="-90" />
                                 </StackPanel.LayoutTransform>
                                 <StackPanel x:Name="ShowStack" Orientation="Horizontal">
-                                  <iconPacks:PackIconMaterial Kind="ArrowUp" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowUp"
+                                    Width="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                   <TextBlock
-                                    FontWeight="Bold"
+                                    x:Name="ShowText"
                                     Margin="6,0"
                                     Text="{Binding FirstExpanderHeaderShowText}"
+                                    FontSize="16"
+                                    VerticalAlignment="Center"
                                   ></TextBlock>
-                                  <iconPacks:PackIconMaterial Kind="ArrowUp" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowUp"
+                                    Width="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ShowText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                 </StackPanel>
                                 <TextBlock
                                   x:Name="OrText"
-                                  FontWeight="Bold"
+                                  FontSize="16"
                                   Margin="6,0"
                                   Text="OR"
                                 ></TextBlock>
                                 <StackPanel x:Name="ChooseStack" Orientation="Horizontal">
-                                  <iconPacks:PackIconMaterial Kind="ArrowDown" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowDown"
+                                    Width="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                   <TextBlock
-                                    FontWeight="Bold"
+                                    x:Name="ChooseText"
+                                    FontSize="16"
                                     Margin="6,0"
                                     Text="{Binding FirstExpanderHeaderChooseText}"
+                                    VerticalAlignment="Center"
                                   ></TextBlock>
-                                  <iconPacks:PackIconMaterial Kind="ArrowDown" />
+                                  <iconPacks:PackIconMaterial
+                                    Kind="ArrowDown"
+                                    Width="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                    Height="{Binding ElementName=ChooseText, Path=ActualHeight, Mode=OneWay}"
+                                  />
                                 </StackPanel>
                               </StackPanel>
                               <DataTemplate.Triggers>

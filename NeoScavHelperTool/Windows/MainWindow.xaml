@@ -17,6 +17,7 @@
   mah:TitleCharacterCasing="Normal"
   SnapsToDevicePixels="True"
   mah:ResizeMode="CanResizeWithGrip"
+  DataContext="{Binding HamburgerPaneViewModel, Source={StaticResource ViewModelLocator}}"
 >
   <mah:MetroWindow.Resources>
     <converters:NotEqualConverter x:Key="NotEqualConverter" />
@@ -171,6 +172,7 @@
                       HorizontalAlignment="Left"
                       Margin="3,0,6,0"
                       IsExpanded="{Binding IsFirstExpanderExtended, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SizeChanged="ExpanderElement_SizeChanged"
                     >
                       <Expander.Header>
                         <!-- for some reason I had to bind the Content because he is the one acting as DataContext in Framework 462 at least -->
@@ -322,6 +324,7 @@
                       HorizontalAlignment="Left"
                       Margin="6,0,3,0"
                       IsExpanded="{Binding IsSecondExpanderExtended, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SizeChanged="ExpanderElement_SizeChanged"
                     >
                       <Expander.Header>
                         <!-- for some reason I had to bind the Content because he is the one acting as DataContext in Framework 462 at least -->

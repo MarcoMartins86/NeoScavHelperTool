@@ -27,7 +27,7 @@ namespace NeoScavHelperTool.Views
     /// </summary>
     public partial class SplashScreenWindow : Window
     {
-        private SplashScreenViewModel ViewModel => (SplashScreenViewModel)DataContext;
+        private SplashScreenViewModel ViewModel => DataContext as SplashScreenViewModel;
 
         public SplashScreenWindow()
         {

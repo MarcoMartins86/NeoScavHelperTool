@@ -35,6 +35,8 @@ namespace NeoScavHelperTool.ViewModels
                     case HamburgerDisplayMode.Consolidated:
                         break;
                 }
+                _firstExpanderMaxWidth = 0;
+                _secondExpanderMaxWidth = 0;
                 IsFirstExpanderExtended = true;
                 IsSecondExpanderExtended = false;
                 ChosenFirstExpanderIndex = -1;
@@ -158,6 +160,20 @@ namespace NeoScavHelperTool.ViewModels
                 }
                 SetProperty(ref _chosenSecondExpanderIndex, value);
             }
+        }
+
+        private double _firstExpanderMaxWidth = 0;
+        public double FirstExpanderMaxWidth
+        {
+            get => _firstExpanderMaxWidth;
+            set => _firstExpanderMaxWidth = Math.Max(_firstExpanderMaxWidth, value);
+        }
+
+        private double _secondExpanderMaxWidth = 0;
+        public double SecondExpanderMaxWidth
+        {
+            get => _secondExpanderMaxWidth;
+            set => _secondExpanderMaxWidth = Math.Max(_secondExpanderMaxWidth, value);
         }
 
         public HamburgerPaneViewModel(

@@ -9,7 +9,7 @@ using NeoScavHelperTool.Models;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
-    public interface IDataTypeHandlerService<T>
+    public interface ILoadingDataTypeHandlerService<T>
     {
         public string Table { get; }
         public void LoadIntoDb(string gamePath, ModInfo mod, DataTypeAttribute attribute);

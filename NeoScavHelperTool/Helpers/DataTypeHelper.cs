@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using NeoScavHelperTool.Attributes;
 using NeoScavHelperTool.Extensions;
 using NeoScavHelperTool.Models;
@@ -50,9 +52,29 @@ namespace NeoScavHelperTool.Helpers
             return _dataTypeToAttributes.TryGetValue(type, out attribute);
         }
 
-        public static bool TryGetHandlerFromTable(string table, out Type handler)
+        private static bool TryGetHandlerTypeFromTable(string table, out Type handler)
         {
             return _tableToHandler.TryGetValue(table, out handler);
+        }
+
+        public static T TryGetHandlerFromTable<T>(string tableName)
+            where T : class
+        {
+            if (!DataTypeHelper.TryGetHandlerTypeFromTable(tableName, out var type))
+            {
+                throw new Exception($"Unexpected error, unknown tableName: \"{tableName}\"");
+            }
+
+            if (Ioc.Default.GetService(type) is T handler)
+            {
+                return handler;
+            }
+            else
+            {
+                throw new Exception(
+                    "Unexpected error, check the Handler attribute assignement in DataType enum"
+                );
+            }
         }
     }
 }

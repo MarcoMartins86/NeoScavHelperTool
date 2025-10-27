@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
+using NeoScavHelperTool.Models.DataTypeModels.Base;
 using NeoScavHelperTool.Services;
+using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 
 namespace NeoScavHelperTool.ViewModels
 {
@@ -17,12 +19,12 @@ namespace NeoScavHelperTool.ViewModels
         private readonly ModsMetadataService _modsMetadata;
 
         private HamburgerDisplayMode _displayMode = 0;
-        public int DisplayMode
+        public HamburgerDisplayMode DisplayMode
         {
-            get => (int)_displayMode;
+            get => _displayMode;
             set
             {
-                switch ((HamburgerDisplayMode)value)
+                switch (value)
                 {
                     case HamburgerDisplayMode.ByMod:
                         FirstExpanderHeaderChooseText = "Choose a mod";
@@ -41,7 +43,8 @@ namespace NeoScavHelperTool.ViewModels
                 IsSecondExpanderExtended = false;
                 ChosenFirstExpanderIndex = -1;
                 ChosenSecondExpanderIndex = -1;
-                SetProperty(ref _displayMode, (HamburgerDisplayMode)value);
+                HamburgerItems = new List<DataTypeModelBase>();
+                SetProperty(ref _displayMode, value);
             }
         }
 
@@ -118,6 +121,7 @@ namespace NeoScavHelperTool.ViewModels
                     ChosenSecondExpanderIndex = -1;
                     IsFirstExpanderExtended = false;
                     IsSecondExpanderExtended = true;
+                    HamburgerItems = new List<DataTypeModelBase>();
                 }
                 SetProperty(ref _chosenFirstExpanderIndex, value);
             }
@@ -147,7 +151,6 @@ namespace NeoScavHelperTool.ViewModels
                         case HamburgerDisplayMode.ByMod:
                             string typeName = SelectedModTypes.ElementAt(value);
                             SecondExpanderHeaderShowText = $"\"{typeName}\" data";
-                            //SelectedModTypes = _modsMetadata.GetModTypes(modName);
                             break;
                         case HamburgerDisplayMode.ByType:
                             break;
@@ -176,6 +179,13 @@ namespace NeoScavHelperTool.ViewModels
             set => _secondExpanderMaxWidth = Math.Max(_secondExpanderMaxWidth, value);
         }
 
+        private List<DataTypeModelBase> _hamburgerItems = new List<DataTypeModelBase>();
+        public List<DataTypeModelBase> HamburgerItems
+        {
+            get => _hamburgerItems;
+            set => SetProperty(ref _hamburgerItems, value);
+        }
+
         public HamburgerPaneViewModel(
             ILogger<HamburgerPaneViewModel> logger,
             ModsMetadataService modsMetadata
@@ -184,9 +194,26 @@ namespace NeoScavHelperTool.ViewModels
             _logger = logger;
             _modsMetadata = modsMetadata;
         }
+
+        public (string mod, string table) GetSelectedModAndTable()
+        {
+            switch (DisplayMode)
+            {
+                case HamburgerDisplayMode.ByMod:
+                    return (
+                        Mods.ElementAt(ChosenFirstExpanderIndex),
+                        SelectedModTypes.ElementAt(ChosenSecondExpanderIndex)
+                    );
+                case HamburgerDisplayMode.ByType:
+                    return (string.Empty, string.Empty);
+                case HamburgerDisplayMode.Consolidated:
+                    return (string.Empty, string.Empty);
+            }
+            throw new NotImplementedException();
+        }
     }
 
-    enum HamburgerDisplayMode
+    public enum HamburgerDisplayMode
     {
         ByMod,
         ByType,

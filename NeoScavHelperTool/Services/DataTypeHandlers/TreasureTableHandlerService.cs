@@ -112,7 +112,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@aTreasures", item.Treasures?.ToString() },
+                { "@aTreasures", item.Treasures },
                 { "@bNested", item.Nested },
                 { "@bSuppress", item.Suppress },
                 { "@bIdentify", item.Identify },

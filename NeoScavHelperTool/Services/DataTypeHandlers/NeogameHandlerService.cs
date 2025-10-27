@@ -51,25 +51,13 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 tables,
                 (tableElement, tableName) =>
                 {
-                    if (!DataTypeHelper.TryGetHandlerFromTable(tableName, out var type))
-                    {
-                        throw new Exception(
-                            $"Unexpected error, unknown tableName: \"{tableName}\""
-                        );
-                    }
-
-                    if (Ioc.Default.GetService(type) is IDataTypeHandlerService<XmlElement> handler)
-                    {
-                        // Create the DB table if needed
-                        bool willOverride = !handler.CreateTableIfNotExists(mod);
-                        handler.ReadItemIntoDb(tableElement, mod, willOverride);
-                    }
-                    else
-                    {
-                        throw new Exception(
-                            "Unexpected error, check the Handler attribute assignement in DataType enum"
-                        );
-                    }
+                    ILoadingDataTypeHandlerService<XmlElement> handler =
+                        DataTypeHelper.TryGetHandlerFromTable<
+                            ILoadingDataTypeHandlerService<XmlElement>
+                        >(tableName);
+                    // Create the DB table if needed
+                    bool willOverride = !handler.CreateTableIfNotExists(mod);
+                    handler.ReadItemIntoDb(tableElement, mod, willOverride);
                 }
             );
             _dbService.Connection.Commit();

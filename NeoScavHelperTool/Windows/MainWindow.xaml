@@ -466,6 +466,7 @@
                         <ListBox
                           x:Name="SecondExpanderListBox"
                           SelectedIndex="{Binding ChosenSecondExpanderIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="Expanders_SelectionChanged"
                         />
                       </Expander.Content>
                     </Expander>
@@ -517,14 +518,6 @@
         </Setter>
       </Style>
     </mah:HamburgerMenu.Resources>
-    <mah:HamburgerMenu.ItemsSource>
-      <mah:HamburgerMenuItemCollection>
-        <mah:HamburgerMenuGlyphItem Label="Account" Tag="fgfgh" Glyph="gh" />
-        <mah:HamburgerMenuGlyphItem Label="Coisas" Tag="bn" />
-        <mah:HamburgerMenuGlyphItem Label="Cenas" />
-        <mah:HamburgerMenuGlyphItem Label="Tretas" />
-      </mah:HamburgerMenuItemCollection>
-    </mah:HamburgerMenu.ItemsSource>
     <mah:HamburgerMenu.ItemTemplate>
       <DataTemplate>
         <DockPanel
@@ -532,32 +525,21 @@
           LastChildFill="True"
         >
           <Grid
-            x:Name="IconPart"
             Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type mah:HamburgerMenu}}, Path=CompactPaneLength}"
             DockPanel.Dock="Left"
           >
-            <Image
-              Margin="12"
+            <TextBlock
+              FontSize="16"
+              Text="{Binding Identifier}"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
-              Source="{Binding Glyph}"
             />
           </Grid>
-          <TextBlock
-            x:Name="TextPart"
-            FontSize="16"
-            Text="{Binding Label}"
-            DockPanel.Dock="Right"
-          />
+          <TextBlock FontSize="16" Text="{Binding Identifier}" DockPanel.Dock="Right" />
         </DockPanel>
       </DataTemplate>
     </mah:HamburgerMenu.ItemTemplate>
     <!--  Options  -->
-    <mah:HamburgerMenu.OptionsItemsSource>
-      <mah:HamburgerMenuItemCollection>
-        <mah:HamburgerMenuIconItem x:Name="AboutOption" Label="About"></mah:HamburgerMenuIconItem>
-      </mah:HamburgerMenuItemCollection>
-    </mah:HamburgerMenu.OptionsItemsSource>
     <mah:HamburgerMenu.OptionsItemTemplate>
       <DataTemplate>
         <DockPanel

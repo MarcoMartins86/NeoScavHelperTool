@@ -16,7 +16,7 @@ using NeoScavHelperTool.Models;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
-    public abstract class DataTypeBaseHandlerService<T, C> : IDataTypeHandlerService<C>
+    public abstract class DataTypeBaseHandlerService<T, C> : ILoadingDataTypeHandlerService<C>
         where T : DataTypeBaseHandlerService<T, C>
     {
         public abstract string Table { get; }

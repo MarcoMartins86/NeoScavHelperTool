@@ -133,9 +133,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strDesc", item.Description },
-                { "@vImageList", item.ImageList?.ToString() },
+                { "@vImageList", item.ImageList },
                 { "@aCapacities", item.Capacities },
-                { "@nTreasureID", item.TreasureId?.ToString() },
+                { "@nTreasureID", item.TreasureId },
                 { "@m_fAlertness", item.Alertness },
                 { "@m_fVisibility", item.Visibility },
                 { "@WetTempAdjustMod", item.WetTempAdjustMod },

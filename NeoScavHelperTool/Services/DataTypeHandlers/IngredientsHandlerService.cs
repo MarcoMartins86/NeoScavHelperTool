@@ -97,8 +97,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@nID", item.Id },
                 { "@strName", item.Name },
-                { "@strRequiredProps", item.RequiredProps?.ToString() },
-                { "@strForbidProps", item.ForbidProps?.ToString() },
+                { "@strRequiredProps", item.RequiredProps },
+                { "@strForbidProps", item.ForbidProps },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },
             };

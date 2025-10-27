@@ -87,7 +87,7 @@ namespace NeoScavHelperTool.Services
 
                     if (
                         Ioc.Default.GetService(attribute.Handler)
-                        is IDataTypeHandlerService<XmlElement> handler
+                        is ILoadingDataTypeHandlerService<XmlElement> handler
                     )
                     {
                         handler.LoadIntoDb(gamePath, mod, attribute);

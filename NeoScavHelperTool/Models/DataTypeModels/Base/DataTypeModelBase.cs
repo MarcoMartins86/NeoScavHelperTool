@@ -16,11 +16,12 @@ namespace NeoScavHelperTool.Models.DataTypeModels.Base
         [Column("valueModFolder")]
         public string ValueModFolder { get; set; }
 
-        // this data below is just to help building better errors during DB insertion
-        protected abstract DataType DataType { get; }
         protected abstract string Identifier { get; }
 
-        public string ItemDescription()
+        // this data below is just to help building better errors during DB insertion
+        protected abstract DataType DataType { get; }
+
+        public string ItemErrorDescription()
         {
             return $"\"{DataType}\" item with id: \"{Identifier}\"";
         }

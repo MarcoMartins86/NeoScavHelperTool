@@ -10,7 +10,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using MahApps.Metro.Controls;
+using NeoScavHelperTool.Helpers;
+using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using NeoScavHelperTool.ViewModels;
 
 namespace NeoScavHelperTool.Views
@@ -50,6 +54,16 @@ namespace NeoScavHelperTool.Views
                 },
                 DispatcherPriority.Render
             ); // Use Render priority to ensure layout is done
+        }
+
+        private void Expanders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (string mod, string table) = ViewModel.GetSelectedModAndTable();
+
+            IRepositoryDataTypeHandlerService repository =
+                DataTypeHelper.TryGetHandlerFromTable<IRepositoryDataTypeHandlerService>(table);
+
+            ViewModel.HamburgerItems = repository.FindAll(mod);
         }
     }
 }

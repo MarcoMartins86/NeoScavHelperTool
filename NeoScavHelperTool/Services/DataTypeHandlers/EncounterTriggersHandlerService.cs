@@ -154,7 +154,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@nEncounterID", item.EncounterId?.ToString() },
+                { "@nEncounterID", item.EncounterId },
                 { "@fChance", item.Chance },
                 { "@bLocBased", item.LocBased },
                 { "@bDateBased", item.DateBased },

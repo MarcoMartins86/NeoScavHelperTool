@@ -12,7 +12,9 @@ using SQLite;
 
 namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
 {
-    public abstract class NewModBaseHandlerService<T, I> : XmlDataTypeBaseHandlerService<T>
+    public abstract class NewModBaseHandlerService<T, I>
+        : XmlDataTypeBaseHandlerService<T>,
+            IRepositoryDataTypeHandlerService
         where T : XmlDataTypeBaseHandlerService<T>
         where I : DataTypeModelBase, new()
     {
@@ -85,7 +87,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
                 {
                     XmlElement column = (XmlElement)columnNode;
                     throw new Exception(
-                        $"Failed to parse \"{mod.Name}\" {item.ItemDescription()} \"{column.GetAttribute(XML_COLUMN_NAME_ATTRIBUTE)}\": \"{column.InnerText}\" on file \"{columnNode.BaseURI}\" with message: \"{ex.Message}\""
+                        $"Failed to parse \"{mod.Name}\" {item.ItemErrorDescription()} \"{column.GetAttribute(XML_COLUMN_NAME_ATTRIBUTE)}\": \"{column.InnerText}\" on file \"{columnNode.BaseURI}\" with message: \"{ex.Message}\""
                     );
                 }
             }
@@ -101,7 +103,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"Failed to insert \"{mod.Name}\" {item.ItemDescription()} and message: \"{ex.Message}\""
+                    $"Failed to insert \"{mod.Name}\" {item.ItemErrorDescription()} and message: \"{ex.Message}\""
                 );
             }
         }
@@ -113,5 +115,12 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers.Base
             I item,
             Func<string, Dictionary<string, object>, SQLiteCommand> builder
         );
+
+        public List<DataTypeModelBase> FindAll(string modName)
+        {
+            List<I> items = _dbService.Connection.Query<I>($"SELECT * FROM `{modName}_{Table}`");
+
+            return items.Cast<DataTypeModelBase>().ToList();
+        }
     }
 }

@@ -27,11 +27,25 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("strImg")]
         public string Image { get; set; } = "EncBlank.png";
 
-        [Column("nTreasureID")]
+        [Ignore]
         public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
-        [Column("nRemoveTreasureID")]
+        [Column("nTreasureID")]
+        public string TreasureIdDb
+        {
+            get => TreasureId?.ToString();
+            set => TreasureId = ModRefValue<int>.Parse(value);
+        }
+
+        [Ignore]
         public ModRefValue<int> RemoveTreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
+
+        [Column("nRemoveTreasureID")]
+        public string RemoveTreasureIdDb
+        {
+            get => RemoveTreasureId?.ToString();
+            set => RemoveTreasureId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("aConditions")]
         public string Conditions { get; set; } = "1";
@@ -54,11 +68,25 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("bRemoveUsed")]
         public bool RemoveUsed { get; set; } = false;
 
-        [Column("nItemsID")]
+        [Ignore]
         public ModRefValue<int> ItemsId { get; set; } = ModRefValue<int>.Of("0", 3);
 
-        [Column("nCreatureID")]
+        [Column("nItemsID")]
+        public string ItemsIdDb
+        {
+            get => ItemsId?.ToString();
+            set => ItemsId = ModRefValue<int>.Parse(value);
+        }
+
+        [Ignore]
         public ModRefValue<int> CreatureId { get; set; } = ModRefValue<int>.Of("0", 0);
+
+        [Column("nCreatureID")]
+        public string CreatureIdDb
+        {
+            get => CreatureId?.ToString();
+            set => CreatureId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("ptCreatureHex")]
         public string CreatureHex { get; set; } = "0,0";
@@ -69,8 +97,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("ptEditor")]
         public string Editor { get; set; } = "0,0";
 
-        [Column("nType")]
+        [Ignore]
         public ModRefValue<int> Type { get; set; } = ModRefValue<int>.Of("0", 0);
+
+        [Column("nType")]
+        public string TypeDb
+        {
+            get => Type?.ToString();
+            set => Type = ModRefValue<int>.Parse(value);
+        }
 
         [Column("fLootChance")]
         public double LootChance { get; set; } = 0;

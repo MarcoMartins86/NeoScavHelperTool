@@ -84,7 +84,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "aTreasures":
-                    item.Treasures = StringList<OrModRefValues<string>, string>.Parse(value);
+                    item.TreasuresDb = value;
                     break;
                 case "bNested":
                     item.Nested = int.Parse(value) == 1;
@@ -112,7 +112,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@aTreasures", item.Treasures },
+                { "@aTreasures", item.TreasuresDb },
                 { "@bNested", item.Nested },
                 { "@bSuppress", item.Suppress },
                 { "@bIdentify", item.Identify },

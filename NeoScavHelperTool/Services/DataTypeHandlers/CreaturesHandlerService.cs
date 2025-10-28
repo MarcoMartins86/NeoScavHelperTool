@@ -117,10 +117,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.MovesPerTurn = int.Parse(value);
                     break;
                 case "nTreasureID":
-                    item.TreasureId = ModRefValue<int>.Parse(value);
+                    item.TreasureIdDb = value;
                     break;
                 case "nFaction":
-                    item.Faction = ModRefValue<int>.Parse(value);
+                    item.FactionDb = value;
                     break;
                 case "vAttackModes":
                     item.AttackModes = value;
@@ -129,7 +129,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.BaseConditions = value;
                     break;
                 case "nCorpseID":
-                    item.CorpseId = ModRefValue<int>.Parse(value);
+                    item.CorpseIdDb = value;
                     break;
                 case "vActivities":
                     item.Activities = value;
@@ -156,11 +156,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strImg", item.Image },
                 { "@vEncounterIDs", item.EncounterIds },
                 { "@nMovesPerTurn", item.MovesPerTurn },
-                { "@nTreasureID", item.TreasureId },
-                { "@nFaction", item.Faction },
+                { "@nTreasureID", item.TreasureIdDb },
+                { "@nFaction", item.FactionDb },
                 { "@vAttackModes", item.AttackModes },
                 { "@vBaseConditions", item.BaseConditions },
-                { "@nCorpseID", item.CorpseId },
+                { "@nCorpseID", item.CorpseIdDb },
                 { "@vActivities", item.Activities },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },

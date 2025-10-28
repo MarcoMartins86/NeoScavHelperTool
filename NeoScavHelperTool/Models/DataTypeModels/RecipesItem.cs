@@ -33,8 +33,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("strDestroyed")]
         public string Destroyed { get; set; } = "";
 
-        [Column("nTreasureID")]
+        [Ignore]
         public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
+
+        [Column("nTreasureID")]
+        public string TreasureIdDb
+        {
+            get => TreasureId?.ToString();
+            set => TreasureId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("fHours")]
         public double Hours { get; set; } = 0;
@@ -42,8 +49,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("nReverse")]
         public int Reverse { get; set; } = 0;
 
-        [Column("nHiddenID")]
+        [Ignore]
         public ModRefValue<int> HiddenId { get; set; } = ModRefValue<int>.Of("0", 0);
+
+        [Column("nHiddenID")]
+        public string HiddenIdDb
+        {
+            get => HiddenId?.ToString();
+            set => HiddenId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("bIdentify")]
         public bool Identify { get; set; } = false;
@@ -54,8 +68,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("vAlsoTry")]
         public string AlsoTry { get; set; }
 
-        [Column("nTempTreasureID")]
+        [Ignore]
         public ModRefValue<int> TempTreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
+
+        [Column("nTempTreasureID")]
+        public string TempTreasureIdDb
+        {
+            get => TempTreasureId?.ToString();
+            set => TempTreasureId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("bDegradeOutput")]
         public bool DegradeOutput { get; set; } = true;

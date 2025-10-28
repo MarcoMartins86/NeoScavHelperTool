@@ -129,10 +129,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Passable = int.Parse(value) == 1;
                     break;
                 case "nScavengeInitialID":
-                    item.ScavengeInitialId = ModRefValue<int>.Parse(value);
+                    item.ScavengeInitialIdDb = value;
                     break;
                 case "nScavengeItemsIDPerHour":
-                    item.ScavengeItemsIdPerHour = ModRefValue<int>.Parse(value);
+                    item.ScavengeItemsIdPerHourDb = value;
                     break;
                 case "nCampItems":
                     item.CampItems = int.Parse(value);
@@ -141,7 +141,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.LightLevels = value;
                     break;
                 case "nDefaultCampID":
-                    item.DefaultCampId = ModRefValue<int>.Parse(value);
+                    item.DefaultCampIdDb = value;
                     break;
                 case "nMinRange":
                     item.MinRange = int.Parse(value);
@@ -175,11 +175,11 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@nVizIncrease", item.VizIncrease },
                 { "@nTreasureID", item.TreasureId },
                 { "@bPassable", item.Passable },
-                { "@nScavengeInitialID", item.ScavengeInitialId },
-                { "@nScavengeItemsIDPerHour", item.ScavengeItemsIdPerHour },
+                { "@nScavengeInitialID", item.ScavengeInitialIdDb },
+                { "@nScavengeItemsIDPerHour", item.ScavengeItemsIdPerHourDb },
                 { "@nCampItems", item.CampItems },
                 { "@vLightLevels", item.LightLevels },
-                { "@nDefaultCampID", item.DefaultCampId },
+                { "@nDefaultCampID", item.DefaultCampIdDb },
                 { "@nMinRange", item.MinRange },
                 { "@nMaxRange", item.MaxRange },
                 { "@vCondIDs", item.ConditionsIds },

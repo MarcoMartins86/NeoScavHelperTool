@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,7 @@ using System.Xml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using MahApps.Metro.Controls;
 using NeoScavHelperTool.Helpers;
+using NeoScavHelperTool.Models.DataTypeModels.Base;
 using NeoScavHelperTool.Services.DataTypeHandlers.Base;
 using NeoScavHelperTool.ViewModels;
 
@@ -58,6 +60,18 @@ namespace NeoScavHelperTool.Views
 
         private void Expanders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.AddedItems.Count == 0)
+            {
+                ViewModel.HamburgerItems = new List<DataTypeModelBase>();
+                return;
+            }
+
+            // Ignore, already listing this content
+            if (e.AddedItems.Contains(ViewModel.HamburgerItemsContentName))
+            {
+                return;
+            }
+
             (string mod, string table) = ViewModel.GetSelectedModAndTable();
 
             IRepositoryDataTypeHandlerService repository =

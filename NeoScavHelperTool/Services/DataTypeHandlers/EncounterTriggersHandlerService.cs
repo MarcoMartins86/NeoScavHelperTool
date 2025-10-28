@@ -105,7 +105,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "nEncounterID":
-                    item.EncounterId = ModRefValue<int>.Parse(value);
+                    item.EncounterIdDb = value;
                     break;
                 case "fChance":
                     item.Chance = double.Parse(value);
@@ -154,7 +154,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strName", item.Name },
-                { "@nEncounterID", item.EncounterId },
+                { "@nEncounterID", item.EncounterIdDb },
                 { "@fChance", item.Chance },
                 { "@bLocBased", item.LocBased },
                 { "@bDateBased", item.DateBased },

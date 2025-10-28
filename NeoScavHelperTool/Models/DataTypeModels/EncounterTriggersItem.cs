@@ -21,8 +21,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("strName")]
         public string Name { get; set; }
 
-        [Column("nEncounterID")]
+        [Ignore]
         public ModRefValue<int> EncounterId { get; set; }
+
+        [Column("nEncounterID")]
+        public string EncounterIdDb
+        {
+            get => EncounterId?.ToString();
+            set => EncounterId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("fChance")]
         public double Chance { get; set; }

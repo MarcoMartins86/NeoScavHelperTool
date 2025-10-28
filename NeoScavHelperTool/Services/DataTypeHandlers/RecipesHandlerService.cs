@@ -126,7 +126,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Destroyed = value;
                     break;
                 case "nTreasureID":
-                    item.TreasureId = ModRefValue<int>.Parse(value);
+                    item.TreasureIdDb = value;
                     break;
                 case "fHours":
                     item.Hours = double.Parse(value);
@@ -137,7 +137,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                         : int.Parse(value);
                     break;
                 case "nHiddenID":
-                    item.HiddenId = ModRefValue<int>.Parse(value);
+                    item.HiddenIdDb = value;
                     break;
                 case "bIdentify":
                     item.Identify = int.Parse(value) == 1;
@@ -149,7 +149,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.AlsoTry = value;
                     break;
                 case "nTempTreasureID":
-                    item.TempTreasureId = ModRefValue<int>.Parse(value);
+                    item.TempTreasureIdDb = value;
                     break;
                 case "bDegradeOutput":
                     item.DegradeOutput = int.Parse(value) == 1;
@@ -181,14 +181,14 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strTools", item.Tools },
                 { "@strConsumed", item.Consumed },
                 { "@strDestroyed", item.Destroyed },
-                { "@nTreasureID", item.TreasureId },
+                { "@nTreasureID", item.TreasureIdDb },
                 { "@fHours", item.Hours },
                 { "@nReverse", item.Reverse },
-                { "@nHiddenID", item.HiddenId },
+                { "@nHiddenID", item.HiddenIdDb },
                 { "@bIdentify", item.Identify },
                 { "@bTransferComponents", item.TransferComponents },
                 { "@vAlsoTry", item.AlsoTry },
-                { "@nTempTreasureID", item.TempTreasureId },
+                { "@nTempTreasureID", item.TempTreasureIdDb },
                 { "@bDegradeOutput", item.DegradeOutput },
                 { "@strType", item.Type },
                 { "@bScrap", item.Scrap },

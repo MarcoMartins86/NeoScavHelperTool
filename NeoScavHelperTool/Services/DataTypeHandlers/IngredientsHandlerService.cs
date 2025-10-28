@@ -75,10 +75,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Name = value;
                     break;
                 case "strRequiredProps":
-                    item.RequiredProps = StringList<AndModRefValues<int>, int>.Parse(value);
+                    item.RequiredPropsDb = value;
                     break;
                 case "strForbidProps":
-                    item.ForbidProps = StringList<AndModRefValues<int>, int>.Parse(value);
+                    item.ForbidPropsDb = value;
                     break;
                 default:
                     throw new Exception(
@@ -97,8 +97,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@nID", item.Id },
                 { "@strName", item.Name },
-                { "@strRequiredProps", item.RequiredProps },
-                { "@strForbidProps", item.ForbidProps },
+                { "@strRequiredProps", item.RequiredPropsDb },
+                { "@strForbidProps", item.ForbidPropsDb },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },
             };

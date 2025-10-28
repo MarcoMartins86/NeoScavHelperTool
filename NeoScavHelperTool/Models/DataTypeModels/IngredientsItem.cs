@@ -20,10 +20,24 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("strName")]
         public string Name { get; set; }
 
-        [Column("strRequiredProps")]
+        [Ignore]
         public StringList<AndModRefValues<int>, int> RequiredProps { get; set; }
 
-        [Column("strForbidProps")]
+        [Column("strRequiredProps")]
+        public string RequiredPropsDb
+        {
+            get => RequiredProps?.ToString();
+            set => RequiredProps = StringList<AndModRefValues<int>, int>.Parse(value);
+        }
+
+        [Ignore]
         public StringList<AndModRefValues<int>, int> ForbidProps { get; set; }
+
+        [Column("strForbidProps")]
+        public string ForbidPropsDb
+        {
+            get => ForbidProps?.ToString();
+            set => ForbidProps = StringList<AndModRefValues<int>, int>.Parse(value);
+        }
     }
 }

@@ -20,15 +20,29 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("strDesc")]
         public string Description { get; set; }
 
-        [Column("vImageList")]
+        [Ignore]
         public ModRefValue<string> ImageList { get; set; } =
             ModRefValue<string>.Of("0", "ItmScavengeGrass01.png");
+
+        [Column("vImageList")]
+        public string ImageListDb
+        {
+            get => ImageList?.ToString();
+            set => ImageList = ModRefValue<string>.Parse(value);
+        }
 
         [Column("aCapacities")]
         public string Capacities { get; set; } = "30x30";
 
-        [Column("nTreasureID")]
+        [Ignore]
         public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
+
+        [Column("nTreasureID")]
+        public string TreasureIdDb
+        {
+            get => TreasureId?.ToString();
+            set => TreasureId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("m_fAlertness")]
         public double Alertness { get; set; } = 0;

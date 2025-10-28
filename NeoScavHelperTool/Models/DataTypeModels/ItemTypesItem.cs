@@ -33,11 +33,25 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("strDescAlt")]
         public string DescriptionAlternative { get; set; }
 
-        [Column("nCondID")]
+        [Ignore]
         public ModRefValue<int> ConditionId { get; set; } = ModRefValue<int>.Of("0", 1);
 
-        [Column("vImageList")]
+        [Column("nCondID")]
+        public string ConditionIdDb
+        {
+            get => ConditionId?.ToString();
+            set => ConditionId = ModRefValue<int>.Parse(value);
+        }
+
+        [Ignore]
         public StringList<ModRefValue<string>, string> ImageList { get; set; }
+
+        [Column("vImageList")]
+        public string ImageListDb
+        {
+            get => ImageList?.ToString();
+            set => ImageList = StringList<ModRefValue<string>, string>.Parse(value);
+        }
 
         [Column("vSpriteList")]
         public string SpriteList { get; set; }
@@ -90,20 +104,55 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("bSocketLocked")]
         public bool SocketLocked { get; set; } = false;
 
-        [Column("vProperties")]
+        [Ignore]
         public StringList<ModRefValue<int>, int> Properties { get; set; }
 
-        [Column("aContentIDs")]
+        [Column("vProperties")]
+        public string PropertiesDb
+        {
+            get => Properties?.ToString();
+            set => Properties = StringList<ModRefValue<int>, int>.Parse(value);
+        }
+
+        [Ignore]
         public StringList<ModRefValue<int>, int> ContentIds { get; set; }
 
-        [Column("nFormatID")]
+        [Column("aContentIDs")]
+        public string ContentIdsDb
+        {
+            get => ContentIds?.ToString();
+            set => ContentIds = StringList<ModRefValue<int>, int>.Parse(value);
+        }
+
+        [Ignore]
         public ModRefValue<int> FormatId { get; set; } = ModRefValue<int>.Of("0", 3);
 
-        [Column("nTreasureID")]
+        [Column("nFormatID")]
+        public string FormatIdDb
+        {
+            get => FormatId?.ToString();
+            set => FormatId = ModRefValue<int>.Parse(value);
+        }
+
+        [Ignore]
         public ModRefValue<int> TreasureId { get; set; } = ModRefValue<int>.Of("0", 3);
 
-        [Column("nComponentID")]
+        [Column("nTreasureID")]
+        public string TreasureIdDb
+        {
+            get => TreasureId?.ToString();
+            set => TreasureId = ModRefValue<int>.Parse(value);
+        }
+
+        [Ignore]
         public ModRefValue<int> ComponentId { get; set; } = ModRefValue<int>.Of("0", 3);
+
+        [Column("nComponentID")]
+        public string ComponentIdDb
+        {
+            get => ComponentId?.ToString();
+            set => ComponentId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("bMirrored")]
         public bool Mirrored { get; set; } = false;
@@ -123,8 +172,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("aSwitchIDs")]
         public string SwitchIds { get; set; } = "";
 
-        [Column("aSounds")]
+        [Ignore]
         public StringList<ModRefValue<string>, string> Sounds { get; set; } =
             StringList<ModRefValue<string>, string>.Of("0", "cuePickup", "cuePutdown");
+
+        [Column("aSounds")]
+        public string SoundsDb
+        {
+            get => Sounds?.ToString();
+            set => Sounds = StringList<ModRefValue<string>, string>.Parse(value);
+        }
     }
 }

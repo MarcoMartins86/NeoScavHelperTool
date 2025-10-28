@@ -186,10 +186,10 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.DescriptionAlternative = value;
                     break;
                 case "nCondID":
-                    item.ConditionId = ModRefValue<int>.Parse(value);
+                    item.ConditionIdDb = value;
                     break;
                 case "vImageList":
-                    item.ImageList = StringList<ModRefValue<string>, string>.Parse(value);
+                    item.ImageListDb = value;
                     break;
                 case "vSpriteList":
                     item.SpriteList = value;
@@ -251,19 +251,19 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.SocketLocked = int.Parse(value) == 1;
                     break;
                 case "vProperties":
-                    item.Properties = StringList<ModRefValue<int>, int>.Parse(value);
+                    item.PropertiesDb = value;
                     break;
                 case "aContentIDs":
-                    item.ContentIds = StringList<ModRefValue<int>, int>.Parse(value);
+                    item.ContentIdsDb = value;
                     break;
                 case "nFormatID":
-                    item.FormatId = ModRefValue<int>.Parse(value);
+                    item.FormatIdDb = value;
                     break;
                 case "nTreasureID":
-                    item.TreasureId = ModRefValue<int>.Parse(value);
+                    item.TreasureIdDb = value;
                     break;
                 case "nComponentID":
-                    item.ComponentId = ModRefValue<int>.Parse(value);
+                    item.ComponentIdDb = value;
                     break;
                 case "bMirrored":
                     item.Mirrored = int.Parse(value) == 1;
@@ -284,7 +284,7 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.SwitchIds = value;
                     break;
                 case "aSounds":
-                    item.Sounds = StringList<ModRefValue<string>, string>.Parse(value);
+                    item.SoundsDb = value;
                     break;
                 default:
                     throw new Exception(
@@ -307,8 +307,8 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@strName", item.Name },
                 { "@strDesc", item.Description },
                 { "@strDescAlt", item.DescriptionAlternative },
-                { "@nCondID", item.ConditionId },
-                { "@vImageList", item.ImageList },
+                { "@nCondID", item.ConditionIdDb },
+                { "@vImageList", item.ImageListDb },
                 { "@vSpriteList", item.SpriteList },
                 { "@vImageUsage", item.ImageUsage },
                 { "@fWeight", item.Weight },
@@ -326,18 +326,18 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                 { "@vEquipSlots", item.EquipSlots },
                 { "@vUseSlots", item.UseSlots },
                 { "@bSocketLocked", item.SocketLocked },
-                { "@vProperties", item.Properties },
-                { "@aContentIDs", item.ContentIds },
-                { "@nFormatID", item.FormatId },
-                { "@nTreasureID", item.TreasureId },
-                { "@nComponentID", item.ComponentId },
+                { "@vProperties", item.PropertiesDb },
+                { "@aContentIDs", item.ContentIdsDb },
+                { "@nFormatID", item.FormatIdDb },
+                { "@nTreasureID", item.TreasureIdDb },
+                { "@nComponentID", item.ComponentIdDb },
                 { "@bMirrored", item.Mirrored },
                 { "@nSlotDepth", item.SlotDepth },
                 { "@strChargeProfiles", item.ChargeProfiles },
                 { "@aAttackModes", item.AttackModes },
                 { "@nStackLimit", item.StackLimit },
                 { "@aSwitchIDs", item.SwitchIds },
-                { "@aSounds", item.Sounds },
+                { "@aSounds", item.SoundsDb },
                 { "@isOverriden", item.IsOverriden },
                 { "@valueModFolder", item.ValueModFolder },
             };

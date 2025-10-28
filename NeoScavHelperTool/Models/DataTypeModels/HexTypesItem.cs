@@ -39,11 +39,25 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("bPassable")]
         public bool Passable { get; set; }
 
-        [Column("nScavengeInitialID")]
+        [Ignore]
         public ModRefValue<int> ScavengeInitialId { get; set; } = ModRefValue<int>.Of("0", 3);
 
-        [Column("nScavengeItemsIDPerHour")]
+        [Column("nScavengeInitialID")]
+        public string ScavengeInitialIdDb
+        {
+            get => ScavengeInitialId?.ToString();
+            set => ScavengeInitialId = ModRefValue<int>.Parse(value);
+        }
+
+        [Ignore]
         public ModRefValue<int> ScavengeItemsIdPerHour { get; set; } = ModRefValue<int>.Of("0", 25);
+
+        [Column("nScavengeItemsIDPerHour")]
+        public string ScavengeItemsIdPerHourDb
+        {
+            get => ScavengeItemsIdPerHour?.ToString();
+            set => ScavengeItemsIdPerHour = ModRefValue<int>.Parse(value);
+        }
 
         [Column("nCampItems")]
         public int CampItems { get; set; } = 5;
@@ -51,8 +65,15 @@ namespace NeoScavHelperTool.Models.DataTypeModels
         [Column("vLightLevels")]
         public string LightLevels { get; set; } = "0.57,1.0,0.57,0.15";
 
-        [Column("nDefaultCampID")]
+        [Ignore]
         public ModRefValue<int> DefaultCampId { get; set; } = ModRefValue<int>.Of("0", 517);
+
+        [Column("nDefaultCampID")]
+        public string DefaultCampIdDb
+        {
+            get => DefaultCampId?.ToString();
+            set => DefaultCampId = ModRefValue<int>.Parse(value);
+        }
 
         [Column("nMinRange")]
         public int MinRange { get; set; } = 3;

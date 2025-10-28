@@ -93,13 +93,13 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
                     item.Description = value;
                     break;
                 case "vImageList":
-                    item.ImageList = ModRefValue<string>.Parse(value);
+                    item.ImageListDb = value;
                     break;
                 case "aCapacities":
                     item.Capacities = value;
                     break;
                 case "nTreasureID":
-                    item.TreasureId = ModRefValue<int>.Parse(value);
+                    item.TreasureIdDb = value;
                     break;
                 case "m_fAlertness":
                     item.Alertness = double.Parse(value);
@@ -133,9 +133,9 @@ namespace NeoScavHelperTool.Services.DataTypeHandlers
             {
                 { "@id", item.Id },
                 { "@strDesc", item.Description },
-                { "@vImageList", item.ImageList },
+                { "@vImageList", item.ImageListDb },
                 { "@aCapacities", item.Capacities },
-                { "@nTreasureID", item.TreasureId },
+                { "@nTreasureID", item.TreasureIdDb },
                 { "@m_fAlertness", item.Alertness },
                 { "@m_fVisibility", item.Visibility },
                 { "@WetTempAdjustMod", item.WetTempAdjustMod },

@@ -12,7 +12,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     public class IngredientsItem : DataTypeModelBase
     {
         protected override DataType DataType => DataType.Ingredients;
-        protected override string Identifier => Id.ToString();
+        public override string Identifier => Id.ToString();
 
         [PrimaryKey, Column("nID")]
         public int Id { get; set; }

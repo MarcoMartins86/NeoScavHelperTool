@@ -16,7 +16,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels.Base
         [Column("valueModFolder")]
         public string ValueModFolder { get; set; }
 
-        protected abstract string Identifier { get; }
+        public abstract string Identifier { get; }
 
         // this data below is just to help building better errors during DB insertion
         protected abstract DataType DataType { get; }

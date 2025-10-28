@@ -11,7 +11,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     public class ImagesItem : DataTypeModelBase
     {
         protected override DataType DataType => DataType.Images;
-        protected override string Identifier => Name.ToString();
+        public override string Identifier => Name.ToString();
 
         [PrimaryKey, Column("name")]
         public int Name { get; set; }

@@ -11,7 +11,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     public class ForbiddenHexesItem : DataTypeModelBase
     {
         protected override DataType DataType => DataType.ForbiddenHexes;
-        protected override string Identifier => Id.ToString();
+        public override string Identifier => Id.ToString();
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }

@@ -29,6 +29,7 @@
     HamburgerWidth="48"
     OpenPaneLength="300"
     DataContext="{Binding HamburgerPaneViewModel, Source={StaticResource ViewModelLocator}}"
+    ItemsSource="{Binding HamburgerItems}"
   >
     <!--  Header  -->
     <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
@@ -154,7 +155,6 @@
                     <ScrollViewer
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
-                      Padding="{TemplateBinding Padding}"
                       mah:ScrollViewerHelper.VerticalScrollBarOnLeftSide="{TemplateBinding mah:ScrollViewerHelper.VerticalScrollBarOnLeftSide}"
                       CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
                       Focusable="False"
@@ -162,6 +162,7 @@
                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                       Style="{StaticResource MahApps.Styles.ScrollViewer.Hamburger}"
                       VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                      Padding="0,0,10,0"
                     >
                       <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </ScrollViewer>
@@ -533,9 +534,18 @@
               Text="{Binding Identifier}"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
+              TextTrimming="CharacterEllipsis"
+              ToolTip="{Binding Identifier}"
             />
           </Grid>
-          <TextBlock FontSize="16" Text="{Binding Identifier}" DockPanel.Dock="Right" />
+          <TextBlock
+            FontSize="16"
+            Text="{Binding Identifier}"
+            DockPanel.Dock="Right"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Margin="6,0"
+          />
         </DockPanel>
       </DataTemplate>
     </mah:HamburgerMenu.ItemTemplate>

@@ -13,7 +13,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     public class EncounterTriggersItem : DataTypeModelBase
     {
         protected override DataType DataType => DataType.EncounterTriggers;
-        protected override string Identifier => Id.ToString();
+        public override string Identifier => Id.ToString();
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }

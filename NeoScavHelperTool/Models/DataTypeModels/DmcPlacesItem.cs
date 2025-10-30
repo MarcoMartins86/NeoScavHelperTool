@@ -12,6 +12,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.DmcPlaces;
         public override string Identifier => Id.ToString();
+        public override string DisplayName => Image;
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }

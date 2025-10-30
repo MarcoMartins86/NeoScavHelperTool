@@ -14,6 +14,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.Encounters;
         public override string Identifier => Id.ToString();
+        public override string DisplayName => Name;
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }

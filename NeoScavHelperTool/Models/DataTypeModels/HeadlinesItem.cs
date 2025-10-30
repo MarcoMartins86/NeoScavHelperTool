@@ -12,6 +12,14 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.Headlines;
         public override string Identifier => Id.ToString();
+        public override string DisplayName
+        {
+            get
+            {
+                int index = Headline.IndexOf("\n");
+                return index == -1 ? Headline : Headline.Substring(0, index);
+            }
+        }
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }

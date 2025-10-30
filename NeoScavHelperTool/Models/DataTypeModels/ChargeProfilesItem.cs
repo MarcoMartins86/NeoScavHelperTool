@@ -12,6 +12,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.ChargeProfiles;
         public override string Identifier => Id.ToString();
+        public override string DisplayName => Name;
 
         [PrimaryKey, Column("nID")]
         public int Id { get; set; }

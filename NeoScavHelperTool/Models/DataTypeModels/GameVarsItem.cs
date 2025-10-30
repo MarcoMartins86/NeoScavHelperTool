@@ -12,6 +12,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.GameVars;
         public override string Identifier => Name;
+        public override string DisplayName => Type;
 
         [PrimaryKey, Column("strName")]
         public string Name { get; set; }

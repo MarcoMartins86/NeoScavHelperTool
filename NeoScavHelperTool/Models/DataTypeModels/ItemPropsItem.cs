@@ -12,6 +12,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.ItemProps;
         public override string Identifier => Id.ToString();
+        public override string DisplayName => PropertyName;
 
         [PrimaryKey, Column("nID")]
         public int Id { get; set; }

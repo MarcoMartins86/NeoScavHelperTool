@@ -27,9 +27,10 @@
     DisplayMode="CompactOverlay"
     IsPaneOpen="True"
     HamburgerWidth="48"
-    OpenPaneLength="300"
+    OpenPaneLength="800"
     DataContext="{Binding HamburgerPaneViewModel, Source={StaticResource ViewModelLocator}}"
     ItemsSource="{Binding HamburgerItems}"
+    MaximumOpenPaneLength="1000"
   >
     <!--  Header  -->
     <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
@@ -535,16 +536,16 @@
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
               TextTrimming="CharacterEllipsis"
-              ToolTip="{Binding Identifier}"
+              ToolTip="{Binding DisplayName}"
             />
           </Grid>
           <TextBlock
-            FontSize="16"
-            Text="{Binding Identifier}"
+            Text="{Binding DisplayName}"
             DockPanel.Dock="Right"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Margin="6,0"
+            ToolTip="{Binding DisplayName}"
           />
         </DockPanel>
       </DataTemplate>

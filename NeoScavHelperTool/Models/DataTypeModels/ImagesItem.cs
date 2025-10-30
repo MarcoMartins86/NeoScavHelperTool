@@ -11,10 +11,11 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     public class ImagesItem : DataTypeModelBase
     {
         protected override DataType DataType => DataType.Images;
-        public override string Identifier => Name.ToString();
+        public override string Identifier => Name;
+        public override string DisplayName => Name;
 
         [PrimaryKey, Column("name")]
-        public int Name { get; set; }
+        public string Name { get; set; }
 
         [Column("small")]
         public string Small { get; set; }

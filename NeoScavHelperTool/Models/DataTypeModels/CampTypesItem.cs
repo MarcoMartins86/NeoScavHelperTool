@@ -13,6 +13,7 @@ namespace NeoScavHelperTool.Models.DataTypeModels
     {
         protected override DataType DataType => DataType.CampTypes;
         public override string Identifier => Id.ToString();
+        public override string DisplayName => Description;
 
         [PrimaryKey, Column("id")]
         public int Id { get; set; }

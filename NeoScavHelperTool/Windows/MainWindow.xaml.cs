@@ -33,31 +33,6 @@ namespace NeoScavHelperTool.Views
             InitializeComponent();
         }
 
-        private void ExpanderElement_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            // Defer the measurement to ensure layout has completed after expansion
-            Dispatcher.InvokeAsync(
-                () =>
-                {
-                    Expander expander = sender as Expander;
-                    switch (expander.Name)
-                    {
-                        case "FirstExpander":
-                            ViewModel.FirstExpanderMaxWidth = expander.ActualWidth;
-                            break;
-                        case "SecondExpander":
-                            ViewModel.SecondExpanderMaxWidth = expander.ActualWidth;
-                            break;
-                        default:
-                            throw new NotImplementedException(
-                                $"Unexpected expander: \"{expander.Name}\""
-                            );
-                    }
-                },
-                DispatcherPriority.Render
-            ); // Use Render priority to ensure layout is done
-        }
-
         private void Expanders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 0)

@@ -9,6 +9,7 @@
   xmlns:views="clr-namespace:NeoScavHelperTool.Views"
   xmlns:converters="clr-namespace:NeoScavHelperTool.Converters"
   xmlns:behaviors="clr-namespace:NeoScavHelperTool.Behaviors"
+  xmlns:bindingProxies="clr-namespace:NeoScavHelperTool.BindingProxies"
   xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Material"
   xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
   mc:Ignorable="d"
@@ -23,17 +24,17 @@
 >
   <mah:MetroWindow.Resources>
     <converters:NotEqualConverter x:Key="NotEqualConverter" />
+    <converters:SumConverter x:Key="SumConverter" />
   </mah:MetroWindow.Resources>
   <mah:HamburgerMenu
     x:Name="ViewerHamburgerMenu"
     DisplayMode="CompactOverlay"
     IsPaneOpen="True"
     HamburgerWidth="48"
-    OpenPaneLength="{Binding CalculatedMaxWidth, Source={x:Reference AdaptivePaneWidthBehaviorInstance}}"
     DataContext="{Binding HamburgerPaneViewModel, Source={StaticResource ViewModelLocator}}"
     ItemsSource="{Binding HamburgerItems}"
-    MaximumOpenPaneLength="600"
-    MinimumOpenPaneLength="100"
+    MaximumOpenPaneLength="800"
+    MinimumOpenPaneLength="300"
   >
     <!--  Header  -->
     <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
@@ -79,6 +80,10 @@
       </DataTemplate>
     </mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
     <mah:HamburgerMenu.Resources>
+      <bindingProxies:HamburgerMenuBindingProxy
+        x:Key="ViewerHamburgerMenuProxy"
+        Data="{Binding ElementName=ViewerHamburgerMenu}"
+      />
       <Style
         BasedOn="{StaticResource MahApps.Styles.HamburgerMenuListBox}"
         TargetType="{x:Type mah:HamburgerMenuListBox}"
@@ -157,8 +162,10 @@
                       Margin="3,0,6,0"
                       DockPanel.Dock="Right"
                       IsExpanded="{Binding IsFirstExpanderExtended, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      SizeChanged="ExpanderElement_SizeChanged"
                     >
+                      <i:Interaction.Behaviors>
+                        <behaviors:ExpanderDesiredWidthBehavior DesiredWidth="{Binding FirstExpanderDesiredWidth, Source={StaticResource ViewerHamburgerMenuProxy}, Mode=OneWayToSource}" />
+                      </i:Interaction.Behaviors>
                       <Expander.Header>
                         <!-- for some reason I had to bind the Content because he is the one acting as DataContext in Framework 462 at least -->
                         <ContentPresenter
@@ -309,8 +316,10 @@
                       Margin="6,0,3,0"
                       DockPanel.Dock="Right"
                       IsExpanded="{Binding IsSecondExpanderExtended, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      SizeChanged="ExpanderElement_SizeChanged"
                     >
+                      <i:Interaction.Behaviors>
+                        <behaviors:ExpanderDesiredWidthBehavior DesiredWidth="{Binding SecondExpanderDesiredWidth, Source={StaticResource ViewerHamburgerMenuProxy}, Mode=OneWayToSource}" />
+                      </i:Interaction.Behaviors>
                       <Expander.Header>
                         <!-- for some reason I had to bind the Content because he is the one acting as DataContext in Framework 462 at least -->
                         <ContentPresenter
@@ -565,5 +574,22 @@
     <i:Interaction.Behaviors>
       <behaviors:AdaptivePaneWidthBehavior x:Name="AdaptivePaneWidthBehaviorInstance" />
     </i:Interaction.Behaviors>
+    <mah:HamburgerMenu.OpenPaneLength>
+      <MultiBinding Converter="{StaticResource SumConverter}">
+        <Binding
+          Path="FirstExpanderDesiredWidth"
+          Source="{StaticResource ViewerHamburgerMenuProxy}"
+        />
+        <Binding
+          Path="SecondExpanderDesiredWidth"
+          Source="{StaticResource ViewerHamburgerMenuProxy}"
+        />
+        <Binding
+          Path="CalculatedMaxWidth"
+          Source="{x:Reference AdaptivePaneWidthBehaviorInstance}"
+        />
+        <Binding Path="HamburgerWidth" ElementName="ViewerHamburgerMenu" />
+      </MultiBinding>
+    </mah:HamburgerMenu.OpenPaneLength>
   </mah:HamburgerMenu>
 </mah:MetroWindow>

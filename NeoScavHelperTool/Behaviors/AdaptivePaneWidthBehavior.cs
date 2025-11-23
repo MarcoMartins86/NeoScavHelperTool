@@ -22,7 +22,7 @@ namespace NeoScavHelperTool.Behaviors
         // Attached Dependency Property to expose the calculated width
         public static readonly DependencyProperty CalculatedMaxWidthProperty =
             DependencyProperty.RegisterAttached(
-                "CalculatedMaxWidth",
+                nameof(CalculatedMaxWidth),
                 typeof(double),
                 typeof(AdaptivePaneWidthBehavior),
                 new FrameworkPropertyMetadata(0.0)
@@ -131,7 +131,7 @@ namespace NeoScavHelperTool.Behaviors
             )
             {
                 // Containers are already generated, perform measurement immediately
-                this.CalculatedMaxWidth = PerformMeasurementLogic() + 20; // Add padding
+                this.CalculatedMaxWidth = PerformMeasurementLogic() + 20; // Add padding for scrollbar/borders
             }
         }
 

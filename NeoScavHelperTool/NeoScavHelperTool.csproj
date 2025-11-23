@@ -27,12 +27,20 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="sqlite-net-base" Version="1.9.172" />
-    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.11" GeneratePathProperty="true" />
+    <PackageReference
+      Include="SQLitePCLRaw.lib.e_sqlite3"
+      Version="2.1.11"
+      GeneratePathProperty="true"
+    />
     <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="3.0.2" />
     <PackageReference Include="System.Memory" Version="4.6.3" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
   </ItemGroup>
-  <Target Name="EmbedNativeSQLiteDllWithCostura" BeforeTargets="ResolveAssemblyReferences" Condition="$(Frameworks.Contains('|$(TargetFramework)|'))">
+  <Target
+    Name="EmbedNativeSQLiteDllWithCostura"
+    BeforeTargets="ResolveAssemblyReferences"
+    Condition="$(Frameworks.Contains('|$(TargetFramework)|'))"
+  >
     <ItemGroup>
       <EmbeddedResource Include="$(PkgSQLitePCLRaw_lib_e_sqlite3)\runtimes\win-x86\native\e_sqlite3.dll">
         <Link>costura-win-x86\e_sqlite3.dll</Link>
@@ -51,7 +59,10 @@
         <Visible>false</Visible>
       </EmbeddedResource>
       <Content Remove="@(Content)" Condition="'%(Filename)%(Extension)' == 'e_sqlite3.dll'" />
-      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)%(Extension)' == 'e_sqlite3.dll' OR '%(Filename)%(Extension)' == 'SQLitePCLRaw.batteries_v2.dll'" />
+      <ReferenceCopyLocalPaths
+        Remove="@(ReferenceCopyLocalPaths)"
+        Condition="'%(Filename)%(Extension)' == 'e_sqlite3.dll' OR '%(Filename)%(Extension)' == 'SQLitePCLRaw.batteries_v2.dll'"
+      />
     </ItemGroup>
   </Target>
   <ItemGroup Condition="!$(Frameworks.Contains('|$(TargetFramework)|'))">
@@ -66,7 +77,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
+    <PackageReference
+      Include="Microsoft.Extensions.Options.ConfigurationExtensions"
+      Version="9.0.8"
+    />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.8" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />

@@ -20,18 +20,18 @@ namespace NeoScavHelperTool.Behaviors
         private Type _lastItemsType = null;
 
         // Attached Dependency Property to expose the calculated width
-        public static readonly DependencyProperty CalculatedMaxWidthProperty =
+        public static readonly DependencyProperty DesiredMaxWidthProperty =
             DependencyProperty.RegisterAttached(
-                nameof(CalculatedMaxWidth),
+                nameof(DesiredMaxWidth),
                 typeof(double),
                 typeof(AdaptivePaneWidthBehavior),
                 new FrameworkPropertyMetadata(0.0)
             );
 
-        public double CalculatedMaxWidth
+        public double DesiredMaxWidth
         {
-            get { return (double)GetValue(CalculatedMaxWidthProperty); }
-            private set { SetValue(CalculatedMaxWidthProperty, value); }
+            get { return (double)GetValue(DesiredMaxWidthProperty); }
+            private set { SetValue(DesiredMaxWidthProperty, value); }
         }
 
         protected override void OnAttached()
@@ -57,7 +57,7 @@ namespace NeoScavHelperTool.Behaviors
                 _itemContainerGenerator = null;
             }
             // Clear the attached property value on detaching for good measure
-            CalculatedMaxWidth = 0.0;
+            DesiredMaxWidth = 0.0;
         }
 
         private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
@@ -110,7 +110,7 @@ namespace NeoScavHelperTool.Behaviors
         {
             if (_targetItemsControl == null || _targetItemsControl.Items.IsEmpty)
             {
-                CalculatedMaxWidth = 0.0;
+                DesiredMaxWidth = 0.0;
                 return;
             }
             // Check if its still the same collection (since it's not dynamic this suffices, otherwise also check collection size)
@@ -131,7 +131,7 @@ namespace NeoScavHelperTool.Behaviors
             )
             {
                 // Containers are already generated, perform measurement immediately
-                this.CalculatedMaxWidth = PerformMeasurementLogic() + 20; // Add padding for scrollbar/borders
+                this.DesiredMaxWidth = PerformMeasurementLogic() + 20; // Add padding for scrollbar/borders
             }
         }
 

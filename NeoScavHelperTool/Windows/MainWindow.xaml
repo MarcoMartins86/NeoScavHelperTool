@@ -73,8 +73,8 @@
             SelectedIndex="{Binding DisplayMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
           >
             <ComboBoxItem Content="by Mod" />
-            <ComboBoxItem Content="by Type" />
-            <ComboBoxItem Content="Consolidated" />
+            <ComboBoxItem Content="by Type (WIP)" />
+            <ComboBoxItem Content="Consolidated (WIP)" />
           </ComboBox>
         </DockPanel>
       </DataTemplate>
@@ -584,10 +584,7 @@
           Path="SecondExpanderDesiredWidth"
           Source="{StaticResource ViewerHamburgerMenuProxy}"
         />
-        <Binding
-          Path="CalculatedMaxWidth"
-          Source="{x:Reference AdaptivePaneWidthBehaviorInstance}"
-        />
+        <Binding Path="DesiredMaxWidth" Source="{x:Reference AdaptivePaneWidthBehaviorInstance}" />
         <Binding Path="HamburgerWidth" ElementName="ViewerHamburgerMenu" />
       </MultiBinding>
     </mah:HamburgerMenu.OpenPaneLength>

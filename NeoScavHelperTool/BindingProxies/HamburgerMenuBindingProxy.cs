@@ -15,7 +15,7 @@ namespace NeoScavHelperTool.BindingProxies
         }
 
         public static readonly DependencyProperty DataProperty = DependencyProperty.Register(
-            "Data",
+            nameof(Data),
             typeof(DependencyObject),
             typeof(HamburgerMenuBindingProxy),
             new PropertyMetadata(null)
